@@ -16,15 +16,14 @@ export const registerUser = async (req, res) => {
 
     res.status(201).json({ token });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error });
   }
 };
 
 export const loginUser = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password } = req.body;    
     const user = await User.findByEmail(email);
-
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: 'Invalid email or password' });
     }
@@ -32,6 +31,6 @@ export const loginUser = async (req, res) => {
     const token = generateToken(user.id);
     res.status(200).json({ token });
   } catch (error) {
-    res.status(500).json({ message: 'Server error' });
+    res.status(500).json({ message: 'Server error', error: error });
   }
 };

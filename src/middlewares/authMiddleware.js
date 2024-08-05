@@ -11,11 +11,11 @@ export const protect = (req, res, next) => {
       req.user = decoded.id;
       next();
     } catch (error) {
-      return res.status(401).json({ message: 'Not authorized, token failed' });
+      return res.status(401).json({ message: 'Not authorized, token failed', error: error });
     }
   }
 
   if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token' });
+    return res.status(401).json({ message: 'Not authorized, no token', error: error });
   }
 };
