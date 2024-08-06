@@ -29,9 +29,41 @@ export const registerUser = async (req, res, next) => {
     const userId = await User.create({ nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, direcciones_id });
     //const token = generateToken(userId);
     req.body.id = userId;
-    res.status(201).json({ user: req.body });
+    res.status(201).json({ message: "User created", user: req.body });
   } catch (error) {
     next(error); // Pasa el error al middleware de manejo de errores
+  }
+};
+
+export const updateUser = async (req, res, next) => {
+  try {
+    const userData = req.body;
+    const { id } = req.params;
+    userData.id = id;
+    const updatedRows = await User.update(userData);
+
+    if (updatedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User updated successfully' });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const deleteUser = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedRows = await User.delete(id);
+
+    if (deletedRows === 0) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    res.status(200).json({ message: 'User deleted successfully' });
+  } catch (error) {
+    next(error);
   }
 };
 
@@ -47,10 +79,10 @@ export const getAllUsers = async (req, res, next) => {
   }
 };
 
-export const getUserByDni = async (req, res, next) => {
+export const getUserById = async (req, res, next) => {
   try {
-    const { dni } = req.params;
-    const user = await User.findByDni(dni);    
+    const { id } = req.params;
+    const user = await User.findById(id);    
     if (!user) {
       return res.status(400).json({message: 'User Not Found'});
     }

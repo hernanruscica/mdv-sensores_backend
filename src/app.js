@@ -1,6 +1,7 @@
 import express from 'express';
 import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
+import dataloggerRoutes from './routes/dataloggerRoutes.js';
 import { errorHandler } from './middlewares/errorMiddleware.js';
 import pool from './config/database.js';
 
@@ -12,6 +13,9 @@ const app = express();
 app.use(express.json());
 
 app.use('/api/users', userRoutes);
+app.use('/api/dataloggers', dataloggerRoutes);
+
+
 
 app.use(errorHandler);
 
