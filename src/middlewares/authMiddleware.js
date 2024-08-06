@@ -16,6 +16,6 @@ export const protect = (req, res, next) => {
   }
 
   if (!token) {
-    return res.status(401).json({ message: 'Not authorized, no token', error: error });
+    return res.status(401).json({ message: 'Not authorized, no token' });
   }
 };

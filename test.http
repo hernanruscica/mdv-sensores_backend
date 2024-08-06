@@ -1,19 +1,41 @@
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcyMjk1NDU3NywiZXhwIjoxNzI1NTQ2NTc3fQ.qeo4T2_TS7h9YRidLY6wWtr7C2gryCESHNc0l1EoCu0
+@baseUrl = http://localhost:5000
+
 ### Login de Usuario
-POST http://localhost:5000/api/users/login
+POST {{baseUrl}}/api/users/login
 Content-Type: application/json
 
 {
-  "email": "test@example.com",
-  "password": "password123"
+  "dni": 28470359,
+  "password": "pass"
 }
+
 
 ### Registro de Usuario (requiere autenticación de administrador)
-POST http://localhost:5000/api/users/register
+POST {{baseUrl}}/api/users/register
 Content-Type: application/json
-Authorization: Bearer {{TOKEN}}
+Authorization: Bearer {{adminToken}}
 
 {
-  "email": "newuser@example.com",
-  "password": "password123",
-  "name": "New User"
+  "nombre_1":"pepe",
+   "nombre_2":"",
+   "apellido_1":"gonzalez",
+   "apellido_2":"",
+   "dni":"11333555",
+   "foto":"",
+   "email":"noesvacio4@gmail.com",
+   "password":"",
+   "telefono":"",
+   "estado":"",
+   "direcciones_id": 1  
 }
+
+### getAllUsers
+GET {{baseUrl}}/api/users/all
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### getByDni
+GET {{baseUrl}}/api/users/28470359
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
