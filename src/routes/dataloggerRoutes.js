@@ -3,7 +3,6 @@ import { getDataloggerById, getAllDataloggers, registerDatalogger, updateDatalog
 import { protect } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
-
 //      /api/dataloggers
 router.post('/', protect, registerDatalogger);
 router.get('/', protect, getAllDataloggers);

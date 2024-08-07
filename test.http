@@ -100,3 +100,45 @@ Authorization: Bearer {{adminToken}}
 DELETE {{baseUrl}}/api/dataloggers/26
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
+
+######################################################################################
+##################################### Locations ####################################
+######################################################################################
+
+### Locations getById
+GET {{baseUrl}}/api/locations/34
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### Locations getAll
+GET {{baseUrl}}/api/locations
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+###  Locations register
+POST {{baseUrl}}/api/locations
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "nombre":"ubicacion API test",
+   "descripcion":"Es un datalogger falso, agregado para la prueba de la API",   
+   "foto":"dataloggerFalso.jpg",
+   "telefono":"48416987",
+   "email": "correo@gmail.com",
+   "direcciones_id": 66   
+}
+
+### location update
+PUT {{baseUrl}}/api/locations/432
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nombre": "ubicacion API TEST 2"
+}
+
+### location delete
+DELETE {{baseUrl}}/api/locations/43
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
