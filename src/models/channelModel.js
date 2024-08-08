@@ -17,6 +17,19 @@ const Channel = {
         const [rows] = await pool.query(queryString);    
         return rows;
       },
+      findByDataloggerId: async (dataloggerId) => {
+        const queryString = 
+            `select canales.id as canal_id, 
+              canales.nombre_columna, 
+              canales.nombre as canal_nombre, 
+              canales.descripcion as canal_descripcion,
+              canales.multiplicador,
+              canales.tiempo_a_promediar
+                  from canales
+                  where datalogger_id = ?`;
+        const [rows] = await pool.query(queryString, [dataloggerId]);    
+        return rows;
+      },
       create: async (channelData) => {
         const { datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador } = channelData;        
         const queryString = `

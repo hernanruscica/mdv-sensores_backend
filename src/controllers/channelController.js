@@ -66,3 +66,16 @@ export const getChannelById = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAllChannelsByDatalogger = async (req, res, next) => {
+  try {
+    const { dataloggerId } = req.params;
+    const channels = await Channel.findByDataloggerId(dataloggerId);
+    if (channels.length == 0) {
+      return res.status(400).json({message: 'channels Not Found'});
+    }
+    res.status(200).json({ count : channels.length, channels });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -208,6 +208,11 @@ GET {{baseUrl}}/api/channels
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
+### channels getall by datalogger id 
+GET {{baseUrl}}/api/channels/bydatalogger/3
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
 ###  channels register
 POST {{baseUrl}}/api/channels
 Content-Type: application/json
@@ -223,7 +228,7 @@ Authorization: Bearer {{adminToken}}
    "multiplicador" : "1"
 }
 
-### location update
+### channels update
 PUT {{baseUrl}}/api/channels/26
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
@@ -232,7 +237,53 @@ Authorization: Bearer {{adminToken}}
   "nombre": "otro canal de prueba de la api"
 }
 
-### location delete
+### channels delete
 DELETE {{baseUrl}}/api/channels/27
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+######################################################################################
+##################################### alarms ####################################
+######################################################################################
+
+### alarms getById
+GET {{baseUrl}}/api/alarms/48
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### alarms getAll
+GET {{baseUrl}}/api/alarms
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+
+###  alarms register 
+POST {{baseUrl}}/api/alarms
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "canal_id":"26",
+   "tabla": "cocina",   
+   "columna": "d2", 
+   "nombre": "alarma falsa TEST API",     
+   "descripcion":"Alarma falsa para probar la api de alarmas",
+   "max":"35",
+   "min": "0",
+   "periodo_tiempo": "1 HOUR" ,
+   "estado" : "1"
+}
+
+### alarms update
+PUT {{baseUrl}}/api/alarms/60
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "estado": "0"
+}
+
+### alarms delete
+DELETE {{baseUrl}}/api/alarms/60
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
