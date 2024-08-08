@@ -73,6 +73,11 @@ GET {{baseUrl}}/api/dataloggers
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
+### Dataloggers getAll by location
+GET {{baseUrl}}/api/dataloggers/bylocation/36
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
 ###  Datalogger register
 POST {{baseUrl}}/api/dataloggers/
 Content-Type: application/json
@@ -140,5 +145,94 @@ Authorization: Bearer {{adminToken}}
 
 ### location delete
 DELETE {{baseUrl}}/api/locations/43
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+
+######################################################################################
+##################################### addresses ####################################
+######################################################################################
+
+### addresses getById
+GET {{baseUrl}}/api/addresses/34
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### addresses getAll
+GET {{baseUrl}}/api/addresses
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+###  addresses register
+POST {{baseUrl}}/api/addresses
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+#calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud
+{
+   "calle":"Av. Siempre Viva",
+   "numero": "155",   
+   "localidad":"1212",
+   "partido":"48416987",
+   "provincia": "02",
+   "codigo_postal": "66" ,
+   "latitud" : "-31.5375",
+   "longitud": "-68.5364"
+}
+
+### location update
+PUT {{baseUrl}}/api/addresses/70
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "numero": "555"
+}
+
+### location delete
+DELETE {{baseUrl}}/api/addresses/70
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+######################################################################################
+##################################### channels ####################################
+######################################################################################
+
+### channels getById
+GET {{baseUrl}}/api/channels/12
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### channels getAll
+GET {{baseUrl}}/api/channels
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+###  channels register
+POST {{baseUrl}}/api/channels
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "datalogger_id":"3",
+   "nombre": "canal API test",   
+   "descripcion":"Canal falso para probar la api de canales",
+   "nombre_columna":"d2",
+   "tiempo_a_promediar": "1 HOUR",
+   "foto": "canales.jpg" ,
+   "multiplicador" : "1"
+}
+
+### location update
+PUT {{baseUrl}}/api/channels/26
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nombre": "otro canal de prueba de la api"
+}
+
+### location delete
+DELETE {{baseUrl}}/api/channels/27
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}

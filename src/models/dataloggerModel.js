@@ -11,12 +11,17 @@ const Datalogger = {
         const [rows] = await pool.query(queryString, [id]);    
         return rows[0];
       },
-      findAll: async () => {
+      findByLocationId: async (locationId) => {
         const queryString = 
-        // `SELECT dataloggers.*,\
-        // dataloggers_x_ubicacion.ubicaciones_id as ubicacion_id\
-        // FROM dataloggers_x_ubicacion\
-        // inner join dataloggers on dataloggers_x_ubicacion.datalogger_id = dataloggers.id`;
+            `select dataloggers.*, dataloggers_x_ubicacion.ubicaciones_id as ubicacion_id
+            from dataloggers
+            inner join dataloggers_x_ubicacion on dataloggers.id = dataloggers_x_ubicacion.datalogger_id
+            where dataloggers_x_ubicacion.ubicaciones_id = ?`;
+        const [rows] = await pool.query(queryString, [locationId]);    
+        return rows[0];
+      },
+      findAll: async () => {
+        const queryString =         
         `SELECT * \
         FROM dataloggers\
         `

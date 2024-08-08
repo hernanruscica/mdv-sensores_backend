@@ -3,6 +3,8 @@ import dotenv from 'dotenv';
 import userRoutes from './routes/userRoutes.js';
 import dataloggerRoutes from './routes/dataloggerRoutes.js';
 import locationRoutes from './routes/locationRoutes.js';
+import addressRoutes from './routes/addressRoutes.js';
+import channelRoutes from './routes/channelRoutes.js';
 import { errorHandler } from './middlewares/errorMiddleware.js';
 import pool from './config/database.js';
 
@@ -16,6 +18,8 @@ app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/dataloggers', dataloggerRoutes);
 app.use('/api/locations', locationRoutes);
+app.use('/api/addresses', addressRoutes);
+app.use('/api/channels', channelRoutes);
 
 
 

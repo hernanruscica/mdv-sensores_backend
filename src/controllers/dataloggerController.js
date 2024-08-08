@@ -25,6 +25,19 @@ export const getAllDataloggers = async (req, res, next) => {
     }
   };
 
+export const getAllDataloggersByLocation = async (req, res, next) => {
+  try {
+    const { locationId } = req.params;
+    const dataloggers = await Datalogger.findByLocationId(locationId);
+    if (dataloggers.length == 0) {
+      return res.status(400).json({message: 'Dataloggers Not Found'});
+    }
+    res.status(200).json({ count : dataloggers.length, dataloggers });
+  } catch (error) {
+    next(error);
+  }
+};
+
   export const registerDatalogger = async (req, res, next) => {
     try {
         const { direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id } = req.body;      
