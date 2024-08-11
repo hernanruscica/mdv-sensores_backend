@@ -287,3 +287,44 @@ Authorization: Bearer {{adminToken}}
 DELETE {{baseUrl}}/api/alarms/60
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
+
+
+######################################################################################
+##################################### alarmUser ####################################
+######################################################################################
+
+### alarmuser getById
+GET {{baseUrl}}/api/alarmuser/10
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### alarmuser getAll
+GET {{baseUrl}}/api/alarmuser
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+
+###  alarmuser register 
+POST {{baseUrl}}/api/alarmuser
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "alarma_id":"56",
+   "usuario_id": "84"   
+}
+
+### alarmuser update
+PUT {{baseUrl}}/api/alarmuser/44
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "alarma_id":"56",
+   "usuario_id": "85"   
+}
+
+### alarmuser delete
+DELETE {{baseUrl}}/api/alarmuser/47
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
