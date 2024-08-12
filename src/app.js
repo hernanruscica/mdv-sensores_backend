@@ -7,6 +7,7 @@ import addressRoutes from './routes/addressRoutes.js';
 import channelRoutes from './routes/channelRoutes.js';
 import alarmRoutes from './routes/alarmRoutes.js';
 import alarmUserRoutes from './routes/alarmUserRoutes.js'
+import alarmLogRoutes from './routes/alarmLogRoutes.js'
 import { errorHandler } from './middlewares/errorMiddleware.js';
 import pool from './config/database.js';
 
@@ -23,7 +24,8 @@ app.use('/api/locations', locationRoutes);
 app.use('/api/addresses', addressRoutes);
 app.use('/api/channels', channelRoutes);
 app.use('/api/alarms', alarmRoutes);
-app.use('/api/alarmuser', alarmUserRoutes);
+app.use('/api/alarmusers', alarmUserRoutes);
+app.use('/api/alarmlogs', alarmLogRoutes)
 
 
 app.use(errorHandler);

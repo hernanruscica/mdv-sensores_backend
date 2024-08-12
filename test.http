@@ -290,22 +290,27 @@ Authorization: Bearer {{adminToken}}
 
 
 ######################################################################################
-##################################### alarmUser ####################################
+##################################### alarmUsers ####################################
 ######################################################################################
 
-### alarmuser getById
-GET {{baseUrl}}/api/alarmuser/10
+### alarmusers getById
+GET {{baseUrl}}/api/alarmusers/10
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-### alarmuser getAll
-GET {{baseUrl}}/api/alarmuser
+### alarmusers getAll
+GET {{baseUrl}}/api/alarmusers
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### getAll users by alarm 
+GET {{baseUrl}}/api/alarmusers/usersbyalarm/1
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 
-###  alarmuser register 
-POST {{baseUrl}}/api/alarmuser
+###  alarmusers register 
+POST {{baseUrl}}/api/alarmusers
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -314,8 +319,8 @@ Authorization: Bearer {{adminToken}}
    "usuario_id": "84"   
 }
 
-### alarmuser update
-PUT {{baseUrl}}/api/alarmuser/44
+### alarmusers update
+PUT {{baseUrl}}/api/alarmusers/44
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -324,7 +329,58 @@ Authorization: Bearer {{adminToken}}
    "usuario_id": "85"   
 }
 
-### alarmuser delete
-DELETE {{baseUrl}}/api/alarmuser/47
+### alarmusers delete
+DELETE {{baseUrl}}/api/alarmusers/47
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+
+######################################################################################
+##################################### alarmLogs ####################################
+######################################################################################
+
+### alarmLogs getById
+GET {{baseUrl}}/api/alarmlogs/44
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### alarmLogs getAll
+GET {{baseUrl}}/api/alarmlogs
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### getAll alarmLogs by user 
+GET {{baseUrl}}/api/alarmlogs/byuser/32
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### getAll alarmLogs by channel 
+GET {{baseUrl}}/api/alarmlogs/bychannel/10
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+###  alarmLogs register - alarma_id, usuario_id, canal_id, valor
+POST {{baseUrl}}/api/alarmLogs/
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "alarma_id":"56",
+   "usuario_id": "84",
+   "canal_id": "10",
+   "valor": "35" 
+}
+
+### alarmLogs update
+PUT {{baseUrl}}/api/alarmLogs/44
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "fecha_vista":"2024-08-11"
+}
+
+### alarmLogs delete
+DELETE {{baseUrl}}/api/alarmLogs/44
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}

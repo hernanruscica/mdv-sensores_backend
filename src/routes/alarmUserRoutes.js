@@ -3,11 +3,11 @@ import { registerAlarmUser, getAllAlarmUser, getAlarmUserById, getUsersByAlarmId
 import { protect } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
-//      /api/alarmsuser
+//      /api/alarmsusers
 router.post('/', protect, registerAlarmUser);
 router.get('/', protect, getAllAlarmUser);
 router.get('/:id', protect, getAlarmUserById);
-router.get('/:alarmId', getUsersByAlarmId);
+router.get('/usersbyalarm/:alarmId', getUsersByAlarmId);
 router.put('/:id', protect, updateAlarmUser);
 router.delete('/:id', protect, deleteAlarmUser);
 
