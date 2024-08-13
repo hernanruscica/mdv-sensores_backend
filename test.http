@@ -5,7 +5,7 @@
 ##################################### users #####################################
 ######################################################################################
 
-### User login
+### User login - http://localhost:5000/api/users/login
 POST {{baseUrl}}/api/users/login
 Content-Type: application/json
 

@@ -10,14 +10,21 @@ import alarmUserRoutes from './routes/alarmUserRoutes.js'
 import alarmLogRoutes from './routes/alarmLogRoutes.js'
 import { errorHandler } from './middlewares/errorMiddleware.js';
 import pool from './config/database.js';
+import cors from 'cors';
 
 
 dotenv.config();
 
 const app = express();
 
-app.use(express.json());
+const corsOptions = {
+  origin: 'http://localhost:5173', // El origen de tu frontend
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
+  credentials: true, // Habilita el uso de credenciales (como cookies, cabeceras de autenticación)
+};
 
+app.use(cors(corsOptions));
+app.use(express.json());
 app.use('/api/users', userRoutes);
 app.use('/api/dataloggers', dataloggerRoutes);
 app.use('/api/locations', locationRoutes);
