@@ -384,3 +384,57 @@ Authorization: Bearer {{adminToken}}
 DELETE {{baseUrl}}/api/alarmLogs/44
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
+
+
+######################################################################################
+##################################### locationsUsers ####################################
+######################################################################################
+
+### locationsusers getById
+GET {{baseUrl}}/api/locationsusers/72
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### locationsusers getAll
+GET {{baseUrl}}/api/locationsusers
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### getAll users by location 
+GET {{baseUrl}}/api/locationsusers/usersbylocation/36
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### getAll locations by user 
+GET {{baseUrl}}/api/locationsusers/locationsbyuser/7
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+
+
+###  locationsusers register - usuarios_id, ubicaciones_id, roles_id
+POST {{baseUrl}}/api/locationsusers
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "ubicaciones_id":"36",
+   "usuarios_id": "7",
+   "roles_id": "8"   
+}
+
+### locationsusers update
+PUT {{baseUrl}}/api/locationsusers/84
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "ubicaciones_id":"34",
+   "usuarios_id": "7",
+   "roles_id": "8"   
+}
+
+### locationsusers delete
+DELETE {{baseUrl}}/api/locationsusers/67
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}

@@ -1,17 +1,24 @@
 import pool from '../config/database.js';
 
 const LocationUser = {
-    // findById: async (id) => {
-    //     const queryString = 
-    //       `SELECT *\             
-    //         FROM alarmas_x_usuarios\            
-    //         WHERE id = ?`;
-    //     const [rows] = await pool.query(queryString, [id]);    
-    //     return rows[0];
-    //   },
+     findById: async (id) => {
+         const queryString = 
+           `SELECT usuarios_x_ubicaciones_x_roles.id,\
+            ubicaciones.id as ubicaciones_id,ubicaciones.nombre as ubicaciones_nombre, ubicaciones.descripcion as ubicaciones_descripcion,\
+            ubicaciones.foto as ubicaciones_foto, ubicaciones.telefono as ubicaciones_tel,\
+            usuarios_x_ubicaciones_x_roles.usuarios_id AS usuarios_id, usuarios_x_ubicaciones_x_roles.roles_id AS usuarios_roles_id,\
+            roles.nombre AS usuarios_nombre_rol\
+            FROM ubicaciones\
+            INNER JOIN usuarios_x_ubicaciones_x_roles ON ubicaciones.id = usuarios_x_ubicaciones_x_roles.ubicaciones_id\ 
+            INNER JOIN roles ON roles_id = roles.id\
+            WHERE usuarios_x_ubicaciones_x_roles.id = ?;`;
+         const [rows] = await pool.query(queryString, [id]);    
+         return rows[0];
+       },
        findAll: async () => {
          const queryString =         
-         `SELECT ubicaciones.id as ubicaciones_id,ubicaciones.nombre as ubicaciones_nombre, ubicaciones.descripcion as ubicaciones_descripcion,\
+         `SELECT usuarios_x_ubicaciones_x_roles.id,\
+            ubicaciones.id as ubicaciones_id,ubicaciones.nombre as ubicaciones_nombre, ubicaciones.descripcion as ubicaciones_descripcion,\
             ubicaciones.foto as ubicaciones_foto, ubicaciones.telefono as ubicaciones_tel,\
             usuarios_x_ubicaciones_x_roles.usuarios_id AS usuarios_id, usuarios_x_ubicaciones_x_roles.roles_id AS usuarios_roles_id,\
             roles.nombre AS usuarios_nombre_rol\
@@ -24,7 +31,8 @@ const LocationUser = {
       findLocationsByUserId: async (userId) => {
         const queryString =         
           /*Find all locations and roles for a certain user*/
-          `SELECT ubicaciones.id as ubicaciones_id,ubicaciones.nombre as ubicaciones_nombre, ubicaciones.descripcion as ubicaciones_descripcion,\
+          `SELECT usuarios_x_ubicaciones_x_roles.id,\
+            ubicaciones.id as ubicaciones_id,ubicaciones.nombre as ubicaciones_nombre, ubicaciones.descripcion as ubicaciones_descripcion,\
             ubicaciones.foto as ubicaciones_foto, ubicaciones.telefono as ubicaciones_tel,\
             usuarios_x_ubicaciones_x_roles.usuarios_id AS usuarios_id, usuarios_x_ubicaciones_x_roles.roles_id AS usuarios_roles_id,\
             roles.nombre AS usuarios_nombre_rol\
@@ -38,7 +46,8 @@ const LocationUser = {
       findUsersByLocationId: async (locationId) => {
         const queryString = 
           /* Find all users that have a rol on the location */
-          `SELECT  usuarios_x_ubicaciones_x_roles.usuarios_id AS usuarios_id, 
+          `SELECT  usuarios_x_ubicaciones_x_roles.id,\
+            usuarios_x_ubicaciones_x_roles.usuarios_id AS usuarios_id, 
             usuarios_x_ubicaciones_x_roles.roles_id AS usuarios_roles_id,
             roles.nombre AS usuarios_nombre_rol,
             usuarios.nombre_1  as usuario_nom_apell,
@@ -60,7 +69,8 @@ const LocationUser = {
               AND ubicaciones_id = ?
           ) AS existe_relacion;`;
         const [rows] = await pool.query(queryStringIfExist, [usuarios_id, ubicaciones_id]);
-        if (rows.length == 1){
+        console.log(rows[0].existe_relacion);
+        if (rows[0].existe_relacion == 1){
           return -1;
         }
         const queryString = 
@@ -71,6 +81,8 @@ const LocationUser = {
         const [result] = await pool.query(queryString, [usuarios_id, ubicaciones_id, roles_id]);
         return result.insertId;
       },
+
+      //hacer algun cambio para contemplar el la misma ubicacion, mismo usuario, pero un cambio de roles.
       update: async (locationUserData) => {
         const { id, usuarios_id, ubicaciones_id, roles_id  } = locationUserData;
         const queryStringIfExist = 
@@ -78,13 +90,12 @@ const LocationUser = {
               SELECT 1
               FROM usuarios_x_ubicaciones_x_roles
               WHERE usuarios_id = ?
-              AND ubicaciones_id = ?
+              AND ubicaciones_id = ?              
           ) AS existe_relacion;`;
         const [rows] = await pool.query(queryStringIfExist, [usuarios_id, ubicaciones_id]);
-        if (rows.length == 1){
-          return -1;
-        }
-        
+        if (rows.length == 1){          
+            return -1;          
+        }        
         const updateFields = [];
         const values = [];
     
@@ -99,8 +110,6 @@ const LocationUser = {
         
         return result.affectedRows;
       },
-    
-      
       delete: async (id) => {
         const [result] = await pool.query('DELETE FROM usuarios_x_ubicaciones_x_roles WHERE id = ?', [id]);
         return result.affectedRows;
