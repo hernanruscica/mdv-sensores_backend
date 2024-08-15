@@ -86,14 +86,24 @@ const LocationUser = {
       update: async (locationUserData) => {
         const { id, usuarios_id, ubicaciones_id, roles_id  } = locationUserData;
         const queryStringIfExist = 
-        `SELECT EXISTS (
-              SELECT 1
-              FROM usuarios_x_ubicaciones_x_roles
-              WHERE usuarios_id = ?
-              AND ubicaciones_id = ?              
+        `SELECT EXISTS (\
+              SELECT 1\
+              FROM usuarios_x_ubicaciones_x_roles\
+              WHERE usuarios_id = ?\
+              AND ubicaciones_id = ?    \          
           ) AS existe_relacion;`;
         const [rows] = await pool.query(queryStringIfExist, [usuarios_id, ubicaciones_id]);
-        if (rows.length == 1){          
+        const userExistOnLocation = rows[0].existe_relacion == 1;
+        
+        if (userExistOnLocation){          
+            // const queryGetRole = 
+            // ` SELECT roles_id\
+            //   FROM usuarios_x_ubicaciones_x_roles\
+            //   WHERE usuarios_id = ?\
+            //   AND ubicaciones_id = ? `;
+            //   const [rows] = await pool.query(queryGetRole, [usuarios_id, ubicaciones_id]);
+            //   //const userExistOnLocation = rows[0].existe_relacion == 1;
+            //   console.log(rows);
             return -1;          
         }        
         const updateFields = [];

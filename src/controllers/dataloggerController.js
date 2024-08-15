@@ -1,4 +1,5 @@
 import Datalogger from '../models/dataloggerModel.js'
+import LocationUser from '../models/locationUserModel.js';
 
 export const getDataloggerById = async (req, res) => {
     try {
@@ -37,6 +38,36 @@ export const getAllDataloggersByLocation = async (req, res, next) => {
     next(error);
   }
 };
+
+//obtengo todos los dataloggers para ese usuario
+export const getAllDataloggersByUser = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const locationsByUser = await LocationUser.findLocationsByUserId(userId);
+    const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
+
+    // Usar Promise.all para esperar a que todas las promesas se resuelvan
+    const dataloggers = await Promise.all(
+      locationsIdsByUser.map(async (locationId) => {
+        const currentDatalogger = await Datalogger.findByLocationId(locationId);
+        return currentDatalogger;
+      })
+    );
+
+    // Filtrar los valores que no existen
+    const filteredDataloggers = dataloggers.filter(Boolean);
+
+    if (filteredDataloggers.length > 0) {
+      return res.status(200).json({ count: filteredDataloggers.length, dataloggers: filteredDataloggers });
+    } else {
+      return res.status(400).json({ message: 'Dataloggers Not Found' });
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
 
   export const registerDatalogger = async (req, res, next) => {
     try {

@@ -7,8 +7,8 @@ const router = express.Router();
 router.post('/', protect, registerLocationUser);
 router.get('/', protect, getAllLocationsUser);
 router.get('/:id', protect, getLocationsUserById);
-router.get('/locationsbyuser/:userId', getLocationsByUserId);
-router.get('/usersbylocation/:locationId', getUsersByLocationId);
+router.get('/locationsbyuser/:userId',protect, getLocationsByUserId);
+router.get('/usersbylocation/:locationId',protect, getUsersByLocationId);
 router.put('/:id', protect, updateLocationUser);
 router.delete('/:id', protect, deleteLocationUser);
 

@@ -78,6 +78,11 @@ GET {{baseUrl}}/api/dataloggers/bylocation/36
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
+### Dataloggers getAll by user
+GET {{baseUrl}}/api/dataloggers/byuser/85
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
 ###  Datalogger register
 POST {{baseUrl}}/api/dataloggers/
 Content-Type: application/json
@@ -406,7 +411,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getAll locations by user 
-GET {{baseUrl}}/api/locationsusers/locationsbyuser/7
+GET {{baseUrl}}/api/locationsusers/locationsbyuser/85
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

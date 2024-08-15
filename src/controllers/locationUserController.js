@@ -84,7 +84,7 @@ export const getLocationsByUserId = async (req, res, next) => {
     if (!locationUserData) {
       return res.status(400).json({message: 'Location on User Not Found'});
     }
-    res.status(200).json({message: "Location on User Founded", locationUserData });
+    res.status(200).json({message: "Location on User Founded", count: locationUserData.length, locationUserData: locationUserData });
   } catch (error) {
     next(error);
   }
