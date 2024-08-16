@@ -49,7 +49,12 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getById
-GET {{baseUrl}}/api/users/97
+GET {{baseUrl}}/api/users/85
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+###/api/users/byuser/${userId} A PRUEBA NO SE SI QUEDA
+GET {{baseUrl}}/api/users/byuser/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -79,7 +84,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### Dataloggers getAll by user
-GET {{baseUrl}}/api/dataloggers/byuser/85
+GET {{baseUrl}}/api/dataloggers/byuser/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -218,6 +223,11 @@ GET {{baseUrl}}/api/channels/bydatalogger/3
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
+### channels getall by user id /api/channels/byuser/${userId}
+GET {{baseUrl}}/api/channels/byuser/32
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
 ###  channels register
 POST {{baseUrl}}/api/channels
 Content-Type: application/json
@@ -310,6 +320,11 @@ Authorization: Bearer {{adminToken}}
 
 ### getAll users by alarm 
 GET {{baseUrl}}/api/alarmusers/usersbyalarm/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### alarmusers getAll byuser
+GET {{baseUrl}}/api/alarmusers/alarmsbyuser/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

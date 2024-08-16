@@ -26,6 +26,16 @@ const AlarmUser = {
         const [rows] = await pool.query(queryString, alarmId);    
         return rows;
       },
+      findAlarmsByUserId: async (userId) => {
+        const queryString = 
+         `SELECT alarmas_x_usuarios.usuario_id as usuario_id, canales.datalogger_id, alarmas.*
+          FROM alarmas_x_usuarios
+          INNER JOIN alarmas on alarmas.id = alarmas_x_usuarios.alarma_id
+          INNER JOIN canales on alarmas.canal_id = canales.id
+          WHERE alarmas_x_usuarios.usuario_id = ?;`
+          const [rows] = await pool.query(queryString, userId);    
+        return rows;
+      },
       create: async (alarmUserData) => {
         const { alarma_id, usuario_id } = alarmUserData;  
         const queryStringIfExist = 

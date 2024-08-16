@@ -19,14 +19,15 @@ const Channel = {
       },
       findByDataloggerId: async (dataloggerId) => {
         const queryString = 
-            `select canales.id as canal_id, 
+            `SELECT canales.id as canal_id, 
               canales.nombre_columna, 
               canales.nombre as canal_nombre, 
               canales.descripcion as canal_descripcion,
               canales.multiplicador,
-              canales.tiempo_a_promediar
-                  from canales
-                  where datalogger_id = ?`;
+              canales.tiempo_a_promediar,
+              canales.datalogger_id
+            FROM canales
+            WHERE datalogger_id = ?`;
         const [rows] = await pool.query(queryString, [dataloggerId]);    
         return rows;
       },

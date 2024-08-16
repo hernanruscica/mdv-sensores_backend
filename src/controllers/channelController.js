@@ -1,5 +1,6 @@
 import Channel from '../models/channelModel.js';
-
+import LocationUser from '../models/locationUserModel.js';
+import Datalogger from '../models/dataloggerModel.js';
 
 export const registerChannel = async (req, res, next) => {
   try {
@@ -75,6 +76,45 @@ export const getAllChannelsByDatalogger = async (req, res, next) => {
       return res.status(400).json({message: 'channels Not Found'});
     }
     res.status(200).json({ count : channels.length, channels });
+  } catch (error) {
+    next(error);
+  }
+};
+//getAllChannelsByUser 
+export const getAllChannelsByUser = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+
+    const locationsByUser = await LocationUser.findLocationsByUserId(userId);
+    const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
+    //console.log(locationsIdsByUser);
+    
+    const dataloggers = await Promise.all(
+      locationsIdsByUser.map(async (locationId) => {
+        const currentDatalogger = await Datalogger.findByLocationId(locationId);        
+        return currentDatalogger;
+      })
+    );    
+    const filteredDataloggers = dataloggers.filter(Boolean);    
+    const flattenedDataloggers = filteredDataloggers.flat();
+    const dataloggersIdsByUser = flattenedDataloggers.map(dataloggerByUser => dataloggerByUser.id);
+    //console.log(dataloggersIdsByUser); 
+    
+    const channels = await Promise.all(
+       dataloggersIdsByUser.map(async (dataloggerId) => {
+         const currentChannel = await Channel.findByDataloggerId(dataloggerId);        
+         return currentChannel;
+       })
+     );    
+     const filteredChannels = channels.filter(Boolean);     
+     const flattenedChannels = filteredChannels.flat();
+      
+    if (channels.length == 0) {
+      return res.status(400).json({message: 'channels Not Found'});
+    }
+    res.status(200).json({message: 'channels Founded', 
+                          count : flattenedChannels.length, 
+                          channels: flattenedChannels });
   } catch (error) {
     next(error);
   }

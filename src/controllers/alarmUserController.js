@@ -87,3 +87,17 @@ export const getUsersByAlarmId = async (req, res, next) => {
     next(error);
   }
 };
+//getAlarmsByUserId
+export const getAlarmsByUserId = async (req, res, next) => {
+  try {
+    const { userId } = req.params;
+    //console.log(userId);
+    const alarmsByUser =  await AlarmUser.findAlarmsByUserId(userId);    
+    if (!alarmsByUser) {
+      return res.status(400).json({message: 'Alarms Not Found for that user'});
+    }
+    res.status(200).json({message: "Alarms Founded", count: alarmsByUser.length, alarms: alarmsByUser });
+  } catch (error) {
+    next(error);
+  }
+};

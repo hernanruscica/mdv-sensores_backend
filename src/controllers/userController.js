@@ -1,4 +1,5 @@
 import User from '../models/userModel.js';
+import LocationUser from '../models/locationUserModel.js';
 import generateToken from '../utils/generateToken.js';
 import bcrypt from 'bcryptjs';
 
@@ -78,6 +79,37 @@ export const getAllUsers = async (req, res, next) => {
     next(error);
   }
 };
+
+// GET {{baseUrl}}/api/locationsusers/usersbylocation/36
+export const getAllUsersByUser = async (req, res, next) => {
+    try {
+       const { userId } = req.params;
+      
+       const locationsByUser = await LocationUser.findLocationsByUserId(userId);
+       const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
+
+      // Usar Promise.all para esperar a que todas las promesas se resuelvan
+      const users = await Promise.all(
+        locationsIdsByUser.map(async (locationId) => {
+          const currentUser = await LocationUser.findUsersByLocationId(locationId);
+          console.log(currentUser)
+          return currentUser;
+        })
+      );
+      // Filtrar los valores que no existen
+      const filteredUsers = users.filter(Boolean);
+      //ponemos todos los usuarios al mismo nivel, lo sacamos del array de objetos
+      const flattenedUsers = filteredUsers.flat();
+
+        if (filteredUsers.length > 0) {
+          res.status(200).json({ count : flattenedUsers.length, users: flattenedUsers });
+        }else{
+          return res.status(400).json({message: 'Users Not Found'});
+        }
+     } catch (error) {
+       next(error);
+     }
+ };
 
 export const getUserById = async (req, res, next) => {
   try {
