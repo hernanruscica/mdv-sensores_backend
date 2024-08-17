@@ -1,5 +1,6 @@
 @adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcyMjk1NDU3NywiZXhwIjoxNzI1NTQ2NTc3fQ.qeo4T2_TS7h9YRidLY6wWtr7C2gryCESHNc0l1EoCu0
-@baseUrl = http://localhost:5000
+//@baseUrl = http://localhost:5000
+@baseUrl = https://mdv-sensores-backend.onrender.com
 
 ######################################################################################
 ##################################### users #####################################
@@ -12,8 +13,7 @@ Content-Type: application/json
 {
   "dni": 28470359,
   "password": "pass"
-}
-
+} 
 
 ### user registry (admin auth required)
 POST {{baseUrl}}/api/users/

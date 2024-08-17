@@ -19,7 +19,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-  origin: 'http://localhost:5173', // El origen de tu frontend
+  origin: ['http://localhost:5173', 'https://mdv-sensores-frontend.onrender.com'], // Los origenes de tu frontend 
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
   credentials: true, // Habilita el uso de credenciales (como cookies, cabeceras de autenticación)
 };
