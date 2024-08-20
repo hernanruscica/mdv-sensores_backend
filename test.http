@@ -1,6 +1,6 @@
 @adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcyMjk1NDU3NywiZXhwIjoxNzI1NTQ2NTc3fQ.qeo4T2_TS7h9YRidLY6wWtr7C2gryCESHNc0l1EoCu0
-//@baseUrl = http://localhost:5000
-@baseUrl = https://mdv-sensores-backend.onrender.com
+@baseUrl = http://localhost:5000
+//@baseUrl = https://mdv-sensores-backend.onrender.com
 
 ######################################################################################
 ##################################### users #####################################
@@ -53,7 +53,7 @@ GET {{baseUrl}}/api/users/85
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-###/api/users/byuser/${userId} A PRUEBA NO SE SI QUEDA
+###/api/users/byuser/${userId} 
 GET {{baseUrl}}/api/users/byuser/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}

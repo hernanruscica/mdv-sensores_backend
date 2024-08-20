@@ -25,9 +25,11 @@ const Channel = {
               canales.descripcion as canal_descripcion,
               canales.multiplicador,
               canales.tiempo_a_promediar,
-              canales.datalogger_id
+              canales.datalogger_id,
+              dataloggers_x_ubicacion.ubicaciones_id
             FROM canales
-            WHERE datalogger_id = ?`;
+            INNER JOIN dataloggers_x_ubicacion ON dataloggers_x_ubicacion.datalogger_id = canales.datalogger_id
+            WHERE canales.datalogger_id = ?`;
         const [rows] = await pool.query(queryString, [dataloggerId]);    
         return rows;
       },

@@ -8,7 +8,6 @@ router.post('/login', loginUser);
 router.post('/', protect, registerUser);
 router.get('/', protect, getAllUsers);
 router.get('/:id', protect, getUserById);
-
 router.get('/byuser/:userId', getAllUsersByUser);
 router.put('/:id', protect, updateUser);
 router.delete('/:id', protect, deleteUser);
