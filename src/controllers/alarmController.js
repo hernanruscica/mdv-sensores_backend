@@ -45,7 +45,7 @@ export const deleteAlarm = async (req, res, next) => {
 export const getAllAlarms = async (req, res, next) => {
   try {
     const alarms = await Alarm.findAll();
-    if (alarms.length == 0) {
+    if (alarms?.length == 0) {
       return res.status(400).json({message: 'Alarms Not Found'});
     }
     res.status(200).json({ count : alarms.length, alarms });
@@ -62,6 +62,19 @@ export const getAlarmById = async (req, res, next) => {
       return res.status(400).json({message: 'alarm Not Found'});
     }
     res.status(200).json({message: "alarm Founded", alarm });
+  } catch (error) {
+    next(error);
+  }
+};
+//
+export const getAlarmsByLocationId = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const alarms = await Alarm.findAllByLocationId(id);    
+    if (alarms?.length == 0) {
+      return res.status(200).json({message: 'alarms Not Found', alarms: []});
+    }
+    res.status(200).json({message: "alarms Founded", count : alarms.length, alarms });
   } catch (error) {
     next(error);
   }

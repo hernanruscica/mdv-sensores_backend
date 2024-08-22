@@ -17,6 +17,22 @@ const Alarm = {
         const [rows] = await pool.query(queryString);    
         return rows;
       },
+      findAllByLocationId: async (id) => {
+         const queryString = 
+         `SELECT *, canales.datalogger_id\ 
+          FROM alarmas\
+          JOIN canales ON alarmas.canal_id = canales.id\
+          WHERE alarmas.canal_id IN (\
+            SELECT canales.id\
+            FROM canales\
+            WHERE datalogger_id IN (\
+              SELECT dataloggers_x_ubicacion.datalogger_id \
+              FROM dataloggers_x_ubicacion\
+              WHERE dataloggers_x_ubicacion.ubicaciones_id = ?\
+              ));`;
+          const [rows] = await pool.query(queryString, id);    
+          return rows;
+      },
       create: async (alarmData) => {
         const { canal_id, tabla, columna, nombre, descripcion, max, min, periodo_tiempo, estado } = alarmData;        
         const queryString = `

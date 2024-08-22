@@ -271,6 +271,10 @@ GET {{baseUrl}}/api/alarms
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
+### alarms getAll by location
+GET {{baseUrl}}/api/alarms/bylocation/34
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
 
 ###  alarms register 
 POST {{baseUrl}}/api/alarms
