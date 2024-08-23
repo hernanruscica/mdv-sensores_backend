@@ -26,6 +26,8 @@ const Channel = {
               canales.multiplicador,
               canales.tiempo_a_promediar,
               canales.datalogger_id,
+              canales.foto,
+              canales.fecha_creacion,
               dataloggers_x_ubicacion.ubicaciones_id
             FROM canales
             INNER JOIN dataloggers_x_ubicacion ON dataloggers_x_ubicacion.datalogger_id = canales.datalogger_id
