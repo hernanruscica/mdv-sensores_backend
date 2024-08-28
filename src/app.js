@@ -9,10 +9,11 @@ import alarmRoutes from './routes/alarmRoutes.js';
 import alarmUserRoutes from './routes/alarmUserRoutes.js';
 import alarmLogRoutes from './routes/alarmLogRoutes.js';
 import locationUserRoutes from './routes/locationUserRoutes.js';
+import dataRoutes from './routes/dataRoutes.js';
 import { errorHandler } from './middlewares/errorMiddleware.js';
-import pool from './config/database.js';
+import {pool} from './config/database.js';
 import cors from 'cors';
-
+import startCronJobs from './config/cronConfig.js'
 
 dotenv.config();
 
@@ -35,9 +36,12 @@ app.use('/api/alarms', alarmRoutes);
 app.use('/api/alarmusers', alarmUserRoutes);
 app.use('/api/alarmlogs', alarmLogRoutes);
 app.use('/api/locationsusers', locationUserRoutes);
+app.use('/api/data', dataRoutes);
 
 
 app.use(errorHandler);
+
+startCronJobs();
 
 const PORT = process.env.PORT || 5000;
 const server = app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

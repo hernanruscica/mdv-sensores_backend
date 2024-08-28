@@ -462,3 +462,17 @@ Authorization: Bearer {{adminToken}}
 DELETE {{baseUrl}}/api/locationsusers/67
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
+
+######################################################################################
+#####################################    data      ###################################
+######################################################################################
+
+### data getAll by timePeriod "5 MINUTE" "24 HOUR"
+GET {{baseUrl}}/api/data
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "table":"guemes",
+   "timePeriod": "5 MINUTE"
+}
