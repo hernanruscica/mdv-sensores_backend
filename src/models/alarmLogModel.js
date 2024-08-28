@@ -37,13 +37,13 @@ const AlarmLog = {
         return rows;
       },
       create: async (alarmUserData) => {
-        const { alarma_id, usuario_id, canal_id, valor } = alarmUserData;  
+        const { alarma_id, usuario_id, canal_id, variables } = alarmUserData;  
         const query = 
           `insert into alarmas_logs
-            (alarma_id, usuario_id, canal_id, valor, fecha_disparo)
+            (alarma_id, usuario_id, canal_id, variables_valores, fecha_disparo)
             values
             (?, ?, ?, ?, CURRENT_TIMESTAMP());`;
-        const [result] = await pool.query(query, [alarma_id, usuario_id, canal_id, valor]);
+        const [result] = await pool.query(query, [alarma_id, usuario_id, canal_id, variables]);
         return result.insertId;
       },
       update: async (alarmUserData) => {

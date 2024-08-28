@@ -19,7 +19,7 @@ const AlarmUser = {
       },      
       findUsersByAlarmId: async (alarmId) => {
         const queryString =         
-          `SELECT usuarios.id, usuarios.email, usuarios.nombre_1, usuarios.apellido_1, usuarios.email, usuarios.telefono
+          `SELECT usuarios.id, usuarios.email, usuarios.nombre_1, usuarios.apellido_1,  usuarios.telefono
             FROM alarmas_x_usuarios 
             INNER JOIN usuarios ON usuarios.id = alarmas_x_usuarios.usuario_id
             WHERE alarma_id = ?`

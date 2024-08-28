@@ -323,7 +323,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getAll users by alarm 
-GET {{baseUrl}}/api/alarmusers/usersbyalarm/1
+GET {{baseUrl}}/api/alarmusers/usersbyalarm/66
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -339,8 +339,8 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "alarma_id":"56",
-   "usuario_id": "84"   
+   "alarma_id":"66",
+   "usuario_id": "2"   
 }
 
 ### alarmusers update
@@ -350,7 +350,7 @@ Authorization: Bearer {{adminToken}}
 
 {
    "alarma_id":"56",
-   "usuario_id": "85"   
+   "usuario_id": "85"
 }
 
 ### alarmusers delete
@@ -392,7 +392,7 @@ Authorization: Bearer {{adminToken}}
    "alarma_id":"56",
    "usuario_id": "84",
    "canal_id": "10",
-   "valor": "35" 
+   "variables":"{'d2_porc_encendido':36.38}"   
 }
 
 ### alarmLogs update
