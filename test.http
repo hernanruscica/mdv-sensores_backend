@@ -467,12 +467,8 @@ Authorization: Bearer {{adminToken}}
 #####################################    data      ###################################
 ######################################################################################
 
-### data getAll by timePeriod "5 MINUTE" "24 HOUR"
-GET {{baseUrl}}/api/data
+### data getAll by timePeriod  - :table/:period in minutes
+# A day: 1440 minutes  2 Days: 2880
+GET {{baseUrl}}/api/data/quilmes/2880
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
-
-{
-   "table":"guemes",
-   "timePeriod": "5 MINUTE"
-}

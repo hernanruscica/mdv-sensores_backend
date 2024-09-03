@@ -1,7 +1,7 @@
 import Datalogger from '../models/dataloggerModel.js'
 import LocationUser from '../models/locationUserModel.js';
 
-export const getDataloggerById = async (req, res) => {
+export const getDataloggerById = async (req, res, next) => {
     try {
         const { id } = req.params;
         const datalogger = await Datalogger.findById(id);
