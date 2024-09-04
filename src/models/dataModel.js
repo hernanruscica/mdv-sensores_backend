@@ -10,7 +10,9 @@ const dataModel = {
         return rows;
       },
     findDataFromDigitalChannel: async (tableName, columnPrefix, timePeriod) => {
-      const queryString = `SELECT fecha, tiempo_total,\ 
+      const queryString = `SELECT 
+                          CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\
+                          tiempo_total,\ 
                           ${columnPrefix}_tiempo as tiempo_encendido,\ 
 	                        ${columnPrefix}_cantidad as cantidad,\
                           ${columnPrefix}_estado as estado,\
