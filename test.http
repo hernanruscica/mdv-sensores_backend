@@ -472,3 +472,8 @@ Authorization: Bearer {{adminToken}}
 GET {{baseUrl}}/api/data/quilmes/2880
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
+
+### '/getporcentages/:tableName/:columnPrefix/:timePeriod/:rangePorcentage' time and ranges in minutes
+GET {{baseUrl}}/api/data/getporcentages/guemes/d2/1440/15
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}

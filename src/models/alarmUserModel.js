@@ -34,7 +34,7 @@ const AlarmUser = {
           FROM alarmas_x_usuarios\
           INNER JOIN alarmas on alarmas.id = alarmas_x_usuarios.alarma_id\
           INNER JOIN canales on alarmas.canal_id = canales.id\
-          WHERE alarmas_x_usuarios.usuario_id = ?;`
+          WHERE alarmas_x_usuarios.usuario_id = ? AND estado = 1;`
           const [rows] = await pool.query(queryString, userId);    
         return rows;
       },

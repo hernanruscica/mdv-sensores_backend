@@ -29,7 +29,7 @@ const Alarm = {
               SELECT dataloggers_x_ubicacion.datalogger_id \
               FROM dataloggers_x_ubicacion\
               WHERE dataloggers_x_ubicacion.ubicaciones_id = ?\
-              ));`;
+              )AND estado = 1);`;
           const [rows] = await pool.query(queryString, id);    
           return rows;
       },
