@@ -38,3 +38,16 @@ export const getPorcentagesOn = async (req, res, next) => {
         next(error);
     }
 }
+export const getAnalogData = async (req, res, next) => {
+    try {
+        const {tableName, columnPrefix, timePeriod } = req.params;        
+        const currentData = await dataModel.findDataFromAnalogChannel(tableName, columnPrefix, timePeriod)
+        if (currentData?.length > 0){
+            return res.status(200).json({message: 'Data Founded', count: currentData.length, data: currentData});
+        }else{
+            return res.status(400).json({message: 'Data Not Found'});
+        }
+    } catch (error) {
+        next(error);
+    }
+}

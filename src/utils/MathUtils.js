@@ -1,4 +1,4 @@
-export const calculatePorcentageOn = (array, tiempoAtras) => {
+export const calculatePorcentageOn = (array, tiempoAtras) => {  
     //tiempoAtras viene en segundos
     return array.map((obj, index, arr) => {
       let sumaTotal = 0;
@@ -19,7 +19,7 @@ export const calculatePorcentageOn = (array, tiempoAtras) => {
       }
   
       // Calculamos el porcentaje de encendido
-      const porcentajeEncendido = ((sumaEncendido / sumaTotal) * 100).toFixed(2);
+      const porcentajeEncendido = parseFloat(((sumaEncendido / sumaTotal) * 100).toFixed(2));
   
       // Devolvemos el objeto original con el nuevo atributo
       return {
