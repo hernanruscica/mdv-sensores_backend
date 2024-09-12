@@ -479,6 +479,6 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### 'api/data/getanalog/:tableName/:columnPrefix/:timePeriod' time and ranges in minutes
-GET {{baseUrl}}/api/data/getanalog/guemes/d2/2880
+GET {{baseUrl}}/api/data/getanalog/cocina/a1/2880
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}

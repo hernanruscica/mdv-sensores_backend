@@ -26,7 +26,7 @@ export const getPorcentagesOn = async (req, res, next) => {
     try {
         const {tableName, columnPrefix, timePeriod, rangePorcentage } = req.params;
         
-        const currentData = await dataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod)
+        const currentData = await dataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod);
         if (currentData?.length > 0){
             const rangePorcentageSecs = rangePorcentage * 60;
             const dataPorcentagesOn = calculatePorcentageOn(currentData, rangePorcentageSecs)

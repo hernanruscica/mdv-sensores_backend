@@ -13,6 +13,7 @@ const Alarm = {
         const queryString =         
         `SELECT * \
         FROM alarmas\
+        WHERE estado = 1;
         `
         const [rows] = await pool.query(queryString);    
         return rows;
@@ -64,6 +65,11 @@ const Alarm = {
         const query = `UPDATE alarmas SET ${updateFields.join(', ')} WHERE id = ?`;
         const [result] = await pool.query(query, values);
         
+        return result.affectedRows;
+      },
+      updateTrigger: async (id, triggerValue) => {
+        const query = 'UPDATE alarmas SET disparada = ? WHERE id = ?';
+        const [result] = await pool.query(query, [triggerValue, id]);
         return result.affectedRows;
       },
     
