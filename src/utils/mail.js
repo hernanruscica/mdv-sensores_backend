@@ -13,15 +13,15 @@ let transporter = nodemailer.createTransport({
     connectionTimeout: 10000 
 }); 
 
-export const sendMessage = async (alarm, variables, emailsString) => {
+export const sendMessage = async (alarm, variables, email) => {
 
     let mailOptions = {
         from: 'info@ruscica-code.ar',
-        to: 'cesarhernanruscica@gmail.com',
+        to: email,
         subject: `Alarma ${alarm.disparada == 1 ? 'disparada' : 'reseteada'} - ${alarm.nombre} - MDV Sensores`,
         html: ` <div style="font-size: 1rem">
-                    <h1>Alarma ${alarm.disparada == 1 ? 'disparada' : 'reseteada'}</h1>
-                    <p>Se registro un cambio en la alarma <strong>'${alarm.nombre}</strong>.'</p>
+                    <h1 style="color: ${alarm.disparada == 1 ? 'red' : 'green'};">Alarma ${alarm.disparada == 1 ? 'disparada' : 'reseteada'}</h1>
+                    <p >Se registro un cambio en la alarma <strong>'${alarm.nombre}</strong>.'</p>
                     <p>La condicion de disparo es <strong>${alarm.condicion}</strong>\
                     y el valor registrado fue ${variables.porcentaje_encendido}</p>
                     <p>El periodo de tiempo para promediar es de\

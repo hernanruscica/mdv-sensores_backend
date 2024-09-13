@@ -67,7 +67,7 @@ class AlarmService {
 
 
         const usersAffected = await AlarmUserModel.findUsersByAlarmId(alarm.id);    
-        console.log(usersAffected);
+        //console.log(usersAffected);        
 
         if (usersAffected.length > 0){
             for (let user of usersAffected){
@@ -85,8 +85,8 @@ class AlarmService {
                 
 
                 try {                    
-                    const emailsString = 'cesarhernanruscica@gmail.com';
-                    const results = await sendMessage(alarm, variables, emailsString);
+                    const emailToSend = user.email;
+                    const results = await sendMessage(alarm, variables, emailToSend);
                     //console.log(results);
                     if (results == true){
                         console.log('Email alarm sended OK !');                        
@@ -128,8 +128,8 @@ class AlarmService {
                 console.log(results>0 ? `Log inserted Ok with id: ${results}`: 'Error inserting log');
 
                 try {                    
-                    const emailsString = 'cesarhernanruscica@gmail.com';
-                    const results = await sendMessage(alarm, variables, emailsString);
+                    const emailToSend = user.email;
+                    const results = await sendMessage(alarm, variables, emailToSend);                    
                     //console.log(results);
                     if (results == true){
                         console.log('Email alarm sended OK !');                        
