@@ -1,5 +1,5 @@
 import express from 'express';
-import { registerAlarmLog, getAllAlarmLogs, updateAlarmLog, deleteAlarmLog, getAlarmLogById, getAlarmLogsByUserId, getAlarmLogsByChannelId  } from '../controllers/alarmLogController.js';
+import { registerAlarmLog, getAllAlarmLogs, updateAlarmLog, deleteAlarmLog, getAlarmLogById, getAlarmLogsByUserId, getAlarmLogsByChannelId, getAlarmLogsByAlarmId  } from '../controllers/alarmLogController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
 const router = express.Router();
@@ -8,7 +8,8 @@ router.post('/', protect, registerAlarmLog);
 router.get('/', protect, getAllAlarmLogs);
 router.get('/:id', protect, getAlarmLogById);
 router.get('/byuser/:userId', getAlarmLogsByUserId);
-router.get('/bychannel/:channelId', getAlarmLogsByChannelId)
+router.get('/bychannel/:channelId', getAlarmLogsByChannelId);
+router.get('/byalarm/:alarmId', getAlarmLogsByAlarmId);
 router.put('/:id', protect, updateAlarmLog);
 router.delete('/:id', protect, deleteAlarmLog);
 

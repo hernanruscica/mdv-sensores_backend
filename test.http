@@ -266,7 +266,7 @@ GET {{baseUrl}}/api/alarms/48
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-### alarms getAll
+### alarms getAll with  state = 1
 GET {{baseUrl}}/api/alarms
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
@@ -282,15 +282,18 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "canal_id":"26",
+   "canal_id":"7",
    "tabla": "cocina",   
-   "columna": "d2", 
-   "nombre": "alarma falsa TEST API",     
-   "descripcion":"Alarma falsa para probar la api de alarmas",
+   "columna": "d1", 
+   "nombre": "Cafetera - alarma falsa TEST API",     
+   "descripcion":"Alarma falsa para probar la api de alarmas y la insercion de usuario asociado a la alarma",
    "max":"35",
    "min": "0",
-   "periodo_tiempo": "1 HOUR" ,
-   "estado" : "1"
+   "periodo_tiempo": "15" ,
+   "nombre_variables": "porcentaje_encendido",
+   "condicion": "porcentaje_encendido > 18",
+   "estado" : "1",
+   "usuario_id": "32"
 }
 
 ### alarms update
@@ -303,7 +306,7 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### alarms delete
-DELETE {{baseUrl}}/api/alarms/60
+DELETE {{baseUrl}}/api/alarms/70
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -379,7 +382,12 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getAll alarmLogs by channel 
-GET {{baseUrl}}/api/alarmlogs/bychannel/10
+GET {{baseUrl}}/api/alarmlogs/bychannel/9
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### getAll alarmLogs by alarm id 
+GET {{baseUrl}}/api/alarmlogs/byalarm/67
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

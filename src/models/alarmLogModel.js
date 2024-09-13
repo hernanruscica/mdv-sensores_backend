@@ -27,13 +27,35 @@ const AlarmLog = {
       },
       findAllAlarmLogsByChannel: async (channelId) => {
         const queryString =         
-          `SELECT alarmas_logs.*, usuarios.nombre_1, usuarios.apellido_1, usuarios.email\
+          `SELECT \
+           CONVERT_TZ(alarmas_logs.fecha_disparo, '+00:00', '${process.env.UTC_LOCAL}') AS fecha_disparo,\
+           CONVERT_TZ(alarmas_logs.fecha_vista, '+00:00', '${process.env.UTC_LOCAL}') AS fecha_vista,\
+           alarmas_logs.id, alarmas_logs.alarma_id, alarmas_logs.usuario_id, alarmas_logs.canal_id,\
+           alarmas_logs.variables_valores, alarmas_logs.disparada,\
+           usuarios.nombre_1, usuarios.apellido_1, usuarios.email\
            FROM alarmas_logs 
            INNER JOIN usuarios 
            ON alarmas_logs.usuario_id = usuarios.id  
            WHERE canal_id = ?  
            ORDER BY fecha_disparo DESC;`
         const [rows] = await pool.query(queryString, channelId);    
+        return rows;
+      },
+      //findAllAlarmLogsByAlarm
+      findAllAlarmLogsByAlarm: async (alarmId) => {
+        const queryString =         
+          `SELECT \
+           CONVERT_TZ(alarmas_logs.fecha_disparo, '+00:00', '${process.env.UTC_LOCAL}') AS fecha_disparo,\
+           CONVERT_TZ(alarmas_logs.fecha_vista, '+00:00', '${process.env.UTC_LOCAL}') AS fecha_vista,\
+           alarmas_logs.id, alarmas_logs.alarma_id, alarmas_logs.usuario_id, alarmas_logs.canal_id,\
+           alarmas_logs.variables_valores, alarmas_logs.disparada,\
+           usuarios.nombre_1, usuarios.apellido_1, usuarios.email\
+           FROM alarmas_logs 
+           INNER JOIN usuarios 
+           ON alarmas_logs.usuario_id = usuarios.id  
+           WHERE alarma_id = ?  
+           ORDER BY fecha_disparo DESC;`
+        const [rows] = await pool.query(queryString, alarmId);    
         return rows;
       },
       create: async (alarmUserData) => {

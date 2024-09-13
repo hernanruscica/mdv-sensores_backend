@@ -91,3 +91,16 @@ export const getAlarmLogsByChannelId = async (req, res, next) => {
     next(error);
   }
 };
+//getAlarmLogsByAlarmId
+export const getAlarmLogsByAlarmId = async (req, res, next) => {
+  try {
+    const { alarmId } = req.params;
+    const alarmLogs = await AlarmLog.findAllAlarmLogsByAlarm(alarmId);    
+    if (!alarmLogs) {
+      return res.status(400).json({message: 'Alarm Logs Not Found for that alarm'});
+    }
+    res.status(200).json({message: "Alarm Logs Founded", count: alarmLogs.length, alarmLogs });
+  } catch (error) {
+    next(error);
+  }
+};
