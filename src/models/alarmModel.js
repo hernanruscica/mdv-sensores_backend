@@ -35,13 +35,14 @@ const Alarm = {
           return rows;
       },
       create: async (alarmData) => {
-        const { canal_id, tabla, columna, nombre, descripcion, max, min, periodo_tiempo, estado } = alarmData;        
+        //canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado
+        const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado } = alarmData;        
         const queryString = `
           INSERT INTO alarmas\
-            (canal_id, tabla, columna, nombre, descripcion, max, min, periodo_tiempo, estado, fecha_creacion)\
+            (canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado, fecha_creacion)\
           VALUES\
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE());`;
-        const [result] = await pool.query(queryString, [canal_id, tabla, columna, nombre, descripcion, max, min, periodo_tiempo, estado]);
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE());`;
+        const [result] = await pool.query(queryString, [canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado]);
         return result.insertId;
       },
       update: async (alarmData) => {

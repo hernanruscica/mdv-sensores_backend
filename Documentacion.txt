@@ -1,0 +1,19 @@
+alarmas
+
+Se muestran, y controlan las que estan con estado = 1.
+
+Variables:
+canal_id : id del canal que controla.
+tabla: nombre del tabla de la Base de datos.
+columna: nombre de la columna en dicha tabla.
+nombre y descripcion: autodescriptivas. se sugiere mencionar el canal en el nombre. no se recomienda dar detalles de la condicion de disparo, ya que la misma puede ser cambiada e implicaria tambien cambiar nombre y descripcion.
+periodo_tiempo: El tiempo para atras desde el minuto actual con el cual se sacara el porcentaje de cada una de las lecturas, se mide en cantidad de minutos.
+estado: Si esta en 1, la alarma esta activa, funcionando. Si esta en 0, dicha alarma no controla la variable, ni la condicion en dicho canal. Se pondria en 0 si se quisiera eliminar la alarma (no usarla mas), pero quedaria aun un registro en la Base de datos para que los ingresos en el historial, si los hubiera, tuvieran sentido.
+fecha_creacion: Fecha y hora de cuando se creo la alarma, no cambia con las modificaciones.
+condicion: Condicion logica con la cual se dispara la alarma. es un string que puede contener expresiones logicas validas para la funcion 'evaluate' de math.js. Se escribe el nombre de la variable, un operador logico y un valor. El nombre de la variables se define en otra variable, que debe coincidir con la puesta aca.
+nombre_variables: nombre de la variable o variables que se usan en la condicion logica. es un string, cada variable esta separada por comas.
+disparada: si se cumple la condicion logica se pone en cero, hasta que deje de cumplirse y se pone en 0.
+
+Proceso para poner una alarma, nivel BD.
+Insert en la tabla alarmas
+insert en la tabla alarmas_x_usuarios
