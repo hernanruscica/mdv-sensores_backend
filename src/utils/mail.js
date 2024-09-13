@@ -16,7 +16,7 @@ export const sendMessage = async (alarm, variables, emailsString) => {
 
     let mailOptions = {
         from: 'info@ruscica-code.ar',
-        to: emailsString,
+        to: 'cesarhernanruscica',
         subject: `Alarma ${alarm.disparada == 1 ? 'disparada' : 'reseteada'} - ${alarm.nombre} - MDV Sensores`,
         html: ` <div style="font-size: 1rem">
                     <h1>Alarma ${alarm.disparada == 1 ? 'disparada' : 'reseteada'}</h1>
