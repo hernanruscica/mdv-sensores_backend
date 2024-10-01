@@ -59,15 +59,15 @@ const AlarmLog = {
         return rows;
       },
       create: async (alarmUserData) => {
-        const { alarma_id, usuario_id, canal_id, variables, disparada } = alarmUserData;  
+        const { alarma_id, usuario_id, canal_id, variables, disparada } = alarmUserData;
         const query = 
-          `insert into alarmas_logs
+          `INSERT INTO alarmas_logs
             (alarma_id, usuario_id, canal_id, variables_valores, disparada, fecha_disparo)
-            values
-            (?, ?, ?, ?, ?, CURRENT_TIMESTAMP());`;
+            VALUES
+            (?, ?, ?, ?, ?, CONVERT_TZ(CURRENT_TIMESTAMP(), '${process.env.UTC_LOCAL}', '+00:00'));`;
         const [result] = await pool.query(query, [alarma_id, usuario_id, canal_id, variables, disparada]);
         return result.insertId;
-      },
+    },    
       update: async (alarmUserData) => {
         const { id, alarma_id, usuario_id, canal_id, valor, fecha_vista  } = alarmUserData;        
         

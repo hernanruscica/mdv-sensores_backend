@@ -15,5 +15,11 @@ nombre_variables: nombre de la variable o variables que se usan en la condicion 
 disparada: si se cumple la condicion logica se pone en cero, hasta que deje de cumplirse y se pone en 0.
 
 Proceso para poner una alarma, nivel BD.
+----------------------------------------
 Insert en la tabla alarmas
 insert en la tabla alarmas_x_usuarios
+
+
+canales
+
+tiempo_a_promediar: determina el tiempo para atras que integra (promedia mediciones), se mide en minutos, sirve para graficar, para disparar o no las alarmas se usa periodo_tiempo en alarmas.
