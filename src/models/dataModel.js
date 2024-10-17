@@ -23,6 +23,16 @@ const dataModel = {
       const [rows] = await poolData.query(queryString);    
       return rows;
     },
+    findLastDataFromTable: async (tableName) => {
+      const queryString = `SELECT 
+                          CONVERT_TZ(fecha, '-03:00', '${process.env.UTC_LOCAL}') AS fecha,\
+                          tiempo_total,\                           
+                          servicio, energia, texto\
+                          FROM ${tableName}\                          
+                          ORDER BY fecha DESC LIMIT 1;`;
+      const [rows] = await poolData.query(queryString);    
+      return rows;
+    },
     findDataFromAnalogChannel: async (tableName, columnPrefix, timePeriod) => {
       const queryString = `SELECT 
                           CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\

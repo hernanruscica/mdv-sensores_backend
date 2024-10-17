@@ -4,8 +4,8 @@ import AlarmUser from '../models/alarmUserModel.js';
 
 export const registerAlarm = async (req, res, next) => {
   try {
-    const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado, usuario_id } = req.body;
-    const alarmId = await Alarm.create({ canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado });    
+    const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, usuario_id, tipo_alarma } = req.body;
+    const alarmId = await Alarm.create({ canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma });    
     req.body.id = alarmId;
     const alarmUserData = {
       alarma_id: alarmId, 

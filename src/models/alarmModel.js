@@ -35,18 +35,18 @@ const Alarm = {
           return rows;
       },
       create: async (alarmData) => {
-        //canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado
-        const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado } = alarmData;        
+        //canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado
+        const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma } = alarmData;        
         const queryString = `
           INSERT INTO alarmas\
-            (canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado, fecha_creacion)\
+            (canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma, fecha_creacion)\
           VALUES\
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE());`;
-        const [result] = await pool.query(queryString, [canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, max, min, periodo_tiempo, estado]);
+            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE());`;
+        const [result] = await pool.query(queryString, [canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma]);
         return result.insertId;
       },
       update: async (alarmData) => {
-        const { id, canal_id, tabla, columna, nombre, descripcion, max, min, periodo_tiempo, estado } = alarmData;
+        const { id, canal_id, tabla, columna, nombre, descripcion, periodo_tiempo, estado, tipo_alarma } = alarmData;
         
         const updateFields = [];
         const values = [];
@@ -55,11 +55,10 @@ const Alarm = {
         if (tabla) { updateFields.push('tabla = ?'); values.push(tabla); }
         if (columna) { updateFields.push('columna = ?'); values.push(columna); }
         if (nombre) { updateFields.push('nombre = ?'); values.push(nombre); }
-        if (descripcion) { updateFields.push('descripcion = ?'); values.push(descripcion); }
-        if (max) { updateFields.push('max = ?'); values.push(max); }
-        if (min) { updateFields.push('min = ?'); values.push(min); }
+        if (descripcion) { updateFields.push('descripcion = ?'); values.push(descripcion); }        
         if (periodo_tiempo) { updateFields.push('periodo_tiempo = ?'); values.push(periodo_tiempo); }
-        if (estado) { updateFields.push('estado = ?'); values.push(estado); }
+        if (estado) { updateFields.push('estado = ?'); values.push(estado); } 
+        if (tipo_alarma) { updateFields.push('tipo_alarma = ?'); values.push(tipo_alarma); } 
     
         values.push(id);
     

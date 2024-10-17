@@ -282,18 +282,17 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "canal_id":"7",
-   "tabla": "cocina",   
-   "columna": "d1", 
-   "nombre": "Cafetera - alarma falsa TEST API",     
-   "descripcion":"Alarma falsa para probar la api de alarmas y la insercion de usuario asociado a la alarma",
-   "max":"35",
-   "min": "0",
+   "canal_id":"23",
+   "tabla": "quilmes",   
+   "columna": "d3", 
+   "nombre": "Fallo comunicación datos en Datalogger Quilmes.",     
+   "descripcion":"Se dispara cuando pasa un tiempo sin recibir datos desde el datalogger.",   
    "periodo_tiempo": "15" ,
-   "nombre_variables": "porcentaje_encendido",
-   "condicion": "porcentaje_encendido > 18",
+   "nombre_variables": "fecha, fecha_actual",
+   "condicion": "fecha_actual - fecha >= 10",
    "estado" : "1",
-   "usuario_id": "32"
+   "usuario_id": "32",
+   "tipo_alarma": "FALLO_COMUNICACION"
 }
 
 ### alarms update
@@ -477,7 +476,7 @@ Authorization: Bearer {{adminToken}}
 
 ### data getAll by timePeriod  - :table/:period in minutes
 # A day: 1440 minutes  2 Days: 2880
-GET {{baseUrl}}/api/data/quilmes/2880
+GET {{baseUrl}}/api/data/quilmes/60
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -490,3 +489,12 @@ Authorization: Bearer {{adminToken}}
 GET {{baseUrl}}/api/data/getanalog/cocina/a1/2880
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
+
+###'/getlastdata/'
+GET {{baseUrl}}/api/data/getLastData
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "tableName": "guemes"
+}
