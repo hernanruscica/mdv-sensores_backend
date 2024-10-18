@@ -34,7 +34,7 @@ const Channel = {
             WHERE canales.datalogger_id = ?`;
         const [rows] = await pool.query(queryString, [dataloggerId]);    
         return rows;
-      },
+      },      
       create: async (channelData) => {
         const { datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador } = channelData;        
         const queryString = `
