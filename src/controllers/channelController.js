@@ -109,7 +109,7 @@ export const getAllChannelsByUser = async (req, res, next) => {
         const updatedChannels = await Promise.all(
           currentChannels.map(async (channel) => {
             const totalTimeCurrentChannel = await Data.findTotalOnTimeFromColumn(channel.nombre_tabla, channel.nombre_columna); 
-            console.log(channel.nombre_tabla, channel.nombre_columna)
+            //console.log(channel.nombre_tabla, channel.nombre_columna)
             return {
               ...channel,
               ...totalTimeCurrentChannel[0],  // Combina los atributos del channel y totalTimeCurrentChannel[0]
