@@ -46,7 +46,7 @@ const Alarm = {
         return result.insertId;
       },
       update: async (alarmData) => {
-        const { id, canal_id, tabla, columna, nombre, descripcion, periodo_tiempo, estado, tipo_alarma } = alarmData;
+        const { id, canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma } = alarmData;
         
         const updateFields = [];
         const values = [];
@@ -59,6 +59,8 @@ const Alarm = {
         if (periodo_tiempo) { updateFields.push('periodo_tiempo = ?'); values.push(periodo_tiempo); }
         if (estado) { updateFields.push('estado = ?'); values.push(estado); } 
         if (tipo_alarma) { updateFields.push('tipo_alarma = ?'); values.push(tipo_alarma); } 
+        if (nombre_variables) { updateFields.push('nombre_variables = ?'); values.push(nombre_variables); } 
+        if (condicion) { updateFields.push('condicion = ?'); values.push(condicion); } 
     
         values.push(id);
     

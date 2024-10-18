@@ -282,30 +282,31 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "canal_id":"23",
+   "canal_id":"24",
    "tabla": "quilmes",   
-   "columna": "d3", 
-   "nombre": "Fallo comunicación datos en Datalogger Quilmes.",     
-   "descripcion":"Se dispara cuando pasa un tiempo sin recibir datos desde el datalogger.",   
+   "columna": "d4", 
+   "nombre": "Quilmes - Bomba dos - Porcentaje de uso maximo.",     
+   "descripcion":"Se dispara cuando sobrepasa los valores determinados en la condicion.",   
    "periodo_tiempo": "15" ,
-   "nombre_variables": "fecha, fecha_actual",
-   "condicion": "fecha_actual - fecha >= 10",
+   "nombre_variables": "porcentaje_encendido",
+   "condicion": "porcentaje_encendido > 30",
    "estado" : "1",
    "usuario_id": "32",
-   "tipo_alarma": "FALLO_COMUNICACION"
+   "tipo_alarma": "PORCENTAJE_ENCENDIDO"
 }
 
 ### alarms update
-PUT {{baseUrl}}/api/alarms/60
+PUT {{baseUrl}}/api/alarms/66
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado": "0"
+  "estado": "1",
+  "condicion": "porcentaje_encendido > 80"
 }
 
 ### alarms delete
-DELETE {{baseUrl}}/api/alarms/70
+DELETE {{baseUrl}}/api/alarms/56
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

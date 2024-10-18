@@ -33,6 +33,17 @@ const dataModel = {
       const [rows] = await poolData.query(queryString);    
       return rows;
     },
+    findTotalOnTimeFromColumn: async (tableName, columnName) => {
+      const queryString = `SELECT 
+                          CONVERT_TZ(min(fecha), '-03:00', '${process.env.UTC_LOCAL}') AS fecha_inicio,\
+                          CONVERT_TZ(max(fecha), '-03:00', '${process.env.UTC_LOCAL}') AS fecha_final,\
+                          DATEDIFF(max(fecha), min(fecha)) AS dias_uso,\
+                          SUM(${columnName}_tiempo) / 60 / 60 AS horas_uso\
+                          FROM ${tableName};`;
+                          
+      const [rows] = await poolData.query(queryString);    
+      return rows;
+    },
     findDataFromAnalogChannel: async (tableName, columnPrefix, timePeriod) => {
       const queryString = `SELECT 
                           CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\

@@ -20,6 +20,7 @@ const Channel = {
       findByDataloggerId: async (dataloggerId) => {
         const queryString = 
             `SELECT canales.id as canal_id, 
+              dataloggers.nombre_tabla,
               canales.nombre_columna, 
               canales.nombre as canal_nombre, 
               canales.descripcion as canal_descripcion,
@@ -30,7 +31,8 @@ const Channel = {
               canales.fecha_creacion,
               dataloggers_x_ubicacion.ubicaciones_id
             FROM canales
-            INNER JOIN dataloggers_x_ubicacion ON dataloggers_x_ubicacion.datalogger_id = canales.datalogger_id
+            INNER JOIN dataloggers_x_ubicacion ON dataloggers_x_ubicacion.datalogger_id = canales.datalogger_id\
+            INNER JOIN dataloggers ON dataloggers_x_ubicacion.datalogger_id = dataloggers.id
             WHERE canales.datalogger_id = ?`;
         const [rows] = await pool.query(queryString, [dataloggerId]);    
         return rows;

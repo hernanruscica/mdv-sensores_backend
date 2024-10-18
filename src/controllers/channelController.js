@@ -1,6 +1,7 @@
 import Channel from '../models/channelModel.js';
 import LocationUser from '../models/locationUserModel.js';
 import Datalogger from '../models/dataloggerModel.js';
+import Data from '../models/dataModel.js';
 
 export const registerChannel = async (req, res, next) => {
   try {
@@ -87,12 +88,12 @@ export const getAllChannelsByUser = async (req, res, next) => {
 
     const locationsByUser = await LocationUser.findLocationsByUserId(userId);
     const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
-    //console.log(locationsIdsByUser);
+    
     
     const dataloggers = await Promise.all(
       locationsIdsByUser.map(async (locationId) => {
-        const currentDatalogger = await Datalogger.findByLocationId(locationId);        
-        return currentDatalogger;
+        const currentDataloggers = await Datalogger.findByLocationId(locationId);        
+        return currentDataloggers;
       })
     );    
     const filteredDataloggers = dataloggers.filter(Boolean);    
@@ -101,14 +102,30 @@ export const getAllChannelsByUser = async (req, res, next) => {
     //console.log(dataloggersIdsByUser); 
     
     const channels = await Promise.all(
-       dataloggersIdsByUser.map(async (dataloggerId) => {
-         const currentChannel = await Channel.findByDataloggerId(dataloggerId);        
-         return currentChannel;
-       })
-     );    
+      dataloggersIdsByUser.map(async (dataloggerId) => {        
+        const currentChannels = await Channel.findByDataloggerId(dataloggerId);
+    
+        // Usamos Promise.all para esperar que todas las promesas dentro del map se resuelvan
+        const updatedChannels = await Promise.all(
+          currentChannels.map(async (channel) => {
+            const totalTimeCurrentChannel = await Data.findTotalOnTimeFromColumn(channel.nombre_tabla, channel.nombre_columna); 
+            console.log(channel.nombre_tabla, channel.nombre_columna)
+            return {
+              ...channel,
+              ...totalTimeCurrentChannel[0],  // Combina los atributos del channel y totalTimeCurrentChannel[0]
+            };
+          })
+        );
+        
+        return updatedChannels; // Retorna el array actualizado con los canales
+      })
+    );
+           
+     
      const filteredChannels = channels.filter(Boolean);     
      const flattenedChannels = filteredChannels.flat();
-      
+
+
     if (channels.length == 0) {
       return res.status(400).json({message: 'channels Not Found'});
     }
