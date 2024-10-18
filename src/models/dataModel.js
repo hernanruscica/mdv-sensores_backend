@@ -12,7 +12,7 @@ const dataModel = {
     findDataFromDigitalChannel: async (tableName, columnPrefix, timePeriod) => {
       /**CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS */
       const queryString = `SELECT 
-                          CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\
+                          CONVERT_TZ(fecha, '-03:00', '${process.env.UTC_LOCAL}') AS fecha,\
                           tiempo_total,\ 
                           ${columnPrefix}_tiempo as tiempo_encendido,\ 
 	                        ${columnPrefix}_cantidad as cantidad,\
