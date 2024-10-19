@@ -523,3 +523,16 @@ Content-Type: image/jpeg
 < ./carlos.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
+### post image on render disk
+
+POST https://mdv-monitoreo-remoto-backend.onrender.com/api/images
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer {{adminToken}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="carlos.jpg"
+Content-Type: image/jpeg
+
+< ./carlos.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
