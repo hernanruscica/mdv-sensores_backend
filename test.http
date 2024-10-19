@@ -510,7 +510,12 @@ GET {{baseUrl}}/api/images/mdvsrl-logo.jpg
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-###POST image no funciona el request este de merda
+### get on render
+GET https://mdv-monitoreo-remoto-backend.onrender.com/api/images/carlos.jpg
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+###POST image 
 
 POST {{baseUrl}}/api/images
 Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW

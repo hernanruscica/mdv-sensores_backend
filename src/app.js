@@ -53,7 +53,8 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 // Middleware para servir el contenido estático de la carpeta 'uploads'
-app.use('/uploads', express.static(path.join(__dirname, 'var/data')));
+//app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+app.use('/uploads', express.static('./var/data'));
 
 //console.log(__dirname);
 

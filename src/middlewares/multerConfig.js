@@ -9,7 +9,9 @@ const storage = multer.diskStorage({
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
     //const uploadPath = path.join(__dirname, '/uploads'); // Guarda las imágenes en la carpeta 'uploads'
-    const uploadPath = path.join('/var/data');
+    //const uploadPath = path.join(__dirname, '/uploads');
+    const uploadPath = './var/data';
+    // console.log('dirname de la upload path', __dirname)
 
     // Crear la carpeta si no existe
     if (!fs.existsSync(uploadPath)) {
