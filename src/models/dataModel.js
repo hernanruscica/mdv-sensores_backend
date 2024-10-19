@@ -25,7 +25,7 @@ const dataModel = {
     },
     findLastDataFromTable: async (tableName) => {
       const queryString = `SELECT 
-                          CONVERT_TZ(fecha, '-03:00', '${process.env.UTC_LOCAL}') AS fecha,\
+                          CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\
                           tiempo_total,\                           
                           servicio, energia, texto\
                           FROM ${tableName}\                          
@@ -35,8 +35,8 @@ const dataModel = {
     },
     findTotalOnTimeFromColumn: async (tableName, columnName) => {
       const queryString = `SELECT 
-                          CONVERT_TZ(min(fecha), '-03:00', '${process.env.UTC_LOCAL}') AS fecha_inicio,\
-                          CONVERT_TZ(max(fecha), '-03:00', '${process.env.UTC_LOCAL}') AS fecha_final,\
+                          CONVERT_TZ(min(fecha), '+00:00', '${process.env.UTC_LOCAL}') AS fecha_inicio,\
+                          CONVERT_TZ(max(fecha), '+00:00', '${process.env.UTC_LOCAL}') AS fecha_final,\
                           DATEDIFF(max(fecha), min(fecha)) AS dias_uso,\
                           SUM(${columnName}_tiempo) / 60 / 60 AS horas_uso\
                           FROM ${tableName};`;

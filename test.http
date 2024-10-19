@@ -497,5 +497,29 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "tableName": "guemes"
+   "tableName": "quilmes"
 }
+
+######################################################################################
+#####################################    Images    ###################################
+######################################################################################
+
+### getimage
+
+GET {{baseUrl}}/api/images/mdvsrl-logo.jpg
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+###POST image no funciona el request este de merda
+
+POST {{baseUrl}}/api/images
+Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+Authorization: Bearer {{adminToken}}
+
+------WebKitFormBoundary7MA4YWxkTrZu0gW
+Content-Disposition: form-data; name="image"; filename="carlos.jpg"
+Content-Type: image/jpeg
+
+< ./carlos.jpg
+------WebKitFormBoundary7MA4YWxkTrZu0gW--
+

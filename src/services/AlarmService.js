@@ -52,7 +52,7 @@ class AlarmService {
                 }
                 break;
             case "FALLO_COMUNICACION":
-                console.log("controlando alarma de fallo de comunicacion...");
+                //console.log("controlando alarma de fallo de comunicacion...");
                 const tableNameFail = alarm.tabla;
                 const currentDataFail = await DataModel.findLastDataFromTable(tableNameFail);
                 const now = Date.now();
@@ -128,7 +128,8 @@ class AlarmService {
                 console.log(results>0 ? `Log inserted Ok with id: ${results}`: 'Error inserting log');
                 
 
-                try {                    
+                try {                
+                        
                     const emailToSend = user.email;
                     const results = await sendMessage(alarm, variables, emailToSend);
                     //console.log(results);
@@ -136,7 +137,9 @@ class AlarmService {
                         console.log('Email alarm sended OK !');                        
                     }else{
                         console.log('Error sending alarm email');
-                }
+                    }
+                   
+                
                 } catch (error) {
                     console.error('Error sending email alarm', error);
                 }
