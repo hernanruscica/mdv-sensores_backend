@@ -522,11 +522,17 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 Authorization: Bearer {{adminToken}}
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="image"; filename="carlos.jpg"
+Content-Disposition: form-data; name="image"; filename="mdvsrl-logo.jpg"
 Content-Type: image/jpeg
 
-< ./carlos.jpg
+< ./src/uploads/mdvsrl-logo.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+
+
+
+
+
 
 ### post image on render disk
 
@@ -535,9 +541,9 @@ Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0g
 Authorization: Bearer {{adminToken}}
 
 ------WebKitFormBoundary7MA4YWxkTrZu0gW
-Content-Disposition: form-data; name="image"; filename="carlos.jpg"
+Content-Disposition: form-data; name="image"; filename="cafetera_generica.jpg"
 Content-Type: image/jpeg
 
-< ./carlos.jpg
+< ./src/uploads/cafetera_generica.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
