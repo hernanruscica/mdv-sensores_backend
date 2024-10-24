@@ -4,15 +4,22 @@ import { fileURLToPath } from 'url';
 export const uploadImage = (req, res, next) => {
     try {
         // Verifica si se subió la imagen correctamente
+        /*
         if (!req.file) {
           return res.status(400).json({ message: 'No se ha subido ninguna imagen' });
         }
-    
+        
         // Devuelve la información de la imagen
+        
         res.status(200).json({ 
           message: 'Imagen subida correctamente', 
           file: req.file 
-        });
+          });
+          */
+      req.body.foto = (req.file) ? req.file.filename : req.body.foto;
+      console.log('uploadImage', req.body);
+      next();
+
       } catch (error) {
         //res.status(500).json({ message: 'Error al subir la imagen', error });
         next(error);

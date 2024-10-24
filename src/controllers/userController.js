@@ -39,6 +39,7 @@ export const registerUser = async (req, res, next) => {
 export const updateUser = async (req, res, next) => {
   try {
     const userData = req.body;
+    console.log('updateUser controller',userData);
     const { id } = req.params;
     userData.id = id;
     const updatedRows = await User.update(userData);
