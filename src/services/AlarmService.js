@@ -55,8 +55,8 @@ class AlarmService {
                 //console.log("controlando alarma de fallo de comunicacion...");
                 const tableNameFail = alarm.tabla;
                 const currentDataFail = await DataModel.findLastDataFromTable(tableNameFail);
-                const now = Date.now();
-                const lastDate = new Date(currentDataFail[0].fecha).getTime();  
+                const now = Date.now() - 3 * 60 * 60 * 1000;
+                const lastDate = new Date(currentDataFail[0].fecha).getTime();                 
                 const variablesNamesFail = alarm.nombre_variables.split(',');     
                 const variablesFails = {};
 
@@ -65,31 +65,29 @@ class AlarmService {
                     const currentName = variablesNamesFail[index];
                     if (index == 0){
                         //fecha
-                        variablesFails[currentName] = parseInt(lastDate) /60 /1000 ;
-                    }else{
-                        if (index == 1){
-                            //fecha actual
-                            variablesFails[currentName] = parseInt(now) /60 /1000 ;
-                        }
+                        variablesFails[currentName] = parseInt(now - lastDate) /60 /1000 ;
                     }
                 }
+                //console.log(variablesFails);
+
                 try {
                     const isTriggered = evaluate(alarm.condicion, variablesFails);
                     //console.log(alarm.nombre, alarm.condicion, variables, isTriggered);   
-                    //console.log(`diference in minutes : ${variablesFails.fecha_actual - variablesFails.fecha}`);
-                    const timeWithoutComunication = (variablesFails.fecha_actual - variablesFails.fecha).toFixed(1);
+                   
+                    const timeWithoutComunication = variablesFails.minutos_sin_comunicacion.toFixed(1);
                     if (isTriggered) {
-                        //console.log('se disparo la alarma de fallo de conexion');
+                        console.log('***********************\nSe disparo la alarma de fallo de conexion', timeWithoutComunication);
                         this.triggerAlarm(alarm, {minutos_sin_conexion: timeWithoutComunication});
                     }else{
-                        //console.log('No se disparo la alarma de fallo de conexion')
+                        console.log('***********************\nNo se disparo la alarma de fallo de conexion', timeWithoutComunication)
                         this.resetAlarm(alarm, {minutos_sin_conexion: timeWithoutComunication});
                     }                   
                 } catch (error) {
                     console.error('Error al evaluar la condición:', error);
                     console.error('Condición:', alarm.condicion);
                     console.error('Variables:', variablesFails);                        
-                }                
+                } 
+                /**/               
                 
                 break;
 

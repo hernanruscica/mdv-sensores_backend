@@ -17,7 +17,7 @@ export const uploadImage = (req, res, next) => {
           });
           */
       req.body.foto = (req.file) ? req.file.filename : req.body.foto;
-      console.log('uploadImage', req.body);
+      
       next();
 
       } catch (error) {

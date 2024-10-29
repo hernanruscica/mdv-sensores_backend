@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcyOTE5NTUwNywiZXhwIjoxNzMxNzg3NTA3fQ.88KtIPOnN-P_kNX8lGtoIUrKey1tNw4y15RGUuCPCxo
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTcyOTcyNTczOSwiZXhwIjoxNzMyMzE3NzM5fQ.flpmJaBQVhFwuLN-GaE9pZL8uu6OdR70Rh5Oz3xlp9Y
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -145,12 +145,12 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### location update
-PUT {{baseUrl}}/api/locations/432
+PUT {{baseUrl}}/api/locations/34
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "nombre": "ubicacion API TEST 2"
+  "nombre": "MDV SRL"
 }
 
 ### location delete

@@ -6,10 +6,12 @@ import { fileURLToPath } from 'url';
 // Configuración de Multer para almacenar archivos
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
+    /*
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = path.dirname(__filename);
-    //const uploadPath = path.join(__dirname, '/uploads'); // Guarda las imágenes en la carpeta 'uploads'
-    //const uploadPath = path.join(__dirname, '/uploads');
+    const uploadPath = path.join(__dirname, '/uploads'); // Guarda las imágenes en la carpeta 'uploads'
+    const uploadPath = path.join(__dirname, '/uploads');
+    */
     const uploadPath = './var/data';
     // console.log('dirname de la upload path', __dirname)
 
@@ -21,6 +23,7 @@ const storage = multer.diskStorage({
     cb(null, uploadPath);
   },
   filename: (req, file, cb) => {
+    //console.log(req.body);
     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
     cb(null, uniqueSuffix + path.extname(file.originalname)); // Asignar nombre único
   }

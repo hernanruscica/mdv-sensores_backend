@@ -2,6 +2,9 @@ import express from 'express';
 import { registerChannel, getAllChannels, getChannelById, getAllChannelsByDatalogger, getAllChannelsByUser, updateChannel, deleteChannel } from '../controllers/channelController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
+import { uploadImage } from '../controllers/imageController.js';
+import upload from '../middlewares/multerConfig.js';
+
 const router = express.Router();
 //      /api/Channel
 router.post('/', protect, registerChannel);
@@ -10,7 +13,7 @@ router.get('/:id', protect, getChannelById);
 router.get('/bydatalogger/:dataloggerId', getAllChannelsByDatalogger);
 ///api/channels/byuser/
 router.get('/byuser/:userId', getAllChannelsByUser)
-router.put('/:id', protect, updateChannel);
+router.put('/:id', protect, upload.single('foto'), uploadImage, updateChannel);
 router.delete('/:id', protect, deleteChannel);
 
 export default router;
