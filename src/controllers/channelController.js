@@ -63,6 +63,9 @@ export const getChannelById = async (req, res, next) => {
     if (!channel) {
       return res.status(400).json({message: 'channel Not Found'});
     }
+   
+    //const totalTimeCurrentChannel = await Data.findTotalOnTimeFromColumn(channel.nombre_tabla, channel.nombre_columna); 
+    // console.log(totalTimeCurrentChannel, channel);
     res.status(200).json({message: "channel Founded", channel });
   } catch (error) {
     next(error);
@@ -87,8 +90,7 @@ export const getAllChannelsByUser = async (req, res, next) => {
     const { userId } = req.params;
 
     const locationsByUser = await LocationUser.findLocationsByUserId(userId);
-    const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
-    
+    const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);    
     
     const dataloggers = await Promise.all(
       locationsIdsByUser.map(async (locationId) => {

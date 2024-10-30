@@ -3,7 +3,8 @@ import {pool} from '../config/database.js';
 const Location = {
     findById: async (id) => {
         const queryString = 
-          `SELECT ubicaciones.id, ubicaciones.nombre, ubicaciones.descripcion, ubicaciones.telefono, ubicaciones.email, ubicaciones.foto, ubicaciones.direcciones_id,\ 
+          `SELECT ubicaciones.id, ubicaciones.nombre, ubicaciones.descripcion, ubicaciones.telefono, ubicaciones.email, ubicaciones.foto, ubicaciones.direcciones_id,\
+            ubicaciones.fecha_creacion,\ 
             direcciones.calle, direcciones.numero, direcciones.localidad, direcciones.partido, direcciones.provincia\
             FROM ubicaciones 
             INNER JOIN direcciones ON ubicaciones.direcciones_id = direcciones.id

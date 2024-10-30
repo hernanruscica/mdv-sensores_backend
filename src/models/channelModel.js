@@ -4,7 +4,7 @@ const Channel = {
     findById: async (id) => {
         const queryString = 
           `SELECT *\             
-            FROM canales\            
+            FROM canales\                     
             WHERE canales.id = ?`;
         const [rows] = await pool.query(queryString, [id]);    
         return rows[0];

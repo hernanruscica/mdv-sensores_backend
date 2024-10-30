@@ -24,6 +24,7 @@ export const updateAlarm = async (req, res, next) => {
     const alarmData = req.body;
     const { id } = req.params;
     alarmData.id = id;
+    console.log(alarmData)
     const updatedRows = await Alarm.update(alarmData);
     if (updatedRows === 0) {
       return res.status(404).json({ message: 'Alarm not found' });
