@@ -4,7 +4,7 @@ import AlarmUserModel from '../models/alarmUserModel.js';
 import AlarmLogModel from '../models/alarmLogModel.js';
 import { evaluate } from 'mathjs';
 import { calculatePorcentageOn } from '../utils/MathUtils.js';
-import { sendMessage } from '../utils/mail.js';
+import { sendMessage, testMessage } from '../utils/mail.js';
 
 
 class AlarmService {
@@ -16,7 +16,10 @@ class AlarmService {
         console.log('No alarms');
         return;
     }         
+    //console.log(alarms);
 
+    //await testMessage('Hi, Im testing...', 'cesarhernanruscica@gmail.com');
+    
     
     for (let alarm of alarms){                  
         //console.log(alarm.nombre, alarm.tabla, alarm.columna, alarm.periodo_tiempo, alarm.nombre_variables, alarm.condicion);
@@ -55,26 +58,37 @@ class AlarmService {
                 //console.log("controlando alarma de fallo de comunicacion...");
                 const tableNameFail = alarm.tabla;
                 const currentDataFail = await DataModel.findLastDataFromTable(tableNameFail);
+                //
                 const now = Date.now() - 3 * 60 * 60 * 1000;
                 const lastDate = new Date(currentDataFail[0].fecha).getTime();                 
                 const variablesNamesFail = alarm.nombre_variables.split(',');     
                 const variablesFails = {};
-
+                /*
+                console.log(`ultimo dato en timestamp: ${lastDate}\n
+                             Ahora: ${now}\n
+                             Diferencia: ${now - lastDate} en minutos: ${(now - lastDate) / 1000 / 60}\n
+                             Tolerancia: `, alarm, variablesNamesFail);  
+                             */
                 for (let index in variablesNamesFail){
                     //console.log(variablesNamesFail[index]);
                     const currentName = variablesNamesFail[index];
                     if (index == 0){
                         //fecha
-                        variablesFails[currentName] = parseInt(now - lastDate) /60 /1000 ;
+                        variablesFails[currentName] = parseInt(lastDate) /60 /1000 ;
+                    }
+                    if (index == 1){
+                        //fecha actual
+                        variablesFails[currentName] = parseInt(now) /60 /1000 ;
                     }
                 }
-                //console.log(variablesFails);
+                //console.log(variablesFails.fecha_actual - variablesFails.fecha);
+                variablesFails['minutos_sin_conexion'] = variablesFails.fecha_actual - variablesFails.fecha;
 
                 try {
+                     
                     const isTriggered = evaluate(alarm.condicion, variablesFails);
-                    //console.log(alarm.nombre, alarm.condicion, variables, isTriggered);   
                    
-                    const timeWithoutComunication = variablesFails.minutos_sin_comunicacion.toFixed(1);
+                    const timeWithoutComunication = variablesFails.minutos_sin_conexion.toFixed(1);
                     if (isTriggered) {
                         console.log('***********************\nSe disparo la alarma de fallo de conexion', timeWithoutComunication);
                         this.triggerAlarm(alarm, {minutos_sin_conexion: timeWithoutComunication});
@@ -126,22 +140,18 @@ class AlarmService {
                 console.log(results>0 ? `Log inserted Ok with id: ${results}`: 'Error inserting log');
                 
 
-                try {                
-                        
+                try {         
                     const emailToSend = user.email;
-                    const results = await sendMessage(alarm, variables, emailToSend);
+                    const results =  await sendMessage(alarm, variables, emailToSend);
                     //console.log(results);
                     if (results == true){
                         console.log('Email alarm sended OK !');                        
                     }else{
                         console.log('Error sending alarm email');
-                    }
-                   
-                
+                    }        
                 } catch (error) {
                     console.error('Error sending email alarm', error);
-                }
-                
+                }                
             }
         }
     }else{

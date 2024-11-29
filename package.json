@@ -9,7 +9,7 @@
     "dev": "nodemon src/app.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "Cesar Hernan Ruscica",
   "license": "ISC",
   "description": "",
   "dependencies": {
