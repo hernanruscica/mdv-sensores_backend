@@ -127,10 +127,11 @@ export const getAllChannelsByUser = async (req, res, next) => {
      const filteredChannels = channels.filter(Boolean);     
      const flattenedChannels = filteredChannels.flat();
 
-
+/*
     if (channels.length == 0) {
       return res.status(400).json({message: 'channels Not Found'});
     }
+      */
     res.status(200).json({message: 'channels Founded', 
                           count : flattenedChannels.length, 
                           channels: flattenedChannels });

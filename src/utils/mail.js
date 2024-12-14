@@ -1,4 +1,4 @@
-import { text } from 'express';
+
 import nodemailer from 'nodemailer';
 
 // Configurar el servicio de correo electrónico

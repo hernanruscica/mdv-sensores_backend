@@ -21,26 +21,27 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "nombre_1":"",
-   "nombre_2":"",
-   "apellido_1":"gonzalez",
+  "nombre_1":"demo1",
+   "nombre_2":"uno",
+   "apellido_1":"mdvSensores",
    "apellido_2":"",
-   "dni":"1133355332",
+   "dni":"11111111",
    "foto":"",
-   "email":"noesvacio7@gmail.com",
-   "password":"",
-   "telefono":"",
-   "estado":"",
+   "email":"demo1@gmail.com",
+   "password":"1111",
+   "telefono":"1536631441",
+   "estado":"1",
    "direcciones_id": 1  
 }
 
 ### user update 
-PUT {{baseUrl}}/api/users/91
+PUT {{baseUrl}}/api/users/100
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado":1
+  "estado":1,
+  "espropietario": 0
 }
 
 ### getAllUsers
@@ -49,18 +50,18 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getById
-GET {{baseUrl}}/api/users/85
+GET {{baseUrl}}/api/users/100
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ###/api/users/byuser/${userId} 
-GET {{baseUrl}}/api/users/byuser/32
+GET {{baseUrl}}/api/users/byuser/100
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### deleteById
 
-DELETE {{baseUrl}}/api/users/90
+DELETE {{baseUrl}}/api/users/99
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -450,9 +451,9 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "ubicaciones_id":"36",
-   "usuarios_id": "7",
-   "roles_id": "8"   
+   "ubicaciones_id":"34",
+   "usuarios_id": "100",
+   "roles_id": "7"   
 }
 
 ### locationsusers update

@@ -39,7 +39,7 @@ export const getAllDataloggersByLocation = async (req, res, next) => {
   }
 };
 
-//obtengo todos los dataloggers para ese usuario
+// Obtengo todos los dataloggers para ese usuario
 export const getAllDataloggersByUser = async (req, res, next) => {
   try {
     const { userId } = req.params;
@@ -58,15 +58,26 @@ export const getAllDataloggersByUser = async (req, res, next) => {
     // Filtrar los valores que no existen
     const filteredDataloggers = dataloggers.filter(Boolean);
 
-    if (filteredDataloggers.length > 0) {
-      return res.status(200).json({ count: filteredDataloggers.length, dataloggers: filteredDataloggers });
+    // Poner todos los dataloggers al mismo nivel
+    const flattenedDataloggers = filteredDataloggers.flat();
+
+    // Eliminar duplicados basados en datalogger_id
+    const uniqueDataloggers = flattenedDataloggers.filter((datalogger, index, self) =>
+      self.findIndex(dl => dl.id === datalogger.id) === index
+    );
+    /*
+    if (uniqueDataloggers.length > 0) {
+      return res.status(200).json({ count: uniqueDataloggers.length, dataloggers: uniqueDataloggers });
     } else {
       return res.status(400).json({ message: 'Dataloggers Not Found' });
     }
+      */
+    return res.status(200).json({ count: uniqueDataloggers.length, dataloggers: uniqueDataloggers });
   } catch (error) {
     next(error);
   }
 };
+
 
 
   export const registerDatalogger = async (req, res, next) => {

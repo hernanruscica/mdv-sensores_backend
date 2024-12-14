@@ -83,34 +83,45 @@ export const getAllUsers = async (req, res, next) => {
 
 // GET {{baseUrl}}/api/locationsusers/usersbylocation/36
 export const getAllUsersByUser = async (req, res, next) => {
-    try {
-       const { userId } = req.params;
-      
-       const locationsByUser = await LocationUser.findLocationsByUserId(userId);
-       const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
+  try {
+    const { userId } = req.params;
 
-      // Usar Promise.all para esperar a que todas las promesas se resuelvan
-      const users = await Promise.all(
-        locationsIdsByUser.map(async (locationId) => {
-          const currentUser = await LocationUser.findUsersByLocationId(locationId);
-          console.log(currentUser)
-          return currentUser;
-        })
-      );
-      // Filtrar los valores que no existen
-      const filteredUsers = users.filter(Boolean);
-      //ponemos todos los usuarios al mismo nivel, lo sacamos del array de objetos
-      const flattenedUsers = filteredUsers.flat();
+    const locationsByUser = await LocationUser.findLocationsByUserId(userId);
+    console.log(locationsByUser);
+    const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
 
-        if (filteredUsers.length > 0) {
-          res.status(200).json({ count : flattenedUsers.length, users: flattenedUsers });
-        }else{
-          return res.status(400).json({message: 'Users Not Found'});
-        }
-     } catch (error) {
-       next(error);
-     }
- };
+    // Usar Promise.all para esperar a que todas las promesas se resuelvan
+    const users = await Promise.all(
+      locationsIdsByUser.map(async (locationId) => {
+        const currentUser = await LocationUser.findUsersByLocationId(locationId);
+        return currentUser;
+      })
+    );
+
+    // Filtrar los valores que no existen
+    const filteredUsers = users.filter(Boolean);
+
+    // Poner todos los usuarios al mismo nivel
+    const flattenedUsers = filteredUsers.flat();
+
+    // Eliminar duplicados basados en usuarios_id
+    const uniqueUsers = flattenedUsers.filter((user, index, self) =>
+      self.findIndex(u => u.usuarios_id === user.usuarios_id) === index
+    );
+
+    /*
+    if (uniqueUsers.length > 0) {
+      res.status(200).json({ count: uniqueUsers.length, users: uniqueUsers });
+    } else {
+      return res.status(400).json({ message: 'Users Not Found' });
+    }
+      */
+    res.status(200).json({ count: uniqueUsers.length, users: uniqueUsers }); 
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 export const getUserById = async (req, res, next) => {
   try {
