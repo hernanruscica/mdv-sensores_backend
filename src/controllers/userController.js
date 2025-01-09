@@ -2,6 +2,8 @@ import User from '../models/userModel.js';
 import LocationUser from '../models/locationUserModel.js';
 import generateToken from '../utils/generateToken.js';
 import bcrypt from 'bcryptjs';
+import { sendActivation } from '../utils/mail.js';
+import jwt from 'jsonwebtoken';
 
 export const loginUser = async (req, res, next) => {
   try {
@@ -14,27 +16,45 @@ export const loginUser = async (req, res, next) => {
     const token = generateToken(user.id);
     res.status(200).json({user, token });
   } catch (error) {
-    next(error); // Pasa el error al middleware de manejo de errores
+    next(error); 
   }
 };
 
 export const registerUser = async (req, res, next) => {
   try {
-    const { nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, direcciones_id } = req.body;
-    const userExists = await User.findByDni(dni);
+    const userData = req.body;    
+    const userExists = await User.findByDni(userData.dni);
 
     if (userExists) {
       return res.status(400).json({ message: 'User already exists' });
-    }
+    }  
 
-    const userId = await User.create({ nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, direcciones_id });
-    //const token = generateToken(userId);
+    const userId = await User.create(userData);
     req.body.id = userId;
+    const token = generateToken(userId, `${req.body.nombre_1} ${req.body.apellido_1}`, req.body.dni);
+    req.body.token = token;    
+    sendActivation(token, userData);
+    
     res.status(201).json({ message: "User created", user: req.body });
   } catch (error) {
     next(error); // Pasa el error al middleware de manejo de errores
   }
 };
+
+export const activateUser = async (req, res, next) => {
+  const { token } = req.params;
+  try {
+    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    const {id, userName, dni} = decodedToken;
+    
+    const response = await User.update({id, estado: 1});    
+    if (response == 1){
+      res.status(201).json({ message: "User activated", userId: id, userName: userName, dni: dni });
+    }
+  } catch (error) {
+    next(error);
+  }
+}
 
 export const updateUser = async (req, res, next) => {
   try {
@@ -87,7 +107,7 @@ export const getAllUsersByUser = async (req, res, next) => {
     const { userId } = req.params;
 
     const locationsByUser = await LocationUser.findLocationsByUserId(userId);
-    console.log(locationsByUser);
+    //console.log(locationsByUser);
     const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
 
     // Usar Promise.all para esperar a que todas las promesas se resuelvan

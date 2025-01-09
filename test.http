@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTczMjgwNTk1MiwiZXhwIjoxNzM1Mzk3OTUyfQ.eQMw9HsK95rJouuYbG1Qk1BerEycVLYEPtGttBpnVp8
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTczNjM1MzM0OSwiZXhwIjoxNzM2NDM5NzQ5fQ.g_qGpPr5EIbocTLvHeujIgaeAB1Sx7YWaR24BIz729c
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -21,26 +21,30 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "nombre_1":"demo1",
-   "nombre_2":"uno",
-   "apellido_1":"mdvSensores",
-   "apellido_2":"",
-   "dni":"11111111",
    "foto":"",
-   "email":"demo1@gmail.com",
-   "password":"1111",
-   "telefono":"1536631441",
+   "nombre_1":"demo1140",
+   "nombre_2":"cuatro",
+   "apellido_1":"mdvSensores",
+   "apellido_2":"dfd",
+   "email":"demo1140@geocities.com",
+   "telefono":"15364631187",
+   "dni":"1014010100",
+   "password":"88488",
    "estado":"1",
-   "direcciones_id": 1  
+   "direcciones_id": "1"  
 }
 
+###Activate User
+GET {{baseUrl}}/api/users/activate/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMxLCJpYXQiOjE3MzYzNTQ2MDQsImV4cCI6MTczNjQ0MTAwNH0.hEJOJ0Wg0w0E1OC5g0-9So8OHtGxMoi448Vk6UkJp3I
+Content-Type: application/json
+
 ### user update 
-PUT {{baseUrl}}/api/users/100
+PUT {{baseUrl}}/api/users/131
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado":1,
+  "estado":0,
   "espropietario": 0
 }
 
@@ -55,13 +59,13 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ###/api/users/byuser/${userId} 
-GET {{baseUrl}}/api/users/byuser/100
+GET {{baseUrl}}/api/users/byuser/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### deleteById
 
-DELETE {{baseUrl}}/api/users/99
+DELETE {{baseUrl}}/api/users/130
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

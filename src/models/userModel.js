@@ -29,11 +29,14 @@ const User = {
   create: async (userData) => {
     const { nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, direcciones_id } = userData;
     const hashedPassword = await bcrypt.hash(password, 10);
+
     const queryString = 
       'INSERT INTO usuarios \
       (nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, fecha_creacion, direcciones_id)\
        VALUES\
       (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  CURDATE(), ?)'
+    //console.log(hashedPassword)
+    //console.log(userData)
     const [result] = await pool.query(queryString, [nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, hashedPassword, telefono, estado, direcciones_id]);
     return result.insertId;
   },

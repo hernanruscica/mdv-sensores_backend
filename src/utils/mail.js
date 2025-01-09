@@ -1,4 +1,5 @@
 
+import { subset } from 'mathjs';
 import nodemailer from 'nodemailer';
 
 // Configurar el servicio de correo electrónico
@@ -61,6 +62,36 @@ export const sendMessage = async (alarm, variables, email) => {
             return false;
         }
 
+}
+
+export const sendActivation = async (token, userData) => {
+    const activationLink =`http://localhost:5173/panel/usuarios/activar/${token}`;
+    let mailOptions = {
+        from: 'admin@impulsainternet.com',
+        to: userData.email,
+        subject: 'Reseteo de contraseña - MDV Sensores',
+        html: `
+                <div style="font-size: 1rem">
+                    <h1 style="color: green">Configuraciones de seguridad</h1>
+                    <p>Hola ${userData.nombre_1} ${userData.apellido_1}, para poder empezar o seguir usando <strong>MDV Sensores</strong> debemos confirmar su correo electrónico y deberá resetear su contraseña</p>
+                    <p>Estas acciones son requerida para verificar su correo electrónico y mantener la seguridad, ya que este mismo será en el cual le llegarán las alarmas de los sensores</p>
+                    <h2>Pasos a seguir:</h2>
+                    <ol>
+                        <li>Click en este enlace: <a href=${activationLink} target="_blank">ACTIVAR</a></li>
+                        <li>Seguir los pasos en la página. </li>                        
+                    <ol>
+                    <p style="color: DodgerBlue"><strong>MDV SRL</strong> 2024 ©</p>
+                </div>
+                `
+        };  
+
+        const results = await transporter.sendMail(mailOptions);        
+        if (results.rejected.length == 0){
+            console.log('Correo enviado correctamente!');
+            return true;
+        }else{
+            return false;
+        }
 }
 
 export const testMessage = async (text, email) => {

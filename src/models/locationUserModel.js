@@ -58,7 +58,7 @@ const LocationUser = {
           INNER JOIN usuarios_x_ubicaciones_x_roles ON usuarios.id = usuarios_x_ubicaciones_x_roles.usuarios_id\ 
           INNER JOIN roles ON roles_id = roles.id\
           INNER JOIN ubicaciones ON ubicaciones.id = ubicaciones_id\
-          WHERE ubicaciones_id = ?;`;
+          WHERE ubicaciones_id = ? AND usuarios.estado = 1;`;
           const [rows] = await pool.query(queryString, locationId);    
         return rows;
       },
