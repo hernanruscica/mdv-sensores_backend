@@ -65,7 +65,8 @@ export const sendMessage = async (alarm, variables, email) => {
 }
 
 export const sendActivation = async (token, userData) => {
-    const activationLink =`http://localhost:5173/panel/usuarios/activar/${token}`;
+    const baseURL = 'http://localhost:5173';
+    const activationLink =`${baseURL}/panel/usuarios/activar/${token}`;
     let mailOptions = {
         from: 'admin@impulsainternet.com',
         to: userData.email,
@@ -78,7 +79,8 @@ export const sendActivation = async (token, userData) => {
                     <h2>Pasos a seguir:</h2>
                     <ol>
                         <li>Click en este enlace: <a href=${activationLink} target="_blank">ACTIVAR</a></li>
-                        <li>Seguir los pasos en la página. </li>                        
+                        <li>Definir una contraseña, de acuerdo a nuestras medidas de seguridad. </li>
+                        <li>Ingresar a MDV Sensores, en este enlace: <a href='${baseURL}/inicio'  target="_blank">INGRESAR</a></li>
                     <ol>
                     <p style="color: DodgerBlue"><strong>MDV SRL</strong> 2024 ©</p>
                 </div>

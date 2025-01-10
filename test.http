@@ -38,14 +38,17 @@ Authorization: Bearer {{adminToken}}
 GET {{baseUrl}}/api/users/activate/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMxLCJpYXQiOjE3MzYzNTQ2MDQsImV4cCI6MTczNjQ0MTAwNH0.hEJOJ0Wg0w0E1OC5g0-9So8OHtGxMoi448Vk6UkJp3I
 Content-Type: application/json
 
+###SendActivationEmail
+GET {{baseUrl}}/api/users/sendactivation/cesarhernanruscica@gmail.com
+Content-Type: application/json
+
 ### user update 
-PUT {{baseUrl}}/api/users/131
+PUT {{baseUrl}}/api/users/132
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado":0,
-  "espropietario": 0
+  "password":"B4rt0n24"
 }
 
 ### getAllUsers
@@ -54,7 +57,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getById
-GET {{baseUrl}}/api/users/100
+GET {{baseUrl}}/api/users/132
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -65,7 +68,7 @@ Authorization: Bearer {{adminToken}}
 
 ### deleteById
 
-DELETE {{baseUrl}}/api/users/130
+DELETE {{baseUrl}}/api/users/131
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

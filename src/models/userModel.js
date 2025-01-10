@@ -18,6 +18,14 @@ const User = {
     const [rows] = await pool.query(queryString, [dni]);    
     return rows[0];
   },
+  findByEmail: async (email) => {
+    const queryString = 
+      'SELECT * \
+      FROM usuarios \
+      WHERE email = ?';
+    const [rows] = await pool.query(queryString, [email]);    
+    return rows[0];
+  },
   findAll: async () => {
     const queryString = 
       'SELECT * \

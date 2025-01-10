@@ -56,6 +56,24 @@ export const activateUser = async (req, res, next) => {
   }
 }
 
+export const sendActivationEmail = async (req, res, next) => {
+  const { email }  = req.params;
+  console.log(`send activation email to ${email}`);
+  try {
+    const response = await User.findByEmail(email);    
+    if (response !== undefined){
+      const userData = response;      
+      const token = generateToken(userData.id, `${userData.nombre_1} ${userData.apellido_1}`, userData.dni);      
+      const emailSended = await sendActivation(token, userData);
+      return res.status(200).json({message: (emailSended) ? "Email sended" : "Error sending email", emailExists: true});
+    }else{
+      return res.status(200).json({message:"Email doesn't exists", emailExists: false});
+    }
+  } catch (error) {
+    next(error);
+  }
+}
+
 export const updateUser = async (req, res, next) => {
   try {
     const userData = req.body;
