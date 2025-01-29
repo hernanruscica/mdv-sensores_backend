@@ -16,6 +16,7 @@ let transporter = nodemailer.createTransport({
 export const sendMessage = async (alarm, variables, email, token) => {
 
     let emailContent = null;
+    const baseURL = process.env.BASE_URL_FRONT;
     switch (alarm.tipo_alarma) {
         case "PORCENTAJE_ENCENDIDO":
             emailContent = `
@@ -25,7 +26,7 @@ export const sendMessage = async (alarm, variables, email, token) => {
                     <p>La condicion de disparo es <strong>${alarm.condicion}</strong> y el valor registrado fue ${variables.porcentaje_encendido}</p>
                     <p>El periodo de tiempo para promediar es de\
                         ${alarm.periodo_tiempo < 60 ? alarm.periodo_tiempo + ' minutos.' : alarm.periodo_tiempo / 60 + " horas"} para atras</p>
-                    <a href='/panel/verestadoalarma/${token}'>Ver alarma</a>
+                    <a href='${baseURL}/panel/verestadoalarma/${token}' style="font-size: 1.5rem; color: white; background-color: green; padding: 10px;">Ver alarma</a>
                     <p style="color: DodgerBlue"><strong>MDV SRL</strong> 2024 ©</p>
                 </div>
                 `;            
@@ -65,7 +66,7 @@ export const sendMessage = async (alarm, variables, email, token) => {
 }
 
 export const sendActivation = async (token, userData) => {
-    const baseURL = 'http://localhost:5173';
+    const baseURL = process.env.BASE_URL_FRONT;
     const activationLink =`${baseURL}/panel/usuarios/activar/${token}`;
     let mailOptions = {
         from: 'admin@impulsainternet.com',
