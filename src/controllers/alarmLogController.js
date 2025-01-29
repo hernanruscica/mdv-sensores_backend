@@ -1,6 +1,7 @@
 import AlarmLog from '../models/alarmLogModel.js';
 
 
+
 export const registerAlarmLog = async (req, res, next) => {
   try {
     const { alarma_id, usuario_id, canal_id, variables } = req.body;

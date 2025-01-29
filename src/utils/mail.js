@@ -1,5 +1,5 @@
 
-import { subset } from 'mathjs';
+//import { subset } from 'mathjs';
 import nodemailer from 'nodemailer';
 
 // Configurar el servicio de correo electrónico
@@ -13,7 +13,7 @@ let transporter = nodemailer.createTransport({
     }
 }); 
 
-export const sendMessage = async (alarm, variables, email) => {
+export const sendMessage = async (alarm, variables, email, token) => {
 
     let emailContent = null;
     switch (alarm.tipo_alarma) {
@@ -25,7 +25,7 @@ export const sendMessage = async (alarm, variables, email) => {
                     <p>La condicion de disparo es <strong>${alarm.condicion}</strong> y el valor registrado fue ${variables.porcentaje_encendido}</p>
                     <p>El periodo de tiempo para promediar es de\
                         ${alarm.periodo_tiempo < 60 ? alarm.periodo_tiempo + ' minutos.' : alarm.periodo_tiempo / 60 + " horas"} para atras</p>
-                    <p>Enlace para marcar la alarma como vista: EN PROCESO</p>
+                    <a href='/panel/verestadoalarma/${token}'>Ver alarma</a>
                     <p style="color: DodgerBlue"><strong>MDV SRL</strong> 2024 ©</p>
                 </div>
                 `;            

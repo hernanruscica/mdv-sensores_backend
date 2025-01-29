@@ -5,7 +5,7 @@ import AlarmLogModel from '../models/alarmLogModel.js';
 import { evaluate } from 'mathjs';
 import { calculatePorcentageOn } from '../utils/MathUtils.js';
 import { sendMessage, testMessage } from '../utils/mail.js';
-
+import generateTokenAlarmLog from '../utils/generateTokenAlarmLog.js';
 
 class AlarmService {
   async checkAlarms() {
@@ -136,21 +136,24 @@ class AlarmService {
                     variables: JSON.stringify(variables),
                     disparada: 1
                 }
-                const results = await AlarmLogModel.create(alarmLog)
-                console.log(results>0 ? `Log inserted Ok with id: ${results}`: 'Error inserting log');
+                const insertedId = await AlarmLogModel.create(alarmLog) //insertedId
+                console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${results}`: 'Error inserting log');                
                 
-
                 try {         
+                    if (insertedId < 0){
+                        throw new Error("Error inserting Alarm Log");                        
+                    }
+                    const token = generateTokenAlarmLog(insertedId, user.id);
                     const emailToSend = user.email;
-                    const results =  await sendMessage(alarm, variables, emailToSend);
-                    //console.log(results);
+                    const results =  await sendMessage(alarm, variables, emailToSend, token);
+                    console.log(token);
                     if (results == true){
                         console.log('Email alarm sended OK !');                        
                     }else{
                         console.log('Error sending alarm email');
                     }        
                 } catch (error) {
-                    console.error('Error sending email alarm', error);
+                    console.error('Alarm triggered, but error: ', error);
                 }                
             }
         }

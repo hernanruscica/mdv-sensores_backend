@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsImlhdCI6MTczNjM1MzM0OSwiZXhwIjoxNzM2NDM5NzQ5fQ.g_qGpPr5EIbocTLvHeujIgaeAB1Sx7YWaR24BIz729c
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzM4MTU5MDEzLCJleHAiOjE3MzgyNDU0MTN9.8gywUO0SJeWao0OsK4b9otwjoXgH0DLYGEu4gc96AzM
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -43,12 +43,12 @@ GET {{baseUrl}}/api/users/sendactivation/cesarhernanruscica@gmail.com
 Content-Type: application/json
 
 ### user update 
-PUT {{baseUrl}}/api/users/132
+PUT {{baseUrl}}/api/users/134
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "password":"B4rt0n24"
+  "estado": 1
 }
 
 ### getAllUsers
@@ -375,7 +375,7 @@ Authorization: Bearer {{adminToken}}
 ######################################################################################
 
 ### alarmLogs getById
-GET {{baseUrl}}/api/alarmlogs/44
+GET {{baseUrl}}/api/alarmlogs/4157
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
