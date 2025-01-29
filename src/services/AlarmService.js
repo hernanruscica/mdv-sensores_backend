@@ -138,7 +138,7 @@ class AlarmService {
                     disparada: 1
                 }
                 insertedId = await AlarmLogModel.create(alarmLog) //insertedId
-                console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${results}`: 'Error inserting log');                
+                console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${insertedId}`: 'Error inserting log');                
                 
                 try {         
                     if (insertedId <= 0){
