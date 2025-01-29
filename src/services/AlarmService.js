@@ -126,6 +126,7 @@ class AlarmService {
         //console.log(usersAffected);        
 
         if (usersAffected.length > 0){
+            let insertedId=null;
             for (let user of usersAffected){
                 console.log(`Alarma ${alarm.nombre} DISPARADA con ${JSON.stringify(variables)} para el  usuario con correo: ${user.email} con id: ${user.id}`);
                 //alarma_id, usuario_id, canal_id, variables
@@ -136,17 +137,18 @@ class AlarmService {
                     variables: JSON.stringify(variables),
                     disparada: 1
                 }
-                const insertedId = await AlarmLogModel.create(alarmLog) //insertedId
+                insertedId = await AlarmLogModel.create(alarmLog) //insertedId
                 console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${results}`: 'Error inserting log');                
                 
                 try {         
-                    if (insertedId < 0){
+                    if (insertedId <= 0){
                         throw new Error("Error inserting Alarm Log");                        
                     }
+                    console.log(insertedId, user.id);
                     const token = generateTokenAlarmLog(insertedId, user.id);
+                    console.log(token);
                     const emailToSend = user.email;
                     const results =  await sendMessage(alarm, variables, emailToSend, token);
-                    console.log(token);
                     if (results == true){
                         console.log('Email alarm sended OK !');                        
                     }else{
