@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzM4MTU5MDEzLCJleHAiOjE3MzgyNDU0MTN9.8gywUO0SJeWao0OsK4b9otwjoXgH0DLYGEu4gc96AzM
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTczOTI5MzMxNywiZXhwIjoxNzM5Mzc5NzE3fQ.a-rQ_YeGzn46haV7O0kPJhbkU3eiYK7br3Jf3IvpEPs
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -11,8 +11,8 @@ POST {{baseUrl}}/api/users/login
 Content-Type: application/json
 
 {
-  "dni": 28470359,
-  "password": "pass"
+  "dni": 11111111,
+  "password": "1111"
 } 
 
 ### user registry (admin auth required)
@@ -43,12 +43,12 @@ GET {{baseUrl}}/api/users/sendactivation/cesarhernanruscica@gmail.com
 Content-Type: application/json
 
 ### user update 
-PUT {{baseUrl}}/api/users/134
+PUT {{baseUrl}}/api/users/85
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado": 1
+  "espropietario": 1
 }
 
 ### getAllUsers
@@ -57,7 +57,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getById
-GET {{baseUrl}}/api/users/132
+GET {{baseUrl}}/api/users/84
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -102,12 +102,12 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "direccion_mac":"2F:88:E7:FF:87:sa",
-   "nombre":"DATALOgger API",
-   "descripcion":"Es un datalogger falso, agregado para la prueba de la API",   
+  "direccion_mac":"84:CC:A8:7A:53:FC",
+   "nombre":"Datalogger de Clinitec",
+   "descripcion":"Esta es la descripcion de el datalogger de Clinitec, ubicado en Salta.",   
    "foto":"dataloggerFalso.jpg",
-   "nombre_tabla":"datalogger_falso",
-   "ubicacion_id": 34   
+   "nombre_tabla":"clinitec1",
+   "ubicacion_id": 41   
 }
 
 ### Datalogger update
@@ -144,8 +144,8 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "nombre":"ubicacion API test",
-   "descripcion":"Es un datalogger falso, agregado para la prueba de la API",   
+   "nombre":"Salta",
+   "descripcion":"Descripcion de la clinica en Salta que tiene el datalogger",   
    "foto":"dataloggerFalso.jpg",
    "telefono":"48416987",
    "email": "correo@gmail.com",

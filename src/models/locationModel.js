@@ -14,9 +14,12 @@ const Location = {
       },
       findAll: async () => {
         const queryString =         
-        `SELECT * \
-        FROM ubicaciones\
-        `
+        `SELECT ubicaciones.id as ubicaciones_id, ubicaciones.nombre as ubicaciones_nombre, ubicaciones.descripcion as ubicaciones_descripcion,\
+            ubicaciones.foto as ubicaciones_foto, ubicaciones.telefono as ubicaciones_tel, ubicaciones.email as ubicaciones_email, ubicaciones.fecha_creacion,\                   
+            direcciones.calle as ubicaciones_calle, direcciones.numero as ubicaciones_calle_numero, direcciones.provincia as ubicaciones_provincia\
+        FROM ubicaciones\   
+        INNER JOIN direcciones ON direcciones.id = ubicaciones.direcciones_id           
+        `;
         const [rows] = await pool.query(queryString);    
         return rows;
       },

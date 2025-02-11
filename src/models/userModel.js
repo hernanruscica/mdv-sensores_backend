@@ -12,7 +12,7 @@ const User = {
   },
   findByDni: async (dni) => {
     const queryString = 
-      'SELECT * \
+      'SELECT usuarios.* \
       FROM usuarios \
       WHERE dni = ?';
     const [rows] = await pool.query(queryString, [dni]);    
