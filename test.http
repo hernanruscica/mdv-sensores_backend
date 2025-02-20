@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTczOTI5MzMxNywiZXhwIjoxNzM5Mzc5NzE3fQ.a-rQ_YeGzn46haV7O0kPJhbkU3eiYK7br3Jf3IvpEPs
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MDAxMDkzNSwiZXhwIjoxNzQwMDk3MzM1fQ.E9A8L5zrQY9ZQF5TOy8AO7uuS85Cwkvcpf4XpVW_u0Q
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 

@@ -7,11 +7,11 @@ import upload from '../middlewares/multerConfig.js';
 
 const router = express.Router();
 //      /api/locations
-router.post('/', protect, registerLocation);
+router.post('/', protect, upload.single('foto'), uploadImage, registerLocation);
 router.get('/', protect, getAllLocations);
 router.get('/:id', protect, getLocationById);
 
-router.put('/:id', upload.single('foto'), uploadImage, protect, updateLocation);
+router.put('/:id', protect, upload.single('foto'), uploadImage, updateLocation);
 
 router.delete('/:id', protect, deleteLocation);
 
