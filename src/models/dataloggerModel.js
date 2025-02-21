@@ -22,9 +22,11 @@ const Datalogger = {
       },
       findAll: async () => {
         const queryString =         
-        `SELECT * \
+        `SELECT dataloggers.*, \
+        dataloggers_x_ubicacion.ubicaciones_id as ubicacion_id\
         FROM dataloggers\
-        `
+        INNER JOIN dataloggers_x_ubicacion\
+        ON dataloggers_x_ubicacion.datalogger_id = dataloggers.id`
         const [rows] = await pool.query(queryString);    
         return rows;
       },
