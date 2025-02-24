@@ -39,6 +39,7 @@ const Datalogger = {
             (?, ?, ?, ?, ?, CURDATE());
         `;
     
+        console.log(dataloggerData);
         // Iniciar una transacción
         const connection = await pool.getConnection();
         try {

@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MDA5ODA5NSwiZXhwIjoxNzQwMTg0NDk1fQ.OPtyB6P6u-Q-cCwO3wdPnKu1EElq7QvyzmbEG64NL6M
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MDQxMDg1MSwiZXhwIjoxNzQwNDk3MjUxfQ.JaAP7CQl8q67UUtCXAl3cW6i2ExOiqAV6NjmgaYHVY8
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -103,7 +103,7 @@ Authorization: Bearer {{adminToken}}
 
 {
   "direccion_mac":"84:CC:A8:7A:53:FC",
-   "nombre":"Datalogger de Clinitec",
+   "nombre":"otro datalogger mas para Clinitec",
    "descripcion":"Esta es la descripcion de el datalogger de Clinitec, ubicado en Salta.",   
    "foto":"dataloggerFalso.jpg",
    "nombre_tabla":"clinitec1",
