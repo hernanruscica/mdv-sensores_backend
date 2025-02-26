@@ -3,9 +3,11 @@ import {pool} from '../config/database.js';
 const Channel = {
     findById: async (id) => {
         const queryString = 
-          `SELECT *\             
-            FROM canales\                     
-            WHERE canales.id = ?`;
+          `SELECT canales.*,\       
+            dataloggers.nombre as datalogger_nombre, dataloggers.id as datalogger_id, dataloggers.nombre_tabla as datalogger_nombre_tabla\      
+          FROM canales\           
+          INNER JOIN dataloggers ON dataloggers.id = canales.datalogger_id\          
+          WHERE canales.id = ?`;
         const [rows] = await pool.query(queryString, [id]);    
         return rows[0];
       },

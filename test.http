@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MDQxMDg1MSwiZXhwIjoxNzQwNDk3MjUxfQ.JaAP7CQl8q67UUtCXAl3cW6i2ExOiqAV6NjmgaYHVY8
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MDU3NDM4MywiZXhwIjoxNzQwNjYwNzgzfQ._Zt6D7i0NRog-c_sRKf7JNeEfYHhMLCn_0DXFPVxbfk
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -246,7 +246,7 @@ Authorization: Bearer {{adminToken}}
    "nombre": "canal API test",   
    "descripcion":"Canal falso para probar la api de canales",
    "nombre_columna":"d2",
-   "tiempo_a_promediar": "1 HOUR",
+   "tiempo_a_promediar": "60",
    "foto": "canales.jpg" ,
    "multiplicador" : "1"
 }
@@ -290,10 +290,8 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "canal_id":"24",
-   "tabla": "quilmes",   
-   "columna": "d4", 
-   "nombre": "Quilmes - Bomba dos - Porcentaje de uso maximo.",     
+   "canal_id":"12",   
+   "nombre": "Dispenser de MDV - Porcentaje de uso maximo.",     
    "descripcion":"Se dispara cuando sobrepasa los valores determinados en la condicion.",   
    "periodo_tiempo": "15" ,
    "nombre_variables": "porcentaje_encendido",

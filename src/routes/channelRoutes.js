@@ -7,7 +7,7 @@ import upload from '../middlewares/multerConfig.js';
 
 const router = express.Router();
 //      /api/Channel
-router.post('/', protect, registerChannel);
+router.post('/', protect, upload.single('foto'), uploadImage, registerChannel);
 router.get('/', protect, getAllChannels);
 router.get('/:id', protect, getChannelById);
 router.get('/bydatalogger/:dataloggerId', getAllChannelsByDatalogger);

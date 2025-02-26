@@ -1,10 +1,20 @@
 import Alarm from '../models/alarmModel.js';
 import AlarmUser from '../models/alarmUserModel.js';
+import Channel from "../models/channelModel.js";
 
 
 export const registerAlarm = async (req, res, next) => {
   try {
-    const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, usuario_id, tipo_alarma } = req.body;
+    const { canal_id, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, usuario_id, tipo_alarma } = req.body;
+
+    const responseChannel = await Channel.findById(canal_id);
+    console.log(responseChannel)
+    const currentChannel = responseChannel;
+    console.log(currentChannel);
+
+    const tabla = currentChannel.datalogger_nombre_tabla;
+    const columna = currentChannel.nombre_columna;
+
     const alarmId = await Alarm.create({ canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma });    
     req.body.id = alarmId;
     const alarmUserData = {
