@@ -1,12 +1,19 @@
 import Location from '../models/locationModel.js';
-
+import locationUserModel from '../models/locationUserModel.js';
 
 export const registerLocation = async (req, res, next) => {
   try {
-    const { nombre, descripcion, foto, telefono, email, direcciones_id } = req.body;
+    const { nombre, descripcion, foto, telefono, email, direcciones_id, usuarios_id } = req.body;
     const locationId = await Location.create({ nombre, descripcion, foto, telefono, email, direcciones_id });    
     req.body.id = locationId;
-    res.status(201).json({ message: "Location created", location: req.body });
+
+    const locationUserData = { usuarios_id, ubicaciones_id: locationId, roles_id : 9 }    
+    const userLocationId = await locationUserModel.create(locationUserData);
+    if (userLocationId>0){
+      res.status(201).json({ message: "Location created", location: req.body });
+    }else{
+      console.log(userLocationId);
+    }
   } catch (error) {    
     if (error.code === 'ER_DUP_ENTRY') {
       return res.status(500).json({message: 'Ya existe una ubicacion con esa direccion', error: error});
