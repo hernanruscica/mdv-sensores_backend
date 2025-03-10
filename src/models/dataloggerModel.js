@@ -16,9 +16,9 @@ const Datalogger = {
             `select dataloggers.*, dataloggers_x_ubicacion.ubicaciones_id as ubicacion_id
             from dataloggers
             inner join dataloggers_x_ubicacion on dataloggers.id = dataloggers_x_ubicacion.datalogger_id
-            where dataloggers_x_ubicacion.ubicaciones_id = ?`;
-        const [rows] = await pool.query(queryString, [locationId]);    
-        return rows[0];
+            where dataloggers_x_ubicacion.ubicaciones_id = ? AND dataloggers.estado = 1`;
+        const [rows] = await pool.query(queryString, [locationId]);            
+        return rows;
       },
       findAll: async () => {
         const queryString =         
@@ -31,24 +31,24 @@ const Datalogger = {
         return rows;
       },
       create: async (dataloggerData) => {
-        const { direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id } = dataloggerData;        
+        const { direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id, estado } = dataloggerData;        
         const queryString = `
           INSERT INTO dataloggers
-            (direccion_mac, nombre, descripcion, foto, nombre_tabla, fecha_creacion)
+            (direccion_mac, nombre, descripcion, foto, nombre_tabla, estado, fecha_creacion)
           VALUES
-            (?, ?, ?, ?, ?, CURDATE());
+            (?, ?, ?, ?, ?, ?, CURDATE());
         `;
     
-        console.log(dataloggerData);
         // Iniciar una transacción
         const connection = await pool.getConnection();
         try {
           await connection.beginTransaction();
-    
+          
+          //console.log(dataloggerData);
           // Insertar en la tabla dataloggers
-          const [result] = await connection.query(queryString, [direccion_mac, nombre, descripcion, foto, nombre_tabla]);
-          const dataloggerId = result.insertId;
-    
+          const [results] = await connection.query(queryString, [direccion_mac, nombre, descripcion, foto, nombre_tabla, estado]);
+         // console.log('results', results);
+          const dataloggerId = results.insertId;
           // Insertar en la tabla datalogger_x_ubicaciones
           const locationQuery = `
             INSERT INTO dataloggers_x_ubicacion
@@ -66,6 +66,7 @@ const Datalogger = {
           await connection.rollback();
           // Verificar si el error es debido a la restricción única
           if (error.code === 'ER_DUP_ENTRY') {
+            console.log(error);
             throw new Error('El datalogger ya está asignado a una ubicación');
           } else {
             throw error;
@@ -75,7 +76,7 @@ const Datalogger = {
         }
       },
       update: async (dataLoggerData) => {
-        const { id, direccion_mac, nombre, descripcion, foto, nombre_tabla } = dataLoggerData;
+        const { id, direccion_mac, nombre, descripcion, foto, nombre_tabla, estado } = dataLoggerData;
     
         const updateFields = [];
         const values = [];
@@ -85,6 +86,7 @@ const Datalogger = {
         if (descripcion) { updateFields.push('descripcion = ?'); values.push(descripcion); }
         if (foto) { updateFields.push('foto = ?'); values.push(foto); }
         if (nombre_tabla) { updateFields.push('nombre_tabla = ?'); values.push(nombre_tabla); }
+        if (estado) { updateFields.push('estado = ?'); values.push(estado); }
     
         values.push(id);
     

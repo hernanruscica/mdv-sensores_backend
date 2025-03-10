@@ -50,7 +50,18 @@ export const getAllChannels = async (req, res, next) => {
     if (channels.length == 0) {
       return res.status(400).json({message: 'Channels Not Found'});
     }
-    res.status(200).json({ count : channels.length, channels });
+    
+    const updatedChannels = await Promise.all(
+      channels.map(async (channel) => {
+        const totalTimeCurrentChannel = await Data.findTotalOnTimeFromColumn(channel.nombre_tabla, channel.nombre_columna);         
+        return {
+          ...channel,
+          ...totalTimeCurrentChannel[0],  
+        };
+      })
+    );
+
+    res.status(200).json({ count : channels.length, channels: updatedChannels });
   } catch (error) {
     next(error);
   }

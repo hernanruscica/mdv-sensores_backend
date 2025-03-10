@@ -82,8 +82,8 @@ export const getAllDataloggersByUser = async (req, res, next) => {
 
   export const registerDatalogger = async (req, res, next) => {
     try {
-        const { direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id } = req.body;      
-        const insertedId = await Datalogger.create({direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id});
+        const { direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id, estado } = req.body;      
+        const insertedId = await Datalogger.create({direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id, estado});
         req.body.id = insertedId;        
         res.status(201).json({message: "Datalogger created", datalogger: req.body});
     } catch (error) {

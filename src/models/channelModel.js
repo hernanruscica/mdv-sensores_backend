@@ -13,29 +13,32 @@ const Channel = {
       },
       findAll: async () => {
         const queryString =         
-        `SELECT * \
+        `SELECT canales.id as canales_id, canales.nombre_columna, canales.nombre as canales_nombre,\ 
+          canales.descripcion as canales_descripcion, canales.multiplicador, canales.tiempo_a_promediar,\
+          canales.fecha_creacion, canales.foto, canales.estado, canales.datalogger_id,\
+          dataloggers.nombre_tabla as nombre_tabla,\
+          dataloggers_x_ubicacion.ubicaciones_id\
         FROM canales\
-        `
+        INNER JOIN dataloggers\
+        ON canales.datalogger_id = dataloggers.id  \
+        INNER JOIN dataloggers_x_ubicacion\
+        ON canales.datalogger_id = dataloggers_x_ubicacion.datalogger_id
+        `;
         const [rows] = await pool.query(queryString);    
         return rows;
       },
       findByDataloggerId: async (dataloggerId) => {
         const queryString = 
-            `SELECT canales.id as canal_id, 
-              dataloggers.nombre_tabla,
-              canales.nombre_columna, 
-              canales.nombre as canal_nombre, 
-              canales.descripcion as canal_descripcion,
-              canales.multiplicador,
-              canales.tiempo_a_promediar,
-              canales.datalogger_id,
-              canales.foto,
-              canales.fecha_creacion,
-              dataloggers_x_ubicacion.ubicaciones_id
-            FROM canales
+            `SELECT canales.id as canales_id,\ 
+            canales.nombre_columna, canales.nombre as canales_nombre, canales.descripcion as canales_descripcion,\
+            canales.multiplicador, canales.tiempo_a_promediar, canales.datalogger_id, canales.foto,\
+            canales.estado, canales.fecha_creacion,\
+            dataloggers.nombre_tabla,\
+            dataloggers_x_ubicacion.ubicaciones_id\
+            FROM canales\
             INNER JOIN dataloggers_x_ubicacion ON dataloggers_x_ubicacion.datalogger_id = canales.datalogger_id\
-            INNER JOIN dataloggers ON dataloggers_x_ubicacion.datalogger_id = dataloggers.id
-            WHERE canales.datalogger_id = ?`;
+            INNER JOIN dataloggers ON dataloggers_x_ubicacion.datalogger_id = dataloggers.id\
+            WHERE canales.datalogger_id = ? AND canales.estado = '1'`;
         const [rows] = await pool.query(queryString, [dataloggerId]);    
         return rows;
       },      
@@ -49,8 +52,8 @@ const Channel = {
         const [result] = await pool.query(queryString, [datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador]);
         return result.insertId;
       },
-      update: async (addressData) => {
-        const { id, datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador } = addressData;
+      update: async (channelData) => {
+        const { id, datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador, estado } = channelData;
         
         const updateFields = [];
         const values = [];
@@ -61,7 +64,8 @@ const Channel = {
         if (nombre_columna) { updateFields.push('nombre_columna = ?'); values.push(nombre_columna); }
         if (tiempo_a_promediar) { updateFields.push('tiempo_a_promediar = ?'); values.push(tiempo_a_promediar); }
         if (foto) { updateFields.push('foto = ?'); values.push(foto); }
-        if (multiplicador) { updateFields.push('multiplicador = ?'); values.push(multiplicador); }        
+        if (multiplicador) { updateFields.push('multiplicador = ?'); values.push(multiplicador); }  
+        if (estado) { updateFields.push('estado = ?'); values.push(estado); }         
     
         values.push(id);
     
