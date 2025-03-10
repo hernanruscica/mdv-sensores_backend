@@ -14,7 +14,7 @@ let transporter = nodemailer.createTransport({
 }); 
 
 export const sendMessage = async (alarm, variables, email, token) => {
-
+    console.log('token en sendmessage:', token);
     let emailContent = null;
     const baseURL = process.env.BASE_URL_FRONT;
     switch (alarm.tipo_alarma) {

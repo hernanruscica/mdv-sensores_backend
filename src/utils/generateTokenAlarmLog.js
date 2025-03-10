@@ -1,10 +1,11 @@
 import jwt from 'jsonwebtoken';
 
-const generateTokenAlarmLog = async (alarmLogId = '' , userId = '' ) => {
-  console.log(alarmLogId, userId);
-  return jwt.sign({ alarmLogId , userId}, process.env.JWT_SECRET, {
+const generateTokenAlarmLog = (alarmLogId = '' , userId = '' ) => {
+  const token = jwt.sign({ alarmLogId , userId}, process.env.JWT_SECRET, {
     expiresIn: '1d',
-  });
+  });  
+  console.log('datos en generateToken',alarmLogId, userId, token);
+  return token;
 };
 
 export default generateTokenAlarmLog;

@@ -145,7 +145,7 @@ class AlarmService {
                         throw new Error("Error inserting Alarm Log");                        
                     }                    
                     console.log(insertedId, user.id);
-                    const token = await generateTokenAlarmLog(insertedId, user.id);
+                    const token = generateTokenAlarmLog(insertedId, user.id);
                     console.log('token: ', token);
                     const emailToSend = user.email;
                     const results =  await sendMessage(alarm, variables, emailToSend, token);
