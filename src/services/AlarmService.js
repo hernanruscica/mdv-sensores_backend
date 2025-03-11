@@ -119,7 +119,7 @@ class AlarmService {
         
         alarm.disparada = 1;
         const affectedRows = await AlarmModel.updateTrigger(alarm.id, alarm.disparada);
-        console.log(affectedRows == 1 ? 'Alarm trigger updated OK: DISPARADA' : 'Error updating alarm trigger');    
+        console.log((affectedRows == 1) ? 'Alarm trigger updated OK: DISPARADA' : 'Error updating alarm trigger');    
 
 
         const usersAffected = await AlarmUserModel.findUsersByAlarmId(alarm.id);    
@@ -189,7 +189,12 @@ class AlarmService {
 
                 try {                    
                     const emailToSend = user.email;
-                    const results = await sendMessage(alarm, variables, emailToSend);                    
+                    
+                    console.log('genero el token con estos datos: ',insertedId, user.id, alarm.id, alarm.canal_id);
+                    const token = generateTokenAlarmLog(insertedId, user.id, alarm.id, alarm.canal_id, alarm.datalogger_id);
+                    console.log('token: ', token);
+                    
+                    const results = await sendMessage(alarm, variables, emailToSend, token);                    
                     //console.log(results);
                     if (results == true){
                         console.log('Email alarm sended OK !');                        
