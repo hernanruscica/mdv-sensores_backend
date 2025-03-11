@@ -11,9 +11,13 @@ const Alarm = {
       },
       findAll: async () => {
         const queryString =         
-        `SELECT * \
+        `SELECT alarmas.*, \
+          canales.id as canal_id,\
+          dataloggers.id as datalogger_id\
         FROM alarmas\
-        WHERE estado = 1;
+        INNER JOIN canales ON alarmas.canal_id = canales.id
+        INNER JOIN dataloggers ON canales.datalogger_id = dataloggers.id
+        WHERE alarmas.estado = 1;
         `
         const [rows] = await pool.query(queryString);    
         return rows;

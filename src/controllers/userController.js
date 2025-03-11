@@ -4,6 +4,7 @@ import generateToken from '../utils/generateToken.js';
 import bcrypt from 'bcryptjs';
 import { sendActivation } from '../utils/mail.js';
 import jwt from 'jsonwebtoken';
+import generateTokenAlarmLog from "../utils/generateTokenAlarmLog.js";
 
 export const loginUser = async (req, res, next) => {
   try {
@@ -108,6 +109,7 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const getAllUsers = async (req, res, next) => {
+  
   try {
     const users = await User.findAll();
     if (users.length == 0) {

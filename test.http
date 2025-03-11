@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MTYyMDUzNywiZXhwIjoxNzQxNzA2OTM3fQ.YuB8stU8-GdJrRCmnd7IU7t_qMXlAiUAaVBT35YllFA
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MTcwOTkxMywiZXhwIjoxNzQxNzk2MzEzfQ.9FZZJ8caL9PF8PPiE0olVO5zYeQNMFaJziVRMATuqxU
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -413,12 +413,12 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### alarmLogs update
-PUT {{baseUrl}}/api/alarmLogs/44
+PUT {{baseUrl}}/api/alarmLogs/2943
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "fecha_vista":"2024-08-11"
+   "fecha_vista":"2025-03-11"
 }
 
 ### alarmLogs delete
