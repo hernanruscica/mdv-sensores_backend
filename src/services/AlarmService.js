@@ -184,8 +184,8 @@ class AlarmService {
                     variables: JSON.stringify(variables),
                     disparada: 0
                 }
-                const results = await AlarmLogModel.create(alarmLog)
-                console.log(results>0 ? `Log inserted Ok with id: ${results}`: 'Error inserting log');
+                const insertedId = await AlarmLogModel.create(alarmLog)                
+                console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${insertedId}`: 'Error inserting log'); 
 
                 try {                    
                     const emailToSend = user.email;
@@ -193,7 +193,7 @@ class AlarmService {
                     console.log('genero el token con estos datos: ',insertedId, user.id, alarm.id, alarm.canal_id);
                     const token = generateTokenAlarmLog(insertedId, user.id, alarm.id, alarm.canal_id, alarm.datalogger_id);
                     console.log('token: ', token);
-                    
+
                     const results = await sendMessage(alarm, variables, emailToSend, token);                    
                     //console.log(results);
                     if (results == true){
