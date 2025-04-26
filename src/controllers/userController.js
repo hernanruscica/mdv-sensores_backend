@@ -11,7 +11,7 @@ export const loginUser = async (req, res, next) => {
     const { dni, password } = req.body;
     const user = await User.findByDni(dni);    
     if (!user || !(await bcrypt.compare(password, user.password))) {
-      return res.status(401).json({ message: 'Invalid email or password' });
+      return res.status(200).json({ message: 'DNI o contraseña incorrectos!' });
     }
     delete user.password;
     const token = generateToken(user.id);

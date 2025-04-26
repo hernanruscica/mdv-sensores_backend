@@ -25,7 +25,7 @@ const app = express();
 
 
 const corsOptions = {
-  origin: ['http://localhost:5173', 'https://mdv-monitoreo-remoto-frontend.onrender.com'], // Los origenes de tu frontend 
+  origin: ['http://localhost:5173', 'https://mdv-front-25.onrender.com', 'https://mdv-monitoreo-remoto-frontend.onrender.com'], // Los origenes de tu frontend 
   methods: ['GET', 'POST', 'PUT', 'DELETE'], // Métodos HTTP permitidos
   credentials: true, // Habilita el uso de credenciales (como cookies, cabeceras de autenticación)
 };

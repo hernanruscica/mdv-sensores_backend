@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAwLCJ1c2VyTmFtZSI6IiIsImRuaSI6IiIsImlhdCI6MTc0MTcwOTkxMywiZXhwIjoxNzQxNzk2MzEzfQ.9FZZJ8caL9PF8PPiE0olVO5zYeQNMFaJziVRMATuqxU
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ1NjI0Mjg1LCJleHAiOjE3NDU3MTA2ODV9.tl0Mf2yMdFKiuLgYPp0qQ7Z0Hf2iB2YzfxdAm-gz6uM
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -11,8 +11,8 @@ POST {{baseUrl}}/api/users/login
 Content-Type: application/json
 
 {
-  "dni": 11111111,
-  "password": "1111"
+  "dni": 28470359,
+  "password": "pass"
 } 
 
 ### user registry (admin auth required)
@@ -130,7 +130,7 @@ Authorization: Bearer {{adminToken}}
 ######################################################################################
 
 ### Locations getById
-GET {{baseUrl}}/api/locations/70
+GET {{baseUrl}}/api/locations/68
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -219,7 +219,7 @@ Authorization: Bearer {{adminToken}}
 ######################################################################################
 
 ### channels getById ✔️ con estado.
-GET {{baseUrl}}/api/channels/21
+GET {{baseUrl}}/api/channels/7
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -334,12 +334,12 @@ GET {{baseUrl}}/api/alarmusers
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-### getAll users by alarm 
+### getAll users by alarm  
 GET {{baseUrl}}/api/alarmusers/usersbyalarm/66
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-### alarmusers getAll byuser
+### alarmusers getAll byuser 
 GET {{baseUrl}}/api/alarmusers/alarmsbyuser/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
@@ -490,8 +490,8 @@ GET {{baseUrl}}/api/data/quilmes/60
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-### '/getporcentages/:tableName/:columnPrefix/:timePeriod/:rangePorcentage' time and ranges in minutes
-GET {{baseUrl}}/api/data/getporcentages/guemes/d1/2880/15
+### '/getporcentages/:tableName/:columnPrefix/:timePeriod/:rangePorcentage' time and ranges in minutes /api/data/getporcentages/cocina/d1/7200/60
+GET {{baseUrl}}/api/data/getporcentages/cocina/d3/7200/720 
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

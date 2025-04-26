@@ -27,12 +27,13 @@ export const getPorcentagesOn = async (req, res, next) => {
         const {tableName, columnPrefix, timePeriod, rangePorcentage } = req.params;
         
         const currentData = await dataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod);
+        console.log(currentData);
         if (currentData?.length > 0){
             const rangePorcentageSecs = rangePorcentage * 60;
             const dataPorcentagesOn = calculatePorcentageOn(currentData, rangePorcentageSecs)
-            return res.status(200).json({message: 'Data Founded', count: dataPorcentagesOn.length, data: dataPorcentagesOn});
+            return res.status(200).json({success: true, message: 'Data Founded', count: dataPorcentagesOn.length, data: dataPorcentagesOn});
         }else{
-            return res.status(400).json({message: 'Data Not Found'});
+            return res.status(200).json({success: false, message: 'Data Not Found'});
         }
     } catch (error) {
         next(error);
@@ -43,9 +44,9 @@ export const getAnalogData = async (req, res, next) => {
         const {tableName, columnPrefix, timePeriod } = req.params;     
         const currentData = await dataModel.findDataFromAnalogChannel(tableName, columnPrefix, timePeriod)
         if (currentData?.length > 0){
-            return res.status(200).json({message: 'Data Founded', count: currentData.length, data: currentData});
+            return res.status(200).json({success: true, message: 'Data Founded', count: currentData.length, data: currentData});
         }else{
-            return res.status(400).json({message: 'Data Not Found'});
+            return res.status(200).json({success: false, message: 'Data Not Found'});
         }
     } catch (error) {
         next(error);
