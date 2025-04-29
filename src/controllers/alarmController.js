@@ -89,10 +89,19 @@ export const getAlarmsByLocationId = async (req, res, next) => {
   try {
     const { id } = req.params;
     const alarms = await Alarm.findAllByLocationId(id);    
+    
     if (alarms?.length == 0) {
       return res.status(200).json({message: 'alarms Not Found', alarms: []});
     }
-    res.status(200).json({message: "alarms Founded", count : alarms.length, alarms });
+
+    // Eliminar duplicados usando Set y un campo único (por ejemplo, id)
+    const uniqueAlarms = [...new Map(alarms.map(alarm => [alarm.id, alarm])).values()];
+    
+    res.status(200).json({
+      message: "alarms Founded", 
+      count: uniqueAlarms.length, 
+      alarms: uniqueAlarms 
+    });
   } catch (error) {
     next(error);
   }

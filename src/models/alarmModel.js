@@ -23,20 +23,31 @@ const Alarm = {
         return rows;
       },
       findAllByLocationId: async (id) => {
-         const queryString = 
-         `SELECT *, canales.datalogger_id\ 
-          FROM alarmas\
-          JOIN canales ON alarmas.canal_id = canales.id\
-          WHERE alarmas.canal_id IN (\
-            SELECT canales.id\
-            FROM canales\
-            WHERE datalogger_id IN (\
-              SELECT dataloggers_x_ubicacion.datalogger_id \
-              FROM dataloggers_x_ubicacion\
-              WHERE dataloggers_x_ubicacion.ubicaciones_id = ?\
-              )AND estado = 1);`;
-          const [rows] = await pool.query(queryString, id);    
-          return rows;
+        const queryString = 
+        `SELECT DISTINCT
+            alarmas.id AS id,
+            alarmas.nombre,
+            alarmas.descripcion,
+            alarmas.tabla,
+            alarmas.columna,
+            alarmas.nombre_variables,
+            alarmas.condicion,
+            alarmas.periodo_tiempo,
+            alarmas.estado,
+            alarmas.tipo_alarma,
+            alarmas.fecha_creacion,
+            alarmas.disparada,
+            alarmas.canal_id,
+            canales.datalogger_id
+        FROM alarmas
+        JOIN canales ON alarmas.canal_id = canales.id
+        JOIN dataloggers_x_ubicacion ON canales.datalogger_id = dataloggers_x_ubicacion.datalogger_id
+        WHERE dataloggers_x_ubicacion.ubicaciones_id = ?
+        AND alarmas.estado = 1
+        ORDER BY alarmas.id`;
+
+        const [rows] = await pool.query(queryString, id);    
+        return rows;
       },
       create: async (alarmData) => {
         //canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado
