@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ1ODU3OTQ0LCJleHAiOjE3NDU5NDQzNDR9.2hSTFqOZtI7VDjYAtwzUQELwDEqmIzugbC_896IirLY
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ2Mjg3OTA3LCJleHAiOjE3NDYzNzQzMDd9.PUHLwtMaxNXwFgRsr1YP3tXKEPzRaZYVKILOgxiY2yw
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -39,7 +39,7 @@ GET {{baseUrl}}/api/users/activate/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6
 Content-Type: application/json
 
 ###SendActivationEmail
-GET {{baseUrl}}/api/users/sendactivation/cesarhernanruscica@gmail.com
+GET {{baseUrl}}/api/users/sendactivation/chernan80@gmail.com
 Content-Type: application/json
 
 ### user update 
@@ -396,7 +396,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getAll alarmLogs by alarm id 
-GET {{baseUrl}}/api/alarmlogs/byalarm/67
+GET {{baseUrl}}/api/alarmlogs/byalarm/47
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

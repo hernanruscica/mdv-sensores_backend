@@ -44,27 +44,88 @@ export const registerUser = async (req, res, next) => {
 
 export const activateUser = async (req, res, next) => {
   const { token } = req.params;
+
+  if (!token) {
+    return res.status(400).json({ 
+      success: false,
+      message: 'Token de activación no proporcionado'
+    });
+  }
+
   try {
-    const decodedToken = jwt.verify(token, process.env.JWT_SECRET);
-    const {id, userName, dni} = decodedToken;
-    
-    const response = await User.update({id, estado: 1});    
-    if (response == 1){
-      res.status(201).json({ message: "User activated", userId: id, userName: userName, dni: dni });
+    // Verificar si el token es válido
+    let decodedToken;
+    try {
+      decodedToken = jwt.verify(token, process.env.JWT_SECRET);
+    } catch (tokenError) {
+      if (tokenError.name === 'TokenExpiredError') {
+        return res.status(401).json({
+          success: false,
+          message: 'El token de activación ha expirado'
+        });
+      }
+      return res.status(401).json({
+        success: false,
+        message: 'Token de activación inválido'
+      });
     }
+
+    const { id, userName, dni } = decodedToken;
+
+    // Verificar si el usuario existe y no está ya activado
+    /*const existingUser = await User.findById(id);
+    if (!existingUser) {
+      return res.status(404).json({
+        success: false,
+        message: 'Usuario no encontrado'
+      });
+    }
+
+    if (existingUser.estado === 1) {
+      return res.status(400).json({
+        success: false,
+        message: 'El usuario ya está activado'
+      });
+    }
+*/
+    // Actualizar estado del usuario
+    const response = await User.update({ id, estado: 1 });
+    console.log("userControler, response del update, dentro de activated", response);
+    
+    if (response !== 1) {
+      return res.status(500).json({
+        success: false,
+        message: 'Error al activar el usuario'
+      });
+    }
+
+    return res.status(200).json({
+      success: true,
+      message: 'Usuario activado exitosamente',
+      data: {
+        userId: id,
+        userName,
+        dni
+      }
+    });
+
   } catch (error) {
+    console.error('Error en activación de usuario:', error);
     next(error);
   }
-}
+};
 
 export const sendActivationEmail = async (req, res, next) => {
   const { email }  = req.params;
-  console.log(`send activation email to ${email}`);
+  //console.log(`Try sending activation email to ${email}`);
   try {
     const response = await User.findByEmail(email);    
+    //console.log('findByEmail', response);
     if (response !== undefined){
       const userData = response;      
-      const token = generateToken(userData.id, `${userData.nombre_1} ${userData.apellido_1}`, userData.dni);      
+      //console.log('userData', userData);
+      const token = generateToken(userData.id, `${userData.nombre_1} ${userData.apellido_1}`, userData.dni);  
+      //console.log('token', token);    
       const emailSended = await sendActivation(token, userData);
       return res.status(200).json({message: (emailSended) ? "Email sended" : "Error sending email", emailExists: true});
     }else{
@@ -84,10 +145,10 @@ export const updateUser = async (req, res, next) => {
     const updatedRows = await User.update(userData);
 
     if (updatedRows === 0) {
-      return res.status(404).json({ message: 'User not found' });
+      return res.status(404).json({ message: 'User not found', success: true });
     }
 
-    res.status(200).json({ message: 'User updated successfully' });
+    res.status(200).json({ message: 'User updated successfully', user: userData, success: true });
   } catch (error) {
     next(error);
   }

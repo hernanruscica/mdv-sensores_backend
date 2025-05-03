@@ -1,4 +1,3 @@
-
 //import { subset } from 'mathjs';
 import nodemailer from 'nodemailer';
 
@@ -10,6 +9,10 @@ let transporter = nodemailer.createTransport({
     auth: {                
         user: process.env.EMAIL_USER,
         pass: process.env.EMAIL_PASS
+    },
+    tls: {
+        // No rechazar certificados autofirmados
+        rejectUnauthorized: false
     }
 }); 
 
@@ -93,6 +96,7 @@ export const sendActivation = async (token, userData) => {
             console.log('Correo enviado correctamente!');
             return true;
         }else{
+            console.log('Error al enviar el correo', results);
             return false;
         }
 }
