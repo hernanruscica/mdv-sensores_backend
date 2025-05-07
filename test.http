@@ -35,10 +35,10 @@ Authorization: Bearer {{adminToken}}
 }
 
 ###Activate User
-GET {{baseUrl}}/api/users/activate/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTMxLCJpYXQiOjE3MzYzNTQ2MDQsImV4cCI6MTczNjQ0MTAwNH0.hEJOJ0Wg0w0E1OC5g0-9So8OHtGxMoi448Vk6UkJp3I
+GET {{baseUrl}}/api/users/activate/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiSnVhbiBwZXJleiIsImRuaSI6Mjg0NzAzNTksImlhdCI6MTc0NjI4NDU3NCwiZXhwIjoxNzQ2MzcwOTc0fQ.Yab8JuwsARTn4wOkdEJILukQ_YDjdk7aEDAVFTaUDeo
 Content-Type: application/json
 
-###SendActivationEmail
+###SendActivationEmail api/users/sendactivation/chernan80@gmail.com
 GET {{baseUrl}}/api/users/sendactivation/chernan80@gmail.com
 Content-Type: application/json
 

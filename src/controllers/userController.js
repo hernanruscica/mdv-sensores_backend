@@ -120,12 +120,12 @@ export const sendActivationEmail = async (req, res, next) => {
   //console.log(`Try sending activation email to ${email}`);
   try {
     const response = await User.findByEmail(email);    
-    //console.log('findByEmail', response);
+    console.log('findByEmail', response);
     if (response !== undefined){
       const userData = response;      
-      //console.log('userData', userData);
+      console.log('userData', userData);
       const token = generateToken(userData.id, `${userData.nombre_1} ${userData.apellido_1}`, userData.dni);  
-      //console.log('token', token);    
+      console.log('token', token);    
       const emailSended = await sendActivation(token, userData);
       return res.status(200).json({message: (emailSended) ? "Email sended" : "Error sending email", emailExists: true});
     }else{
