@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ2Mjg3OTA3LCJleHAiOjE3NDYzNzQzMDd9.PUHLwtMaxNXwFgRsr1YP3tXKEPzRaZYVKILOgxiY2yw
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ2NjU1MTkzLCJleHAiOjE3NDY3NDE1OTN9.Gma25YdNHgcA87uknR_n6qqiVaATamEOFdejHC1VzME
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -12,7 +12,7 @@ Content-Type: application/json
 
 {
   "dni": 28470359,
-  "password": "pass"
+  "password": "Pass1234"
 } 
 
 ### user registry (admin auth required)
@@ -155,12 +155,12 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### location update
-PUT {{baseUrl}}/api/locations/72
+PUT {{baseUrl}}/api/locations/83
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado": "1"
+  "estado": "0"
 }
 
 ### location delete
