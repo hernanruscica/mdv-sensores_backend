@@ -1,26 +1,114 @@
+import {pool} from '../config/database.js';
+
 import Location from '../models/locationModel.js';
 import locationUserModel from '../models/locationUserModel.js';
+import AddressModel from '../models/addressModel.js';
 
 export const registerLocation = async (req, res, next) => {
+  /* Recibe los campos para crear una ubicacion y el usuario que la crea
+   * 1. Crea la direccion en la tabla direcciones y obtiene el id
+   * 2. Crea la ubicacion en la tabla ubicaciones y obtiene el id
+   * 3. Crea la relacion entre el usuario y la ubicacion en la tabla usuarios_ubicaciones
+   */
+  const connection = await pool.getConnection();
+  
   try {
-    const { nombre, descripcion, foto, telefono, email, direcciones_id, usuarios_id } = req.body;
-    const locationId = await Location.create({ nombre, descripcion, foto, telefono, email, direcciones_id });    
-    req.body.id = locationId;
+    await connection.beginTransaction();
 
-    const locationUserData = { usuarios_id, ubicaciones_id: locationId, roles_id : 9 }    
-    const userLocationId = await locationUserModel.create(locationUserData);
-    if (userLocationId>0){
-      res.status(201).json({ message: "Location created", location: req.body });
-    }else{
-      console.log(userLocationId);
+    // 1. Crear dirección
+    const { 
+      // Datos de ubicación
+      nombre = 'Sin nombre',
+      descripcion = 'Sin descripción',
+      foto = 'default.jpg',
+      telefono = '0000000000',
+      email = 'no-email@example.com',
+      usuarios_id = 1,
+      // Datos de dirección
+      calle = 'Sin calle',
+      numero = '0',
+      localidad = 'Sin localidad',
+      partido = 'Sin partido',
+      provincia = 'Sin provincia',
+      codigo_postal = '0000',
+      latitud = '0',
+      longitud = '0'
+    } = req.body;
+
+    const addressData = {
+      calle, numero, localidad, partido, provincia, 
+      codigo_postal, latitud, longitud
+    };
+
+    const direcciones_id = await AddressModel.create(addressData);
+    if (!direcciones_id) {
+      throw new Error('Error al crear la dirección');
     }
+
+    // 2. Crear ubicación
+    const locationData = { 
+      nombre, descripcion, foto, telefono, 
+      email, direcciones_id 
+    };
+
+    const locationId = await Location.create(locationData);
+    if (!locationId) {
+      // Si falla, revertir la creación de la dirección
+      await connection.rollback();
+      return res.status(500).json({
+        message: 'Error al crear la ubicación'
+      });
+    }
+
+    // 3. Crear relación usuario-ubicación
+    const locationUserData = { 
+      usuarios_id, 
+      ubicaciones_id: locationId, 
+      roles_id: 9 // Rol por defecto
+    };
+
+    const userLocationId = await locationUserModel.create(locationUserData);
+    if (userLocationId <= 0) {
+      // Si falla, revertir todo
+      await connection.rollback();
+      return res.status(500).json({
+        message: 'Error al asociar usuario con ubicación'
+      });
+    }
+
+    // Si todo sale bien, confirmar la transacción
+    await connection.commit();
+
+    // Preparar respuesta
+    const response = {
+      id: locationId,
+      ...locationData,
+      direccion: addressData,
+      usuario_id: usuarios_id
+    };
+
+    res.status(201).json({ 
+      success: true,
+      message: "Location created successfully", 
+      location: response 
+    });
+
   } catch (error) {    
+    // Revertir todos los cambios si algo falla
+    await connection.rollback();
+
     if (error.code === 'ER_DUP_ENTRY') {
-      return res.status(500).json({message: 'Ya existe una ubicacion con esa direccion', error: error});
-    } else {      
-    next(error); // Pasa el error al middleware de manejo de errores
+      return res.status(409).json({
+        success: false,
+        message: 'Ya existe una ubicación con esa dirección',
+        error: error.message
+      });
+    }
+
+    next(error);
+  } finally {
+    connection.release();
   }
-}
 };
 
 export const updateLocation = async (req, res, next) => {

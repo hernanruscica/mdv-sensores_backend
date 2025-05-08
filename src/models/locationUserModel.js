@@ -1,6 +1,28 @@
 import {pool} from '../config/database.js';
 
 const LocationUser = {
+  create: async (locationUserData) => {
+    const { usuarios_id, ubicaciones_id, roles_id } = locationUserData;  
+    const queryStringIfExist = 
+    `SELECT EXISTS (
+          SELECT 1
+          FROM usuarios_x_ubicaciones_x_roles
+          WHERE usuarios_id = ?
+          AND ubicaciones_id = ?
+      ) AS existe_relacion;`;
+    const [rows] = await pool.query(queryStringIfExist, [usuarios_id, ubicaciones_id]);
+    console.log(rows[0].existe_relacion);
+    if (rows[0].existe_relacion == 1){
+      return -1;
+    }
+    const queryString = 
+      `insert into usuarios_x_ubicaciones_x_roles
+        (usuarios_id, ubicaciones_id, roles_id, fecha_creacion)
+        values
+        (?, ?, ?, curdate());`
+    const [result] = await pool.query(queryString, [usuarios_id, ubicaciones_id, roles_id]);
+    return result.insertId;
+  },
      findById: async (id) => {
          const queryString = 
            `SELECT usuarios_x_ubicaciones_x_roles.id,\
@@ -63,28 +85,6 @@ const LocationUser = {
           WHERE ubicaciones_id = ? AND usuarios.estado = 1;`;
           const [rows] = await pool.query(queryString, locationId);    
         return rows;
-      },
-      create: async (locationUserData) => {
-        const { usuarios_id, ubicaciones_id, roles_id } = locationUserData;  
-        const queryStringIfExist = 
-        `SELECT EXISTS (
-              SELECT 1
-              FROM usuarios_x_ubicaciones_x_roles
-              WHERE usuarios_id = ?
-              AND ubicaciones_id = ?
-          ) AS existe_relacion;`;
-        const [rows] = await pool.query(queryStringIfExist, [usuarios_id, ubicaciones_id]);
-        console.log(rows[0].existe_relacion);
-        if (rows[0].existe_relacion == 1){
-          return -1;
-        }
-        const queryString = 
-          `insert into usuarios_x_ubicaciones_x_roles
-            (usuarios_id, ubicaciones_id, roles_id, fecha_creacion)
-            values
-            (?, ?, ?, curdate());`
-        const [result] = await pool.query(queryString, [usuarios_id, ubicaciones_id, roles_id]);
-        return result.insertId;
       },
 
       //hacer algun cambio para contemplar el la misma ubicacion, mismo usuario, pero un cambio de roles.

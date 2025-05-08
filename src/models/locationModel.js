@@ -1,6 +1,17 @@
 import {pool} from '../config/database.js';
 
 const Location = {
+  create: async (locationData) => {
+    const { nombre, descripcion, foto, telefono, email, direcciones_id } = locationData;        
+    const queryString = `
+      INSERT INTO ubicaciones
+        (nombre, descripcion, foto, telefono, email, fecha_creacion, estado, direcciones_id)
+      VALUES
+        (?, ?, ?, ?, ?, CURDATE(), 1, ?);
+    `;
+    const [result] = await pool.query(queryString, [nombre, descripcion, foto, telefono, email, direcciones_id]);
+    return result.insertId;
+  },
     findById: async (id) => {
         const queryString = 
           `SELECT ubicaciones.id, ubicaciones.nombre, ubicaciones.descripcion, ubicaciones.telefono, ubicaciones.email, ubicaciones.foto, ubicaciones.direcciones_id,\
@@ -24,17 +35,7 @@ const Location = {
         const [rows] = await pool.query(queryString);    
         return rows;
       },
-      create: async (locationData) => {
-        const { nombre, descripcion, foto, telefono, email, direcciones_id } = locationData;        
-        const queryString = `
-          INSERT INTO ubicaciones
-            (nombre, descripcion, foto, telefono, email, fecha_creacion, estado, direcciones_id)
-          VALUES
-            (?, ?, ?, ?, ?, CURDATE(), 1, ?);
-        `;
-        const [result] = await pool.query(queryString, [nombre, descripcion, foto, telefono, email, direcciones_id]);
-        return result.insertId;
-      },
+      
       update: async (locationData) => {
         const { nombre, descripcion, telefono, foto, email, id, estado } = locationData;
     

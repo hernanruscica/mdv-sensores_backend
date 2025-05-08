@@ -1,6 +1,16 @@
 import {pool} from '../config/database.js';
 
 const Address = {
+  create: async (addressData) => {
+    const { calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud } = addressData;        
+    const queryString = `
+      INSERT INTO direcciones\
+        (calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud, fecha_creacion)\
+      VALUES\
+        (?, ?, ?, ?, ?, ?, ?, ?, CURDATE());`;
+    const [result] = await pool.query(queryString, [calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud]);
+    return result.insertId;
+  },
     findById: async (id) => {
         const queryString = 
           `SELECT *\             
@@ -16,16 +26,6 @@ const Address = {
         `
         const [rows] = await pool.query(queryString);    
         return rows;
-      },
-      create: async (addressData) => {
-        const { calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud } = addressData;        
-        const queryString = `
-          INSERT INTO direcciones\
-            (calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud, fecha_creacion)\
-          VALUES\
-            (?, ?, ?, ?, ?, ?, ?, ?, CURDATE());`;
-        const [result] = await pool.query(queryString, [calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud]);
-        return result.insertId;
       },
       update: async (addressData) => {
         const { id, calle, numero, localidad, partido, provincia, codigo_postal, latitud, longitud } = addressData;
