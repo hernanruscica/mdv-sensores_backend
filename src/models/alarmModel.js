@@ -51,13 +51,13 @@ const Alarm = {
       },
       create: async (alarmData) => {
         //canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado
-        const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma } = alarmData;        
+        const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, tipo_alarma } = alarmData;        
         const queryString = `
           INSERT INTO alarmas\
             (canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma, fecha_creacion)\
           VALUES\
-            (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, CURDATE());`;
-        const [result] = await pool.query(queryString, [canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma]);
+            (?, ?, ?, ?, ?, ?, ?, ?, 1, ?, CURDATE());`;
+        const [result] = await pool.query(queryString, [canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo,  tipo_alarma]);
         return result.insertId;
       },
       update: async (alarmData) => {

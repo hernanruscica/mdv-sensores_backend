@@ -8,7 +8,9 @@ export const registerChannel = async (req, res, next) => {
     const { datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador } = req.body;
     const channelId = await Channel.create({ datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador });    
     req.body.id = channelId;
-    res.status(201).json({ message: "channel created", channel: req.body });
+    if (channelId > 0){
+      res.status(201).json({ message: "Canal creado correctamente", success: true, channel: req.body });
+    }
   } catch (error) {           
     next(error); // Pasa el error al middleware de manejo de errores  
 }
@@ -21,9 +23,9 @@ export const updateChannel = async (req, res, next) => {
     channelData.id = id;
     const updatedRows = await Channel.update(channelData);
     if (updatedRows === 0) {
-      return res.status(404).json({ message: 'channel not found' });
+      return res.status(200).json({ message: 'Canal no encontrado', success: false });
     }
-    res.status(200).json({ message: 'channel updated successfully' });
+    res.status(201).json({ message: 'Canal actualizado correctamente', success: true, channel: channelData });
   } catch (error) {
     next(error);
   }

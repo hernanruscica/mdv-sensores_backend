@@ -1,32 +1,93 @@
+import { pool } from '../config/database.js';
 import Alarm from '../models/alarmModel.js';
 import AlarmUser from '../models/alarmUserModel.js';
 import Channel from "../models/channelModel.js";
 
-
 export const registerAlarm = async (req, res, next) => {
+  const connection = await pool.getConnection();
+  
   try {
-    const { canal_id, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, usuario_id, tipo_alarma } = req.body;
+    await connection.beginTransaction();
 
+    const { canal_id, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, usuario_id, tipo_alarma } = req.body;
+
+    // 1. Verificar si existe el canal
     const responseChannel = await Channel.findById(canal_id);
-    console.log(responseChannel)
-    const currentChannel = responseChannel;
-    console.log(currentChannel);
+    if (!responseChannel) {
+      throw new Error('Canal no encontrado');
+    }
 
-    const tabla = currentChannel.datalogger_nombre_tabla;
-    const columna = currentChannel.nombre_columna;
+    const tabla = responseChannel.datalogger_nombre_tabla;
+    const columna = responseChannel.nombre_columna;
 
-    const alarmId = await Alarm.create({ canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado, tipo_alarma });    
-    req.body.id = alarmId;
+    // 2. Crear la alarma
+    const alarmId = await Alarm.create({ 
+      canal_id, 
+      tabla, 
+      columna, 
+      nombre, 
+      descripcion, 
+      nombre_variables, 
+      condicion, 
+      periodo_tiempo, 
+      tipo_alarma 
+    });    
+
+    if (!alarmId) {
+      throw new Error('Error al crear la alarma');
+    }
+
+    // 3. Crear la relación alarma-usuario
     const alarmUserData = {
       alarma_id: alarmId, 
       usuario_id: usuario_id
     }
+
     const responseAlarmUser = await AlarmUser.create(alarmUserData);
-    console.log(responseAlarmUser);
-    res.status(201).json({ message: "Alarm created", alarm: req.body });
-  } catch (error) {           
-    next(error); // Pasa el error al middleware de manejo de errores  
-}
+    if (!responseAlarmUser) {
+      throw new Error('Error al crear la relación alarma-usuario');
+    }
+
+    // Si todo salió bien, hacer commit
+    await connection.commit();
+
+    // Preparar respuesta
+    const createdAlarm = {
+      id: alarmId,
+      canal_id,
+      tabla,
+      columna,
+      nombre,
+      descripcion,
+      nombre_variables,
+      condicion,
+      periodo_tiempo,
+      tipo_alarma,
+      usuario_id
+    };
+
+    res.status(201).json({ 
+      message: "Alarm created successfully", 
+      success: true, 
+      alarm: createdAlarm 
+    });
+
+  } catch (error) {
+    // Si algo falló, hacer rollback
+    await connection.rollback();
+    
+    if (error.message.includes('no encontrado')) {
+      return res.status(404).json({
+        success: false,
+        message: error.message
+      });
+    }
+
+    next(error);
+  } finally {
+    // Siempre liberar la conexión
+    connection.release();
+  }
 };
 
 export const updateAlarm = async (req, res, next) => {
@@ -37,9 +98,9 @@ export const updateAlarm = async (req, res, next) => {
     console.log(alarmData)
     const updatedRows = await Alarm.update(alarmData);
     if (updatedRows === 0) {
-      return res.status(404).json({ message: 'Alarm not found' });
+      return res.status(200).json({ message: 'Alarma no encontrada', success: false });
     }
-    res.status(200).json({ message: 'Alarm updated successfully' });
+    res.status(201).json({ message: 'Alarma actualizada correctamente', success: true, alarm: alarmData });
   } catch (error) {
     next(error);
   }

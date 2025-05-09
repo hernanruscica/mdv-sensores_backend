@@ -27,18 +27,74 @@ export const registerUser = async (req, res, next) => {
     const userExists = await User.findByDni(userData.dni);
 
     if (userExists) {
-      return res.status(400).json({ message: 'User already exists' });
+      return res.status(200).json({ 
+        message: 'Ya existe un usuario con ese DNI', 
+        success: false 
+      });
     }  
 
-    const userId = await User.create(userData);
-    req.body.id = userId;
-    const token = generateToken(userId, `${req.body.nombre_1} ${req.body.apellido_1}`, req.body.dni);
+    // Verificar que vengan los datos necesarios para la relación
+    if (!userData.ubicaciones_id || !userData.roles_id) {
+      return res.status(200).json({
+        message: 'Faltan datos de ubicación o rol',
+        success: false
+      });
+    }
+
+    // 1. Crear el usuario
+    const result = await User.create(userData);
+
+    if (!result.success) {
+      return res.status(200).json({
+        success: false,
+        message: result.message,
+        error: result.error
+      });
+    }
+
+    // 2. Crear la relación usuario-ubicación-rol
+    const locationUserResult = await LocationUser.create({
+      usuarios_id: result.userId,
+      ubicaciones_id: userData.ubicaciones_id,
+      roles_id: userData.roles_id
+    });
+
+    // Si locationUserResult es -1, significa que la relación ya existe
+    if (locationUserResult === -1) {
+      // Eliminar el usuario creado para mantener consistencia
+      await User.delete(result.userId);
+      return res.status(200).json({
+        message: 'Relación usuario-ubicación-rol ya existe',
+        success: false
+      });
+    }
+
+    if (!locationUserResult) {
+      // Eliminar el usuario creado para mantener consistencia
+      await User.delete(result.userId);
+      return res.status(200).json({
+        message: 'Error al crear la relación usuario-ubicación-rol',
+        success: false
+      });
+    }
+
+    // 3. Si todo salió bien, generar token y enviar email
+    req.body.id = result.userId;
+    const token = generateToken(result.userId, `${req.body.nombre_1} ${req.body.apellido_1}`, req.body.dni);
     req.body.token = token;    
-    sendActivation(token, userData);
+    await sendActivation(token, userData);
     
-    res.status(201).json({ message: "User created", user: req.body });
+    res.status(201).json({ 
+      message: "Usuario creado exitosamente", 
+      success: true, 
+      user: {
+        ...req.body,
+        locationUser: locationUserResult
+      }
+    });
+
   } catch (error) {
-    next(error); // Pasa el error al middleware de manejo de errores
+    next(error);
   }
 };
 
@@ -145,10 +201,10 @@ export const updateUser = async (req, res, next) => {
     const updatedRows = await User.update(userData);
 
     if (updatedRows === 0) {
-      return res.status(404).json({ message: 'User not found', success: true });
+      return res.status(200).json({ message: 'Usuario no encontrado', success: true });
     }
 
-    res.status(200).json({ message: 'User updated successfully', user: userData, success: true });
+    res.status(200).json({ message: 'Usuario actualizado correctamente', user: userData, success: true });
   } catch (error) {
     next(error);
   }

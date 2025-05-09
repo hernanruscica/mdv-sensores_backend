@@ -23,6 +23,7 @@ export const registerLocation = async (req, res, next) => {
       foto = 'default.jpg',
       telefono = '0000000000',
       email = 'no-email@example.com',
+      //Usuario al que se le asigna la ubicacion
       usuarios_id = 1,
       // Datos de dirección
       calle = 'Sin calle',

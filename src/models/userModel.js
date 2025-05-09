@@ -34,19 +34,45 @@ const User = {
     return rows;
   },
 
-  create: async (userData) => {
-    const { nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, direcciones_id } = userData;
-    const hashedPassword = await bcrypt.hash(password, 10);
+  create: async (userData) => {    
+    try {
+        const { nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, telefono, direcciones_id = 1 } = userData;    
+        const temporaryPassword = Math.random().toString(36).slice(-8);
+        const hashedPassword = await bcrypt.hash(temporaryPassword, 10);
 
-    const queryString = 
-      'INSERT INTO usuarios \
-      (nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, fecha_creacion, direcciones_id)\
-       VALUES\
-      (?, ?, ?, ?, ?, ?, ?, ?, ?, ?,  CURDATE(), ?)'
-    //console.log(hashedPassword)
-    //console.log(userData)
-    const [result] = await pool.query(queryString, [nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, hashedPassword, telefono, estado, direcciones_id]);
-    return result.insertId;
+        const queryString = 'INSERT INTO usuarios (nombre_1, nombre_2, apellido_1, apellido_2, dni, foto, email, password, telefono, estado, fecha_creacion, direcciones_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 0, CURDATE(), ?)';
+        
+        const [result] = await pool.query(queryString, [
+            nombre_1, nombre_2, apellido_1, apellido_2, 
+            dni, foto, email, hashedPassword, telefono, direcciones_id
+        ]);
+
+        return {
+            success: true,
+            userId: result.insertId,
+            message: 'Usuario creado exitosamente'
+        };
+
+    } catch (error) {
+        if (error.code === 'ER_DUP_ENTRY') {
+            // Verificar si el error es por email duplicado
+            if (error.message.includes('email')) {
+                return {
+                    success: false,
+                    error: 'DUPLICATE_EMAIL',
+                    message: 'El email ya está registrado'
+                };
+            }
+            // Otros casos de duplicación (por ejemplo, DNI)
+            return {
+                success: false,
+                error: 'DUPLICATE_ENTRY',
+                message: 'Datos duplicados'
+            };
+        }
+        // Cualquier otro error
+        throw error;
+    }
   },
 
   update: async (userData) => {

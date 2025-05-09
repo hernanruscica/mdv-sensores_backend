@@ -30,10 +30,14 @@ export const getAllDataloggersByLocation = async (req, res, next) => {
   try {
     const { locationId } = req.params;
     const dataloggers = await Datalogger.findByLocationId(locationId);
-    if (dataloggers.length == 0) {
-      return res.status(400).json({message: 'Dataloggers Not Found'});
-    }
-    res.status(200).json({ count : dataloggers.length, dataloggers });
+    
+    return res.status(200).json({
+      success: true,
+      count: dataloggers.length,
+      message: dataloggers.length === 0 ? 'No hay dataloggers registrados' : 'Dataloggers encontrados',
+      dataloggers
+    });
+
   } catch (error) {
     next(error);
   }
@@ -80,45 +84,87 @@ export const getAllDataloggersByUser = async (req, res, next) => {
 
 
 
-  export const registerDatalogger = async (req, res, next) => {
+export const registerDatalogger = async (req, res, next) => {
+  try {
+    const { direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id, estado } = req.body;
+    
+    const result = await Datalogger.create({
+      direccion_mac, 
+      nombre, 
+      descripcion, 
+      foto, 
+      nombre_tabla, 
+      ubicacion_id, 
+      estado
+    });
+
+    // Si no fue exitoso, retornar un 409 Conflict
+    if (!result.success) {
+      return res.status(409).json({
+        success: false,
+        message: result.message,
+        error: result.error
+      });
+    }
+
+    // Si fue exitoso, retornar 201 Created
+    return res.status(201).json({
+      success: true,
+      message: result.message,
+      datalogger: result.datalogger
+    });
+
+  } catch (error) {
+    next(error);
+  }
+}
+
+export const updateDatalogger = async (req, res, next) => {
     try {
-        const { direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id, estado } = req.body;      
-        const insertedId = await Datalogger.create({direccion_mac, nombre, descripcion, foto, nombre_tabla, ubicacion_id, estado});
-        req.body.id = insertedId;        
-        res.status(201).json({message: "Datalogger created", datalogger: req.body});
+        const dataloggerData = req.body;
+        const { id } = req.params;
+        dataloggerData.id = id;
+
+        const result = await Datalogger.update(dataloggerData);
+
+        if (!result.success) {
+            // Diferentes códigos según el tipo de error
+            const statusCodes = {
+                'NOT_FOUND': 404,
+                'DUPLICATE_MAC': 409,
+                'NO_FIELDS': 400,
+                'DUPLICATE_ENTRY': 409
+            };
+
+            return res.status(statusCodes[result.error] || 400).json({
+                success: false,
+                message: result.message,
+                error: result.error
+            });
+        }
+
+        return res.status(200).json({
+            success: true,
+            message: result.message,
+            datalogger: result.datalogger
+        });
+
     } catch (error) {
         next(error);
     }
-  }
+};
 
-  export const updateDatalogger = async (req, res, next) => {
-    try {
-      const dataloggerData = req.body;
-      const { id } = req.params;
-      dataloggerData.id = id;
-      const updatedRows = await Datalogger.update(dataloggerData);
-  
-      if (updatedRows === 0) {
-        return res.status(404).json({ message: 'Datalogger not found' });
-      }
-  
-      res.status(200).json({ message: 'Datalogger updated successfully' });
-    } catch (error) {
-      next(error);
+export const deleteDatalogger = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const deletedRows = await Datalogger.delete(id);
+
+    if (deletedRows === 0) {
+      return res.status(404).json({ message: 'Datalogger not found' });
     }
-  };
-  
-  export const deleteDatalogger = async (req, res, next) => {
-    try {
-      const { id } = req.params;
-      const deletedRows = await Datalogger.delete(id);
-  
-      if (deletedRows === 0) {
-        return res.status(404).json({ message: 'Datalogger not found' });
-      }
-  
-      res.status(200).json({ message: 'Datalogger deleted successfully' });
-    } catch (error) {
-      next(error);
-    }
-  };
+
+    res.status(200).json({ message: 'Datalogger deleted successfully' });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ2NjU1MTkzLCJleHAiOjE3NDY3NDE1OTN9.Gma25YdNHgcA87uknR_n6qqiVaATamEOFdejHC1VzME
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ2NzQyNjg1LCJleHAiOjE3NDY4MjkwODV9.nYZVrnOPrwLHLdXsLLt9W70kq2BwgojKxt1GXdabro4
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -26,12 +26,12 @@ Authorization: Bearer {{adminToken}}
    "nombre_2":"cuatro",
    "apellido_1":"mdvSensores",
    "apellido_2":"dfd",
-   "email":"demo1140@geocities.com",
+   "email":"mdvmonitoreoremoto@yahoo.com",
    "telefono":"15364631187",
-   "dni":"1014010100",
-   "password":"88488",
-   "estado":"1",
-   "direcciones_id": "1"  
+   "dni":"101410100",    
+   "direcciones_id": "1",
+   "ubicaciones_id": "67",
+   "roles_id": "7"  
 }
 
 ###Activate User
@@ -77,7 +77,7 @@ Authorization: Bearer {{adminToken}}
 ######################################################################################
 
 ### Dataloggers getById : ✔️ con estado.
-GET {{baseUrl}}/api/dataloggers/3
+GET {{baseUrl}}/api/dataloggers/44
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -102,13 +102,12 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "direccion_mac":"84:CC:A8:7A:32:EE",
+  "direccion_mac":"84:CC:A8:7A:32:dE",
    "nombre":"otro datalogger mas para MDV",
    "descripcion":"Esta es la descripcion de el datalogger de Clinitec, ubicado en Salta.",   
    "foto":"dataloggerFalso.jpg",
    "nombre_tabla":"clinitec1",
-   "ubicacion_id": 67,
-   "estado"   : 1
+   "ubicacion_id": 68
 }
 
 ### Datalogger update ✔️ con estado.
@@ -121,7 +120,7 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### datalogger delete 
-DELETE {{baseUrl}}/api/dataloggers/26
+DELETE {{baseUrl}}/api/dataloggers/43
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
