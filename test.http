@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ2NzQyNjg1LCJleHAiOjE3NDY4MjkwODV9.nYZVrnOPrwLHLdXsLLt9W70kq2BwgojKxt1GXdabro4
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ2Nzk5MDE0LCJleHAiOjE3NDY4ODU0MTR9.h4esWrSpeL3F4grvADeTq1Qh3t2JqbxQJ8LkkrfV6yE
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -26,10 +26,9 @@ Authorization: Bearer {{adminToken}}
    "nombre_2":"cuatro",
    "apellido_1":"mdvSensores",
    "apellido_2":"dfd",
-   "email":"mdvmonitoreoremoto@yahoo.com",
+   "email":"mdvmon4itor2eoremoto@yahoo.com",
    "telefono":"15364631187",
-   "dni":"101410100",    
-   "direcciones_id": "1",
+   "dni":"48489232",       
    "ubicaciones_id": "67",
    "roles_id": "7"  
 }
@@ -43,12 +42,13 @@ GET {{baseUrl}}/api/users/sendactivation/chernan80@gmail.com
 Content-Type: application/json
 
 ### user update 
-PUT {{baseUrl}}/api/users/85
+PUT {{baseUrl}}/api/users/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "espropietario": 1
+  "nombre_2": "Carlos",
+  "apellido_2": "Fernandez"
 }
 
 ### getAllUsers
@@ -57,7 +57,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getById
-GET {{baseUrl}}/api/users/84
+GET {{baseUrl}}/api/users/32
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -256,17 +256,16 @@ Authorization: Bearer {{adminToken}}
    "nombre_columna":"d2",
    "tiempo_a_promediar": "60",
    "foto": "canales.jpg" ,
-   "multiplicador" : "1",
-   "estado": "1"
+   "multiplicador" : "1"
 }
 
 ### channels update  ✔️ con estado.
-PUT {{baseUrl}}/api/channels/30
+PUT {{baseUrl}}/api/channels/37
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado": "0"
+  "nombre": "prueba de put desde el back"
 }
 
 ### channels delete
@@ -279,7 +278,7 @@ Authorization: Bearer {{adminToken}}
 ######################################################################################
 
 ### alarms getById
-GET {{baseUrl}}/api/alarms/48
+GET {{baseUrl}}/api/alarms/86
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -299,25 +298,24 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-   "canal_id":"12",   
-   "nombre": "Dispenser de MDV - Porcentaje de uso maximo.",     
-   "descripcion":"Se dispara cuando sobrepasa los valores determinados en la condicion.",   
+   "canal_id":"37",   
+   "nombre": "Prueba create back.",     
+   "descripcion":"alarma de prueba para el back create.",   
    "periodo_tiempo": "15" ,
    "nombre_variables": "porcentaje_encendido",
    "condicion": "porcentaje_encendido > 30",
-   "estado" : "1",
    "usuario_id": "32",
    "tipo_alarma": "PORCENTAJE_ENCENDIDO"
 }
 
 ### alarms update
-PUT {{baseUrl}}/api/alarms/66
+PUT {{baseUrl}}/api/alarms/86
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
   "estado": "1",
-  "condicion": "porcentaje_encendido > 60"
+  "condicion": "porcentaje_encendido > 40"
 }
 
 ### alarms delete
