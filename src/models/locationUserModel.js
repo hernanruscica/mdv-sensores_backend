@@ -50,7 +50,7 @@ const LocationUser = {
          const [rows] = await pool.query(queryString);    
          return rows;
        },      
-      findLocationsByUserId: async (userId) => {
+      findLocationsByUserId: async (userId) => {        
         const queryString =         
           /*Find all locations and roles for a certain user*/
           `SELECT usuarios_x_ubicaciones_x_roles.id,\
@@ -74,15 +74,16 @@ const LocationUser = {
             usuarios_x_ubicaciones_x_roles.usuarios_id AS usuarios_id,\ 
             usuarios_x_ubicaciones_x_roles.roles_id AS usuarios_roles_id,\
             roles.nombre AS usuarios_nombre_rol,\
-            concat(usuarios.nombre_1, " ", usuarios.apellido_1) as usuario_nom_apell,\
+            concat(usuarios.nombre_1, " ", usuarios.apellido_1) AS usuario_nom_apell,\
             usuarios.email, usuarios.telefono,\
-            ubicaciones.nombre as ubicaciones_nombre,\
-            usuarios_x_ubicaciones_x_roles.ubicaciones_id as ubicaciones_id\
+            usuarios.estado ,\
+            ubicaciones.nombre AS ubicaciones_nombre,\
+            usuarios_x_ubicaciones_x_roles.ubicaciones_id AS ubicaciones_id\
           FROM usuarios\
           INNER JOIN usuarios_x_ubicaciones_x_roles ON usuarios.id = usuarios_x_ubicaciones_x_roles.usuarios_id\ 
           INNER JOIN roles ON roles_id = roles.id\
           INNER JOIN ubicaciones ON ubicaciones.id = ubicaciones_id\
-          WHERE ubicaciones_id = ? AND usuarios.estado = 1;`;
+          WHERE ubicaciones_id = ? `; //Saque esto: AND usuarios.estado = 1; para recibir todos los usuarios.
           const [rows] = await pool.query(queryString, locationId);    
         return rows;
       },

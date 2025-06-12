@@ -167,3 +167,28 @@ export const getAlarmsByLocationId = async (req, res, next) => {
     next(error);
   }
 };
+
+export const getAlarmsByChannelId = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const alarms = await Alarm.findAllByChannelId(id);    
+    
+    if (alarms?.length == 0) {
+      return res.status(200).json({
+        message: 'No se encontraron alarmas para este canal', 
+        alarms: []
+      });
+    }
+
+    // Eliminar duplicados usando Set y un campo único
+    const uniqueAlarms = [...new Map(alarms.map(alarm => [alarm.id, alarm])).values()];
+    
+    res.status(200).json({
+      message: "Alarmas encontradas", 
+      count: uniqueAlarms.length, 
+      alarms: uniqueAlarms 
+    });
+  } catch (error) {
+    next(error);
+  }
+};

@@ -226,13 +226,65 @@ export const deleteUser = async (req, res, next) => {
 };
 
 export const getAllUsers = async (req, res, next) => {
-  
   try {
     const users = await User.findAll();
-    if (users.length == 0) {
+    
+    if (users.length === 0) {
       return res.status(400).json({message: 'Users Not Found'});
     }
-    res.status(200).json({ count : users.length, users });
+
+    // Crear un Map para agrupar por usuario
+    const usersMap = new Map();
+
+    users.forEach(user => {
+      // Extraer los datos de ubicación
+      const ubicacion = {
+        ubicaciones_id: user.ubicaciones_id,
+        ubicaciones_nombre: user.ubicaciones_nombre,
+        ubicaciones_descripcion: user.ubicaciones_descripcion,
+        ubicaciones_foto: user.ubicaciones_foto,
+        ubicaciones_tel: user.ubicaciones_tel,
+        usuarios_roles_id: user.usuarios_roles_id,
+        usuarios_nombre_rol: user.usuarios_nombre_rol
+      };
+
+      // Extraer datos base del usuario (sin las ubicaciones)
+      const userData = {
+        id: user.id,
+        nombre_1: user.nombre_1,
+        nombre_2: user.nombre_2,
+        apellido_1: user.apellido_1,
+        apellido_2: user.apellido_2,
+        usuario_nom_apell: user.usuario_nom_apell,
+        email: user.email,
+        telefono: user.telefono,
+        estado: user.estado,
+        dni: user.dni,
+        foto: user.foto,
+        espropietario: user.espropietario,
+        fecha_creacion: user.fecha_creacion,
+        direcciones_id: user.direcciones_id,
+        ubicaciones: []
+      };
+
+      // Si el usuario ya existe en el Map, solo agregamos la ubicación
+      if (usersMap.has(user.id)) {
+        usersMap.get(user.id).ubicaciones.push(ubicacion);
+      } else {
+        // Si es la primera vez que vemos este usuario, lo agregamos con su primera ubicación
+        userData.ubicaciones.push(ubicacion);
+        usersMap.set(user.id, userData);
+      }
+    });
+
+    // Convertir el Map a un array de usuarios
+    const uniqueUsers = Array.from(usersMap.values());
+
+    res.status(200).json({ 
+      count: uniqueUsers.length, 
+      users: uniqueUsers 
+    });
+
   } catch (error) {
     next(error);
   }
@@ -244,7 +296,6 @@ export const getAllUsersByUser = async (req, res, next) => {
     const { userId } = req.params;
 
     const locationsByUser = await LocationUser.findLocationsByUserId(userId);
-    //console.log(locationsByUser);
     const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
 
     // Usar Promise.all para esperar a que todas las promesas se resuelvan
@@ -255,25 +306,52 @@ export const getAllUsersByUser = async (req, res, next) => {
       })
     );
 
-    // Filtrar los valores que no existen
-    const filteredUsers = users.filter(Boolean);
+    // Filtrar los valores que no existen y aplanar el array
+    const flattenedUsers = users.filter(Boolean).flat();
 
-    // Poner todos los usuarios al mismo nivel
-    const flattenedUsers = filteredUsers.flat();
+    // Crear un Map para agrupar por usuario
+    const usersMap = new Map();
 
-    // Eliminar duplicados basados en usuarios_id
-    const uniqueUsers = flattenedUsers.filter((user, index, self) =>
-      self.findIndex(u => u.usuarios_id === user.usuarios_id) === index
-    );
+    flattenedUsers.forEach(user => {
+      // Extraer solo los datos de ubicación requeridos
+      const ubicacion = {
+        ubicaciones_id: user.ubicaciones_id,
+        ubicaciones_nombre: user.ubicaciones_nombre
+      };
 
-    /*
-    if (uniqueUsers.length > 0) {
-      res.status(200).json({ count: uniqueUsers.length, users: uniqueUsers });
-    } else {
-      return res.status(400).json({ message: 'Users Not Found' });
-    }
-      */
-    res.status(200).json({ count: uniqueUsers.length, users: uniqueUsers }); 
+      // Si el usuario ya existe en el Map, solo agregamos la ubicación
+      if (usersMap.has(user.usuarios_id)) {
+        usersMap.get(user.usuarios_id).ubicaciones.push(ubicacion);
+      } else {
+        // Si es la primera vez que vemos este usuario, lo agregamos con su primera ubicación
+        const userData = {
+          id: user.usuarios_id,
+          nombre_1: user.nombre_1,
+          nombre_2: user.nombre_2,
+          apellido_1: user.apellido_1,
+          apellido_2: user.apellido_2,
+          usuario_nom_apell: user.usuario_nom_apell,
+          email: user.email,
+          telefono: user.telefono,
+          estado: user.estado,
+          dni: user.dni,
+          foto: user.foto,
+          espropietario: user.espropietario,
+          fecha_creacion: user.fecha_creacion,
+          ubicaciones: [ubicacion]
+        };
+        usersMap.set(user.usuarios_id, userData);
+      }
+    });
+
+    // Convertir el Map a un array de usuarios
+    const uniqueUsers = Array.from(usersMap.values());
+
+    res.status(200).json({ 
+      count: uniqueUsers.length, 
+      users: uniqueUsers 
+    });
+
   } catch (error) {
     next(error);
   }

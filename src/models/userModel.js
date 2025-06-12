@@ -28,8 +28,35 @@ const User = {
   },
   findAll: async () => {
     const queryString = 
-      'SELECT * \
-      FROM usuarios';
+      `SELECT usuarios.id as id, 
+            usuarios.nombre_1, 
+            usuarios.nombre_2, 
+            usuarios.apellido_1, 
+            usuarios.apellido_2, 
+            concat(usuarios.nombre_1, " ", usuarios.apellido_1) AS usuario_nom_apell,
+            usuarios.email, 
+            usuarios.telefono, 
+            usuarios.estado, 
+            usuarios.dni, 
+            usuarios.foto, 
+            usuarios.espropietario, 
+            usuarios.fecha_creacion, 
+            usuarios.direcciones_id,
+            ubicaciones.id as ubicaciones_id,
+            ubicaciones.nombre as ubicaciones_nombre, 
+            ubicaciones.descripcion as ubicaciones_descripcion,
+            ubicaciones.foto as ubicaciones_foto, 
+            ubicaciones.telefono as ubicaciones_tel,
+            usuarios_x_ubicaciones_x_roles.roles_id AS usuarios_roles_id,
+            roles.nombre AS usuarios_nombre_rol            
+      FROM usuarios
+      INNER JOIN usuarios_x_ubicaciones_x_roles 
+            ON usuarios.id = usuarios_x_ubicaciones_x_roles.usuarios_id
+      INNER JOIN ubicaciones 
+            ON ubicaciones.id = usuarios_x_ubicaciones_x_roles.ubicaciones_id
+      INNER JOIN roles 
+            ON roles.id = usuarios_x_ubicaciones_x_roles.roles_id`;
+            
     const [rows] = await pool.query(queryString);    
     return rows;
   },

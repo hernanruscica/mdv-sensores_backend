@@ -38,17 +38,43 @@ const Alarm = {
             alarmas.fecha_creacion,
             alarmas.disparada,
             alarmas.canal_id,
-            canales.datalogger_id
+            canales.datalogger_id,
+            canales.nombre AS canal_nombre
         FROM alarmas
         JOIN canales ON alarmas.canal_id = canales.id
         JOIN dataloggers_x_ubicacion ON canales.datalogger_id = dataloggers_x_ubicacion.datalogger_id
-        WHERE dataloggers_x_ubicacion.ubicaciones_id = ?
-        AND alarmas.estado = 1
+        WHERE dataloggers_x_ubicacion.ubicaciones_id = ?        
         ORDER BY alarmas.id`;
 
         const [rows] = await pool.query(queryString, id);    
         return rows;
       },
+      findAllByChannelId: async (channelId) => {
+        const queryString = 
+        `SELECT DISTINCT
+            alarmas.id AS id,
+            alarmas.nombre,
+            alarmas.descripcion,
+            alarmas.tabla,
+            alarmas.columna,
+            alarmas.nombre_variables,
+            alarmas.condicion,
+            alarmas.periodo_tiempo,
+            alarmas.estado,
+            alarmas.tipo_alarma,
+            alarmas.fecha_creacion,
+            alarmas.disparada,
+            alarmas.canal_id,
+            canales.datalogger_id,
+            canales.nombre AS canal_nombre
+        FROM alarmas
+        JOIN canales ON alarmas.canal_id = canales.id
+        WHERE alarmas.canal_id = ?
+        ORDER BY alarmas.id`;
+
+        const [rows] = await pool.query(queryString, channelId);    
+        return rows;
+    },
       create: async (alarmData) => {
         //canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, estado
         const { canal_id, tabla, columna, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, tipo_alarma } = alarmData;        
