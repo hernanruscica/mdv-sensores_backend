@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzQ5NzM1OTQxLCJleHAiOjE3NDk4MjIzNDF9.Zn9GJLqudmJxtK7hpjt04n0-S4LVSkMQT9RUay53tbs
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzUwNDI2OTUxLCJleHAiOjE3NTA1MTMzNTF9.93jf3rEv-Tkzuc7l0bfyxOnC4YRrPRU19FSkpw0_lfQ
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -161,7 +161,7 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### location update
-PUT {{baseUrl}}/api/locations/83
+PUT {{baseUrl}}/api/locations/70
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -319,8 +319,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado": "1",
-  "condicion": "porcentaje_encendido > 40"
+  "estado": "1"  
 }
 
 ### alarms delete
@@ -450,13 +449,13 @@ GET {{baseUrl}}/api/locationsusers
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
-### getAll users by location  /api/locationsusers/locationsbyuser/
+### getAll users by location  
 GET {{baseUrl}}/api/locationsusers/usersbylocation/67
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getAll locations by user 
-GET {{baseUrl}}/api/locationsusers/locationsbyuser/67
+GET {{baseUrl}}/api/locationsusers/locationsbyuser/36
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
