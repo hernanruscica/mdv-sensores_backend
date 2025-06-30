@@ -10,25 +10,23 @@ const dataModel = {
         return rows;
       },
     findDataFromDigitalChannel: async (tableName, columnPrefix, timePeriod) => {
-      const queryString = `SELECT 
-                          CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\
-                          tiempo_total,\ 
-                          ${columnPrefix}_tiempo as tiempo_encendido,\ 
-	                        ${columnPrefix}_cantidad as cantidad,\
-                          ${columnPrefix}_estado as estado,\
-                          servicio, energia, texto\
-                          FROM ${tableName}
-                          WHERE fecha >= DATE_SUB(NOW(), INTERVAL ${timePeriod} MINUTE) AND fecha <= NOW()
-                          ORDER BY fecha ASC;`;
+      const queryString = `SELECT \
+                            CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha, \
+                            tiempo_total, \
+                            ${columnPrefix}_tiempo as tiempo_encendido, \
+                            ${columnPrefix}_cantidad as cantidad, \
+                            ${columnPrefix}_estado as estado, \
+                            servicio, energia, texto \
+                            FROM ${tableName} \
+                            WHERE fecha >= DATE_SUB(NOW(), INTERVAL ${timePeriod} MINUTE) AND fecha <= NOW() \
+                            ORDER BY fecha ASC;`;
       const [rows] = await poolData.query(queryString);    
       return rows;
     },
     findLastDataFromTable: async (tableName) => {
-      const queryString = `SELECT 
-                          CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\
-                          tiempo_total,\                           
-                          servicio, energia, texto\
-                          FROM ${tableName}\                          
+      const queryString = `SELECT *,
+                          CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha_local
+                          FROM ${tableName}                         
                           ORDER BY fecha DESC LIMIT 1;`;
       const [rows] = await poolData.query(queryString);    
       return rows;
@@ -45,19 +43,16 @@ const dataModel = {
       return rows;
     },
     findDataFromAnalogChannel: async (tableName, columnPrefix, timePeriod) => {
-      const queryString = `SELECT 
-                          CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,\
-                          tiempo_total,\ 
-                          ${columnPrefix}_tiempo as tiempo_encendido,\ 
-	                        ${columnPrefix}_cantidad as cantidad,\
-                          ${columnPrefix}_estado as estado,\
-                          ${columnPrefix}_min as min,\
-                          ${columnPrefix}_inst as inst,\
-                          ${columnPrefix}_max as max,\
-                          servicio, energia, texto\
-                          FROM ${tableName}
-                          WHERE fecha >= DATE_SUB(NOW(), INTERVAL ${timePeriod} MINUTE) AND fecha <= NOW()
-                          ORDER BY fecha ASC;`;
+      const queryString = `SELECT
+  CONVERT_TZ(fecha, '+00:00', '${process.env.UTC_LOCAL}') AS fecha,
+  tiempo_total,
+  ${columnPrefix}_tiempo as tiempo_encendido,
+  ${columnPrefix}_cantidad as cantidad,
+  ${columnPrefix}_estado as estado,
+  servicio, energia, texto
+  FROM ${tableName}
+  WHERE fecha >= DATE_SUB(NOW(), INTERVAL ${timePeriod} MINUTE) AND fecha <= NOW()
+  ORDER BY fecha ASC;`;
       const [rows] = await poolData.query(queryString);    
       return rows;
     }

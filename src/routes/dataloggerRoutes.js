@@ -2,8 +2,8 @@ import express from 'express';
 import { getDataloggerById, getAllDataloggers, getAllDataloggersByLocation, getAllDataloggersByUser, registerDatalogger, updateDatalogger, deleteDatalogger} from '../controllers/dataloggerController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
-import { uploadImage } from '../controllers/imageController.js';
-import upload from '../middlewares/multerConfig.js';
+import {uploadImage} from '../controllers/imageController.js';
+import {upload} from '../middlewares/uploadMiddleware.js';
 
 const router = express.Router();
 //      /api/dataloggers

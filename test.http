@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzUwNDI2OTUxLCJleHAiOjE3NTA1MTMzNTF9.93jf3rEv-Tkzuc7l0bfyxOnC4YRrPRU19FSkpw0_lfQ
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzUxMjkzMTMwLCJleHAiOjE3NTEzNzk1MzB9.Bugi8omf64QWnFWdmQ1O-vS4tI2qCthTHiWN5sajk1Y
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -314,12 +314,12 @@ Authorization: Bearer {{adminToken}}
 }
 
 ### alarms update
-PUT {{baseUrl}}/api/alarms/86
+PUT {{baseUrl}}/api/alarms/57
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 {
-  "estado": "1"  
+  "estado": "0"  
 }
 
 ### alarms delete
@@ -563,4 +563,94 @@ Content-Type: image/jpeg
 
 < ./src/uploads/cafetera_generica.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+
+######################################################################################
+##################################### ALARMS ####################################
+######################################################################################
+
+### Alarms getById
+GET {{baseUrl}}/api/alarms/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### Alarms getAll
+GET {{baseUrl}}/api/alarms
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### Alarms getAll by location
+GET {{baseUrl}}/api/alarms/bylocation/67
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### Alarms getAll by channel
+GET {{baseUrl}}/api/alarms/bychannel/7
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### Alarm register
+POST {{baseUrl}}/api/alarms
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+   "canal_id": 7,
+   "nombre": "Alarma de prueba",
+   "descripcion": "Esta es una alarma de prueba",
+   "variable01": "60",
+   "variable02": "30",
+   "variable03": "15",
+   "variable04": "10",
+   "variable05": "5",
+   "variable06": "1",
+   "condicion": "valor01 > variable01",
+   "condicion_mostrar": "El valor actual (valor01) es mayor que el umbral (variable01)",
+   "periodo_tiempo": "15",
+   "tipo_alarma": "PORCENTAJE_ENCENDIDO",
+   "usuario_id": "32"
+}
+
+### Alarm update
+PUT {{baseUrl}}/api/alarms/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+  "nombre": "Alarma actualizada",
+  "descripcion": "Esta es una alarma actualizada",
+  "variable01": "70",
+  "condicion": "valor01 > variable01",
+  "condicion_mostrar": "El valor actual (valor01) es mayor que 70%"
+}
+
+### Alarm delete
+DELETE {{baseUrl}}/api/alarms/1
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+######################################################################################
+##################################### SOLUTIONS ####################################
+######################################################################################
+
+### Create Solution
+POST {{baseUrl}}/api/solutions
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+{
+    "nombre": "Solución de prueba 2",
+    "descripcion": "Se realizaron tareas de mantenimiento en el sistema de poleas",
+    "alarmas_logs_id": "b5285584-4720-4eb2-be07-f202bcf7da27",
+    "usuarios_id": 32
+}
+
+### Get Solutions by Alarm Log ID
+GET {{baseUrl}}/api/solutions/byalarmlog/6ce0f440-ff6d-4c19-a755-c61c5fe928fa
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
+
+### Get Solutions by User ID
+GET {{baseUrl}}/api/solutions/byuser/32
+Content-Type: application/json
+Authorization: Bearer {{adminToken}}
 

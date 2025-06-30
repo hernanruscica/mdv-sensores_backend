@@ -1,5 +1,5 @@
 import express from 'express';
-import { uploadImage, getImage } from '../controllers/imageController.js';
+import { uploadImage } from '../controllers/imageController.js';
 import { protect } from '../middlewares/authMiddleware.js';
 
 // const upload = require('../middlewares/multerConfig');
@@ -12,6 +12,6 @@ const router = express.Router();
 router.post('/',  upload.single('image'), protect, uploadImage);
 
 // Ruta opcional para acceder a una imagen
-router.get('/:imageName', protect, getImage);
+//router.get('/:imageName', protect, getImage);
 
 export default router;

@@ -6,206 +6,203 @@ import { evaluate } from 'mathjs';
 import { calculatePorcentageOn } from '../utils/MathUtils.js';
 import { sendMessage, testMessage } from '../utils/mail.js';
 import generateTokenAlarmLog from '../utils/generateTokenAlarmLog.js';
+import { v4 as uuidv4 } from 'uuid';
 
 class AlarmService {
   async checkAlarms() {
-    
-    const alarms = await AlarmModel.findAll();    
-    //if there is any alarm, do nothing
-    if (alarms?.length == 0){
-        console.log('No alarms');
-        return;
-    }         
-    //console.log(alarms);
+    const alarms = await AlarmModel.findAll();
+    if (!alarms?.length) {
+      console.log('No alarms');
+      return;
+    }
 
-    //await testMessage('Hi, Im testing...', 'cesarhernanruscica@gmail.com');
-    
-    
-    for (let alarm of alarms){                  
-        //console.log(alarm.nombre, alarm.tabla, alarm.columna, alarm.periodo_tiempo, alarm.nombre_variables, alarm.condicion);
-        
-        
-        switch (alarm.tipo_alarma) {
-            case "PORCENTAJE_ENCENDIDO":
-                //console.log("getporcentageson and evaluates the condition");
-                const tableName = alarm.tabla;
-                const columnPrefix = alarm.columna;
-                const timePeriod = alarm.periodo_tiempo;
-                const currentData = await DataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod );
-                const rangePorcentageSecs = timePeriod * 60;
-                const dataPorcentagesOn = calculatePorcentageOn(currentData, rangePorcentageSecs);
-                if (dataPorcentagesOn?.length > 0){
-                    //the last data
-                    const currentPorcentage = dataPorcentagesOn[dataPorcentagesOn.length - 1].porcentaje_encendido;
-                    let variables = {};
-                    variables['porcentaje_encendido'] = currentPorcentage;
-                    try {
-                        const isTriggered = evaluate(alarm.condicion, variables);
-                        //console.log(alarm.nombre, alarm.condicion, variables, isTriggered);   
-                        if (isTriggered) {
-                            this.triggerAlarm(alarm, variables);
-                        }else{
-                            this.resetAlarm(alarm, variables);
-                        }                   
-                    } catch (error) {
-                        console.error('Error al evaluar la condición:', error);
-                        console.error('Condición:', alarm.condicion);
-                        console.error('Variables:', variables);                        
-                    }
-                }
-                break;
-            case "FALLO_COMUNICACION":
-                //console.log("controlando alarma de fallo de comunicacion...");
-                const tableNameFail = alarm.tabla;
-                const currentDataFail = await DataModel.findLastDataFromTable(tableNameFail);
-                //
-                const now = Date.now() - 3 * 60 * 60 * 1000;
-                const lastDate = new Date(currentDataFail[0].fecha).getTime();                 
-                const variablesNamesFail = alarm.nombre_variables.split(',');     
-                const variablesFails = {};
-                /*
-                console.log(`ultimo dato en timestamp: ${lastDate}\n
-                             Ahora: ${now}\n
-                             Diferencia: ${now - lastDate} en minutos: ${(now - lastDate) / 1000 / 60}\n
-                             Tolerancia: `, alarm, variablesNamesFail);  
-                             */
-                for (let index in variablesNamesFail){
-                    //console.log(variablesNamesFail[index]);
-                    const currentName = variablesNamesFail[index];
-                    if (index == 0){
-                        //fecha
-                        variablesFails[currentName] = parseInt(lastDate) /60 /1000 ;
-                    }
-                    if (index == 1){
-                        //fecha actual
-                        variablesFails[currentName] = parseInt(now) /60 /1000 ;
-                    }
-                }
-                //console.log(variablesFails.fecha_actual - variablesFails.fecha);
-                variablesFails['minutos_sin_conexion'] = variablesFails.fecha_actual - variablesFails.fecha;
+    for (let alarm of alarms) {
+      const { isTriggered, mensaje } = await this.evaluateAlarm(alarm);
+      if (isTriggered === null) continue;
 
-                try {
-                     
-                    const isTriggered = evaluate(alarm.condicion, variablesFails);
-                   
-                    const timeWithoutComunication = variablesFails.minutos_sin_conexion.toFixed(1);
-                    if (isTriggered) {
-                        console.log('***********************\nSe disparo la alarma de fallo de conexion', timeWithoutComunication);
-                        this.triggerAlarm(alarm, {minutos_sin_conexion: timeWithoutComunication});
-                    }else{
-                        console.log('***********************\nNo se disparo la alarma de fallo de conexion', timeWithoutComunication)
-                        this.resetAlarm(alarm, {minutos_sin_conexion: timeWithoutComunication});
-                    }                   
-                } catch (error) {
-                    console.error('Error al evaluar la condición:', error);
-                    console.error('Condición:', alarm.condicion);
-                    console.error('Variables:', variablesFails);                        
-                } 
-                /**/               
-                
-                break;
-
-            default:
-                console.log(`Unhandled nombre_variables: ${alarm.nombre_variables}`);
-                break;
-            }   
-    }   
-  }
-
-  async triggerAlarm(alarm, variables) {
-    console.log(`Alarm evaluation positive: ${alarm.nombre}`);
-    if (alarm.disparada == 0){        
-        //Tengo que actualizar disparada en alarma BD
-        
-        alarm.disparada = 1;
-        const affectedRows = await AlarmModel.updateTrigger(alarm.id, alarm.disparada);
-        console.log((affectedRows == 1) ? 'Alarm trigger updated OK: DISPARADA' : 'Error updating alarm trigger');    
-
-
-        const usersAffected = await AlarmUserModel.findUsersByAlarmId(alarm.id);    
-        //console.log(usersAffected);        
-
-        if (usersAffected.length > 0){
-            let insertedId=null;
-            for (let user of usersAffected){
-                console.log(`Alarma ${alarm.nombre} DISPARADA con ${JSON.stringify(variables)} para el  usuario con correo: ${user.email} con id: ${user.id}`);
-                //alarma_id, usuario_id, canal_id, variables
-                const alarmLog = {
-                    alarma_id: alarm.id,
-                    usuario_id: user.id,
-                    canal_id: alarm.canal_id,
-                    variables: JSON.stringify(variables),
-                    disparada: 1
-                }
-                insertedId = await AlarmLogModel.create(alarmLog) //insertedId
-                console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${insertedId}`: 'Error inserting log');                
-                
-                try {         
-                    if (insertedId <= 0){
-                        throw new Error("Error inserting Alarm Log");                        
-                    }                    
-                    console.log('genero el token con estos datos: ',insertedId, user.id, alarm.id, alarm.canal_id);
-                    const token = generateTokenAlarmLog(insertedId, user.id, alarm.id, alarm.canal_id, alarm.datalogger_id);
-                    console.log('token: ', token);
-                    const emailToSend = user.email;
-                    const results =  await sendMessage(alarm, variables, emailToSend, token);
-                    if (results == true){
-                        console.log('Email alarm sended OK !');                        
-                    }else{
-                        console.log('Error sending alarm email');
-                    }        
-                } catch (error) {
-                    console.error('Alarm triggered, but error: ', error);
-                }                
-            }
-        }
-    }else{
-        console.log(`la alarma ${alarm.nombre} sigue disparada...\n`);
+      if (isTriggered) {
+        await this.triggerAlarm(alarm, mensaje);
+      } else {
+        await this.resetAlarm(alarm, mensaje);
+      }
     }
   }
-  async resetAlarm(alarm, variables) {
-    console.log(`Alarm evaluation negative ${alarm.nombre}`);
-    if (alarm.disparada == 1){
 
-        alarm.disparada = 0;
-        const affectedRows = await AlarmModel.updateTrigger(alarm.id, alarm.disparada);
-        console.log(affectedRows == 1 ? 'Alarm trigger updated OK: NO DISPARADA' : 'Error updating alarm trigger');         
+  async evaluateAlarm(alarm) {
+    try {
+      switch (alarm.tipo_alarma) {
+        case "PORCENTAJE_ENCENDIDO": {
+          const tableName = alarm.tabla;
+          const columnPrefix = alarm.columna;
+          const timePeriod = alarm.periodo_tiempo;
+          const variable01 = 60;
+          const currentData = await DataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod);
+          
+          const rangePorcentageSecs = timePeriod * 60;
+          const dataPorcentagesOn = calculatePorcentageOn(currentData, rangePorcentageSecs);
 
+          if (!dataPorcentagesOn?.length) return { isTriggered: null, mensaje: '' };
 
-        const usersAffected = await AlarmUserModel.findUsersByAlarmId(alarm.id);  
-        //console.log(usersAffected);  
-        if (usersAffected.length > 0){
-            for (let user of usersAffected){
-                console.log(`Alarma ${alarm.nombre} RESETEADA con ${JSON.stringify(variables)} para el  usuario con correo: ${user.email} con id: ${user.id}`);
-                const alarmLog = {
-                    alarma_id: alarm.id,
-                    usuario_id: user.id,
-                    canal_id: alarm.canal_id,
-                    variables: JSON.stringify(variables),
-                    disparada: 0
-                }
-                const insertedId = await AlarmLogModel.create(alarmLog)                
-                console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${insertedId}`: 'Error inserting log'); 
+          const currentPorcentage = dataPorcentagesOn[dataPorcentagesOn.length - 1].porcentaje_encendido;
+          const variablesAndValues = { valor01: currentPorcentage, variable01: variable01 };
 
-                try {                    
-                    const emailToSend = user.email;
-                    
-                    console.log('genero el token con estos datos: ',insertedId, user.id, alarm.id, alarm.canal_id);
-                    const token = generateTokenAlarmLog(insertedId, user.id, alarm.id, alarm.canal_id, alarm.datalogger_id);
-                    console.log('token: ', token);
+          const isTriggered = this.evaluateAlarmCondition(alarm.condicion, variablesAndValues);
+          
+          const mensaje = `Porcentaje de encendido actual: ${currentPorcentage}%. Umbral: ${variable01}%. Periodo: ${timePeriod} minutos.`;
 
-                    const results = await sendMessage(alarm, variables, emailToSend, token);                    
-                    //console.log(results);
-                    if (results == true){
-                        console.log('Email alarm sended OK !');                        
-                    }else{
-                        console.log('Error sending alarm email');
-                }
-                } catch (error) {
-                    console.error('Error sending email alarm', error);
-                }
-            }
+          return { isTriggered, mensaje };
         }
+        case "FALLO_COMUNICACION": {
+          const tableName = alarm.tabla;
+          const response = await DataModel.findLastDataFromTable(tableName);
+          const currentData = response[0]?.fecha_local;
+
+          const variable01 = 15 * 60 * 1000;
+          const now = Date.now() ; //const now = Date.now() -3  * 60 * 60 * 1000; para el servidor de render
+          const lastDate = new Date(currentData).getTime();   
+          
+          const variablesAndValues = { valor01: now - lastDate, variable01: variable01 };
+          const isTriggered = this.evaluateAlarmCondition(alarm.condicion, variablesAndValues);
+          
+          const minutos = ((now - lastDate) / 60 / 1000).toFixed(0);
+          const mensaje = `Última comunicación hace ${minutos} minutos. Umbral: ${(variable01 / 60 / 1000)} minutos.`;
+
+          return { isTriggered, mensaje };
+        }
+        case "FUNCIONAMIENTO_SIMULTANEO": {
+          const tableName = alarm.tabla;         
+          
+          const columnPrefix = alarm.columna.split(',').map(col => col.trim());     
+          const column01 = columnPrefix[0];
+          const column02 = columnPrefix[1];
+         
+          //const timePeriod = alarm.periodo_tiempo;
+          const variable01 = alarm.variable01;
+          const variable02 = alarm.variable02;
+
+          const response = await DataModel.findLastDataFromTable(tableName);
+          const lastRegister = response[0];
+          if (!lastRegister) {
+            console.log(`No data found for table ${tableName}`);
+            return { isTriggered: null, mensaje: '' };
+          } 
+          //console.log('lastRegister:', lastRegister);
+          const currentData01 = parseInt(lastRegister[`${column01}_tiempo`]);          
+          const currentData02 = parseInt(lastRegister[`${column02}_tiempo`]);   
+          const currentData03 = 1;       
+
+          console.log(currentData01, currentData02);
+          
+          const variablesAndValues = { valor01: currentData01, variable01: variable01, 
+                                       valor02: currentData02, variable02: variable02, valor03: currentData03};
+          
+          const isTriggered = this.evaluateAlarmCondition('((valor01 > variable01 & valor02 > variable02) | (valor01 > variable01 & valor03 == 2) | (valor02 > variable02 & valor03 == 1))', variablesAndValues);
+                    
+          const mensaje = `Se encendieron los dos compresores.`;
+
+          return { isTriggered, mensaje };
+        }
+        default:
+          console.log(`Unhandled tipo_alarma: ${alarm.tipo_alarma}`);
+          return { isTriggered: null, mensaje: '' };
+      }
+    } catch (error) {
+      console.error('Error evaluando alarma:', error);
+      return { isTriggered: null, mensaje: '' };
+    }
+  }
+
+  evaluateAlarmCondition(condition, variablesAndValues) {
+    try {
+      console.log('\nEvaluando condición de la alarma:',condition);
+      console.log('Variables and values:', variablesAndValues);      
+      return evaluate(condition, variablesAndValues);
+    } catch (error) {
+      console.error('Error al evaluar la condición:', error);
+      console.error('Condición:',condition);
+      console.error('Variables y valores:', variablesAndValues);
+      return false;
+    }
+  }
+
+  /**
+   * Envía correos a los usuarios afectados y devuelve un array con el resultado de cada envío.
+   */
+  async notifyUsers(alarm, mensaje, users, disparada) {
+    const results = [];
+    for (const user of users) {
+      try {
+        const token = generateTokenAlarmLog(null, user.id, alarm.id, alarm.canal_id, alarm.datalogger_id);
+        const emailToSend = user.email;
+        const sendOk = await sendMessage(alarm, mensaje, emailToSend, token);
+        results.push({
+          user,
+          sendOk,
+          token,
+          disparada
+        });
+        console.log(sendOk ? `Email sent OK to ${emailToSend}` : `Error sending email to ${emailToSend}`);
+      } catch (error) {
+        results.push({
+          user,
+          sendOk: false,
+          token: null,
+          disparada
+        });
+        console.error(`Error sending email to ${user.email}:`, error);
+      }
+    }
+    return results;
+  }
+
+  
+  async logAlarmNotifications(alarm, mensaje, notifications) {
+    console.log('notifications:', notifications);
+    const eventId = uuidv4();
+    for (const notif of notifications) {
+      const alarmLog = {
+        id: eventId,
+        alarma_id: alarm.id,
+        usuario_id: notif.user.id,
+        canal_id: alarm.canal_id,
+        mensaje: mensaje,
+        disparada: notif.disparada,
+        email_enviado: notif.sendOk ? 1 : 0 
+      };
+      console.log('Alarm Log data on logAlarmNotificatins:', alarmLog);
+      const insertedId = await AlarmLogModel.create(alarmLog);
+      console.log('insertedId on alarmaLogs on logAlarmNotificatins', insertedId);
+      console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${insertedId}` : 'Error inserting log');
+    }
+  }
+
+  async triggerAlarm(alarm, mensaje) {
+    console.log(`Alarm evaluation positive: ${alarm.nombre}`);
+    if (alarm.disparada == 0) {
+      alarm.disparada = 1;
+      await AlarmModel.updateTrigger(alarm.id, alarm.disparada);
+
+      const usersAffected = await AlarmUserModel.findUsersByAlarmId(alarm.id);
+      if (usersAffected.length > 0) {
+        const notifications = await this.notifyUsers(alarm, mensaje, usersAffected, 1);
+        await this.logAlarmNotifications(alarm, mensaje, notifications);
+      }
+    } else {
+      console.log(`la alarma ${alarm.nombre} sigue disparada...\n`);
+    }
+  }
+
+  async resetAlarm(alarm, mensaje) {
+    console.log(`Alarm evaluation negative ${alarm.nombre}`);
+    if (alarm.disparada == 1) {
+      alarm.disparada = 0;
+      await AlarmModel.updateTrigger(alarm.id, alarm.disparada);
+
+      const usersAffected = await AlarmUserModel.findUsersByAlarmId(alarm.id);
+      if (usersAffected.length > 0) {
+        const notifications = await this.notifyUsers(alarm, mensaje, usersAffected, 0);
+        await this.logAlarmNotifications(alarm, mensaje, notifications);
+      }
     }
   }
 }

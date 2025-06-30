@@ -48,7 +48,7 @@ const AlarmLog = {
            CONVERT_TZ(alarmas_logs.fecha_disparo, '+00:00', '${process.env.UTC_LOCAL}') AS fecha_disparo,\
            CONVERT_TZ(alarmas_logs.fecha_vista, '+00:00', '${process.env.UTC_LOCAL}') AS fecha_vista,\
            alarmas_logs.id, alarmas_logs.alarma_id, alarmas_logs.usuario_id, alarmas_logs.canal_id,\
-           alarmas_logs.variables_valores, alarmas_logs.disparada,\
+           alarmas_logs.disparada, alarmas_logs.mensaje,\
            usuarios.nombre_1, usuarios.apellido_1, usuarios.email\
            FROM alarmas_logs 
            INNER JOIN usuarios 
@@ -58,18 +58,18 @@ const AlarmLog = {
         const [rows] = await pool.query(queryString, alarmId);    
         return rows;
       },
-      create: async (alarmUserData) => {
-        const { alarma_id, usuario_id, canal_id, variables, disparada } = alarmUserData;
+      create: async (alarmLogData) => {
+        const { id, alarma_id, usuario_id, canal_id, mensaje, disparada, email_enviado } = alarmLogData;
         const query = 
           `INSERT INTO alarmas_logs
-            (alarma_id, usuario_id, canal_id, variables_valores, disparada, fecha_disparo)
-            VALUES
-            (?, ?, ?, ?, ?, CONVERT_TZ(CURRENT_TIMESTAMP(), '${process.env.UTC_LOCAL}', '+00:00'));`;
-        const [result] = await pool.query(query, [alarma_id, usuario_id, canal_id, variables, disparada]);
+        (id, alarma_id, usuario_id, canal_id, mensaje, disparada, fecha_disparo, email_enviado)
+        VALUES
+        (?, ?, ?, ?, ?, ?, CONVERT_TZ(CURRENT_TIMESTAMP(), '+00:00', '${process.env.UTC_LOCAL}'), ?);`;
+        const [result] = await pool.query(query, [id, alarma_id, usuario_id, canal_id, mensaje, disparada, email_enviado]);
         return result.insertId;
-    },    
+        },    
       update: async (alarmUserData) => {
-        const { id, alarma_id, usuario_id, canal_id, valor, fecha_vista  } = alarmUserData;        
+        const { id, alarma_id, usuario_id, canal_id, valor, fecha_vista, email_enviado  } = alarmUserData;        
         
         const updateFields = [];
         const values = [];
@@ -79,10 +79,11 @@ const AlarmLog = {
         if (canal_id) { updateFields.push('canal_id = ?'); values.push(canal_id); }
         if (valor) { updateFields.push('valor = ?'); values.push(valor); }
         if (fecha_vista) { updateFields.push('fecha_vista = ?'); values.push(fecha_vista); }
+        if (email_enviado) { updateFields.push('email_enviado = ?'); values.push(email_enviado); }
        
         values.push(id);
     
-        const query = `UPDATE alarmas_logs SET ${updateFields.join(', ')} WHERE id = ?`;
+        const query = `UPDATE alarmas_logs SET ${updateFields.join(', ')} WHERE id = ? AND usuario_id = ?`;
         const [result] = await pool.query(query, values);
         
         return result.affectedRows;

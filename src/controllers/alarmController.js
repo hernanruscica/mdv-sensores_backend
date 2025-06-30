@@ -9,7 +9,22 @@ export const registerAlarm = async (req, res, next) => {
   try {
     await connection.beginTransaction();
 
-    const { canal_id, nombre, descripcion, nombre_variables, condicion, periodo_tiempo, usuario_id, tipo_alarma } = req.body;
+    const { 
+      canal_id, 
+      nombre, 
+      descripcion, 
+      variable01,
+      variable02,
+      variable03,
+      variable04,
+      variable05,
+      variable06,
+      condicion,
+      condicion_mostrar,
+      periodo_tiempo, 
+      usuario_id, 
+      tipo_alarma 
+    } = req.body;
 
     // 1. Verificar si existe el canal
     const responseChannel = await Channel.findById(canal_id);
@@ -19,17 +34,25 @@ export const registerAlarm = async (req, res, next) => {
 
     const tabla = responseChannel.datalogger_nombre_tabla;
     const columna = responseChannel.nombre_columna;
+    const datalogger_id = responseChannel.datalogger_id;
 
     // 2. Crear la alarma
     const alarmId = await Alarm.create({ 
-      canal_id, 
+      canal_id,
+      datalogger_id, 
       tabla, 
       columna, 
       nombre, 
-      descripcion, 
-      nombre_variables, 
-      condicion, 
-      periodo_tiempo, 
+      descripcion,
+      variable01,
+      variable02,
+      variable03,
+      variable04,
+      variable05,
+      variable06,
+      condicion,
+      condicion_mostrar,
+      periodo_tiempo,
       tipo_alarma 
     });    
 
@@ -55,12 +78,19 @@ export const registerAlarm = async (req, res, next) => {
     const createdAlarm = {
       id: alarmId,
       canal_id,
+      datalogger_id,
       tabla,
       columna,
       nombre,
       descripcion,
-      nombre_variables,
+      variable01,
+      variable02,
+      variable03,
+      variable04,
+      variable05,
+      variable06,
       condicion,
+      condicion_mostrar,
       periodo_tiempo,
       tipo_alarma,
       usuario_id

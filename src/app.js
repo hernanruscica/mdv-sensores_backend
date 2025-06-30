@@ -11,6 +11,7 @@ import alarmLogRoutes from './routes/alarmLogRoutes.js';
 import locationUserRoutes from './routes/locationUserRoutes.js';
 import dataRoutes from './routes/dataRoutes.js';
 import imageRoutes from './routes/imageRoutes.js';
+import solutionRoutes from './routes/solutionRoutes.js';
 import { errorHandler } from './middlewares/errorMiddleware.js';
 import {pool} from './config/database.js';
 import cors from 'cors';
@@ -47,6 +48,7 @@ app.use('/api/alarmlogs', alarmLogRoutes);
 app.use('/api/locationsusers', locationUserRoutes);
 app.use('/api/data', dataRoutes);
 app.use('/api/images', imageRoutes);
+app.use('/api/solutions', solutionRoutes);
 
 // Obtén el nombre del archivo actual y el directorio actual
 const __filename = fileURLToPath(import.meta.url);
