@@ -26,9 +26,9 @@ Authorization: Bearer {{adminToken}}
    "nombre_2":"cuatro",
    "apellido_1":"mdvSensores",
    "apellido_2":"dfd",
-   "email":"mdvmon4itor2eoremoto@yahoo.com",
+   "email":"mdvmo2dddn4itor2eoremoto@yahoo.com",
    "telefono":"15364631187",
-   "dni":"48489232",       
+   "dni":"57489632",       
    "ubicaciones_id": "67",
    "roles_id": "7"  
 }

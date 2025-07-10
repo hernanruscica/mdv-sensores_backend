@@ -3,10 +3,10 @@ import AlarmService  from '../services/AlarmService.js';
 
 class CronService {
   startJobs() {
-    cron.schedule('*/30 * * * * * ', async () => { // Cada ... */1 * * * * = 1 minuto / */30 * * * * * = 30 segundos
+    cron.schedule('*/5 * * * * ', async () => { // Cada ... */1 * * * * = 1 minuto / */30 * * * * * = 30 segundos
       //console.clear();
-      //console.log('Verificando alarmas...s');
-      //await AlarmService.checkAlarms();
+      console.log('Verificando alarmas...s');
+      await AlarmService.checkAlarms();
     });
   }
 }

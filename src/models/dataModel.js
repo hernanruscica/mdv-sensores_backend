@@ -19,8 +19,9 @@ const dataModel = {
                             servicio, energia, texto \
                             FROM ${tableName} \
                             WHERE fecha >= DATE_SUB(NOW(), INTERVAL ${timePeriod} MINUTE) AND fecha <= NOW() \
-                            ORDER BY fecha ASC;`;
-      const [rows] = await poolData.query(queryString);    
+                            ORDER BY fecha ASC;`;                           
+      const [rows] = await poolData.query(queryString);  
+      console.log(rows)  
       return rows;
     },
     findLastDataFromTable: async (tableName) => {
