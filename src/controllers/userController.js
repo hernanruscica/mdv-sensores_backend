@@ -9,6 +9,7 @@ import generateTokenAlarmLog from "../utils/generateTokenAlarmLog.js";
 export const loginUser = async (req, res, next) => {
   try {
     const { dni, password } = req.body;
+    console.log('loginUser controller', dni, password);
     const user = await User.findByDni(dni);    
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(200).json({ message: 'DNI o contraseña incorrectos!' });
@@ -302,7 +303,7 @@ export const getAllUsersByUser = async (req, res, next) => {
     const users = await Promise.all(
       locationsIdsByUser.map(async (locationId) => {
         const currentUser = await LocationUser.findUsersByLocationId(locationId);
-        return currentUser;
+        return currentUser.filter(user => user.espropietario == 0);
       })
     );
 

@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzUxMjkzMTMwLCJleHAiOjE3NTEzNzk1MzB9.Bugi8omf64QWnFWdmQ1O-vS4tI2qCthTHiWN5sajk1Y
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzUzMjEzMTk5LCJleHAiOjE3NTMyOTk1OTl9.y1zqcv8WLyfhNiA5L7NHFD-sx9dFK77-YfDqzHqBW-0
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -11,7 +11,7 @@ POST {{baseUrl}}/api/users/login
 Content-Type: application/json
 
 {
-  "dni": 28470359,
+  "dni": "28470359",
   "password": "Pass1234"
 } 
 
@@ -57,7 +57,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### getById
-GET {{baseUrl}}/api/users/32
+GET {{baseUrl}}/api/users/36
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -499,7 +499,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### '/getporcentages/:tableName/:columnPrefix/:timePeriod/:rangePorcentage' time and ranges in minutes /api/data/getporcentages/cocina/d1/7200/60
-GET {{baseUrl}}/api/data/getporcentages/cocina/d3/7200/720 
+GET {{baseUrl}}/api/data/getporcentages/cocina/d3/240/720 
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -509,13 +509,9 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ###'/getlastdata/'
-GET {{baseUrl}}/api/data/getLastData
+GET {{baseUrl}}/api/data/getLastData/guemes
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
-
-{
-   "tableName": "cocina"
-}
 
 ######################################################################################
 #####################################    Images    ###################################

@@ -76,7 +76,7 @@ const LocationUser = {
             roles.nombre AS usuarios_nombre_rol,\
             concat(usuarios.nombre_1, " ", usuarios.apellido_1) AS usuario_nom_apell,\
             usuarios.email, usuarios.telefono,\
-            usuarios.estado ,\
+            usuarios.estado , usuarios.espropietario,\
             ubicaciones.nombre AS ubicaciones_nombre,\
             usuarios_x_ubicaciones_x_roles.ubicaciones_id AS ubicaciones_id\
           FROM usuarios\

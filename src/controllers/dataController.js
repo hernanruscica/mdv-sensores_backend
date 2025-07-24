@@ -27,7 +27,7 @@ export const getPorcentagesOn = async (req, res, next) => {
         const {tableName, columnPrefix, timePeriod, rangePorcentage } = req.params;
         
         const currentData = await dataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod);
-        console.log(currentData);
+        console.log('currentData del datacontroller geporcentageson', currentData);
         if (currentData?.length > 0){
             const rangePorcentageSecs = rangePorcentage * 60;
             const dataPorcentagesOn = calculatePorcentageOn(currentData, rangePorcentageSecs)
@@ -55,7 +55,9 @@ export const getAnalogData = async (req, res, next) => {
 export const getLastData = async (req, res, next) => {    
 
     try {
-        const {tableName } = req.body;
+        
+        const {tableName } = req.params;        
+
         const currentData = await dataModel.findLastDataFromTable(tableName);
         if (currentData?.length > 0){
             return res.status(200).json({message: 'Data Founded', data: currentData});

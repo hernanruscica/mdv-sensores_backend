@@ -38,21 +38,21 @@ export const registerAlarm = async (req, res, next) => {
 
     // 2. Crear la alarma
     const alarmId = await Alarm.create({ 
-      canal_id,
+      canal_id, 
       datalogger_id, 
       tabla, 
       columna, 
       nombre, 
-      descripcion,
+      descripcion, 
       variable01,
       variable02,
       variable03,
       variable04,
       variable05,
       variable06,
-      condicion,
+      condicion, 
       condicion_mostrar,
-      periodo_tiempo,
+      periodo_tiempo, 
       tipo_alarma 
     });    
 

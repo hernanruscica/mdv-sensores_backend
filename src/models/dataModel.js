@@ -21,7 +21,7 @@ const dataModel = {
                             WHERE fecha >= DATE_SUB(NOW(), INTERVAL ${timePeriod} MINUTE) AND fecha <= NOW() \
                             ORDER BY fecha ASC;`;                           
       const [rows] = await poolData.query(queryString);  
-      console.log(rows)  
+      console.log('rows del datamodel',rows)  
       return rows;
     },
     findLastDataFromTable: async (tableName) => {
