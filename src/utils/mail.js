@@ -25,7 +25,7 @@ export const sendMessage = async (alarm, mensaje, email, token) => {
             <p>Se registró un cambio en la alarma <strong>'${alarm.nombre}'</strong>.</p>
             <p>${mensaje}</p>
             <a href='${baseURL}/panel/verestadoalarma/${token}' style="font-size: 1.5rem; color: white; background-color: green; padding: 10px;">Ver alarma</a>
-            <p style="color: DodgerBlue"><strong>MDV SRL</strong> 2024 ©</p>
+            <p style="color: DodgerBlue"><strong>MDV SRL</strong> 2025 ©</p>
         </div>
     `;
 

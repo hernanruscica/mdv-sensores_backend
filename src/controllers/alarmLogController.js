@@ -20,9 +20,9 @@ export const updateAlarmLog = async (req, res, next) => {
     alarmLogData.id = id;
     const updatedRows = await AlarmLog.update(alarmLogData);    
     if (updatedRows == 0) {
-      return res.status(404).json({ message: 'Alarm log not found' });
+      return res.status(200).json({ success: false, message: 'Alarm log not found' });
     }else{
-      return res.status(200).json({ message: 'Alarm log updated successfully' });
+      return res.status(201).json({ success: true, message: 'Alarm log updated successfully' });
     }        
   } catch (error) {
     next(error);

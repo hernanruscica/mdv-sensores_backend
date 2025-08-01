@@ -46,10 +46,10 @@ const Channel = {
         const { datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador } = channelData;        
         const queryString = `
           INSERT INTO canales\
-            (datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, multiplicador, foto, estado, fecha_creacion)\
+            (datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, multiplicador, estado, fecha_creacion, foto)\
           VALUES\
             (?, ?, ?, ?, ?, ?, 1, CURDATE(), ?);`;
-        const [result] = await pool.query(queryString, [datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, foto, multiplicador]);
+        const [result] = await pool.query(queryString, [datalogger_id, nombre, descripcion, nombre_columna, tiempo_a_promediar, multiplicador, foto]);
         return result.insertId;
       },
       update: async (channelData) => {

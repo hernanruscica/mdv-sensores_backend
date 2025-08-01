@@ -1,4 +1,4 @@
-@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzUzMjEzMTk5LCJleHAiOjE3NTMyOTk1OTl9.y1zqcv8WLyfhNiA5L7NHFD-sx9dFK77-YfDqzHqBW-0
+@adminToken = eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MzIsInVzZXJOYW1lIjoiIiwiZG5pIjoiIiwiaWF0IjoxNzUzODk3OTczLCJleHAiOjE3NTM5ODQzNzN9.gIyz5bbkVKoY-OFnwgyvOvbWY2pyJ5POzaEE-7aPiF8
 @baseUrl = http://localhost:5000
 //@baseUrl = https://mdv-sensores-backend.onrender.com
 
@@ -499,7 +499,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ### '/getporcentages/:tableName/:columnPrefix/:timePeriod/:rangePorcentage' time and ranges in minutes /api/data/getporcentages/cocina/d1/7200/60
-GET {{baseUrl}}/api/data/getporcentages/cocina/d3/240/720 
+GET {{baseUrl}}/api/data/getporcentages/cocina/d1/46/60 
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
@@ -509,7 +509,7 @@ Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 
 ###'/getlastdata/'
-GET {{baseUrl}}/api/data/getLastData/guemes
+GET {{baseUrl}}/api/data/getLastData/cocina
 Content-Type: application/json
 Authorization: Bearer {{adminToken}}
 

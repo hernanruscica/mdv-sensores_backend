@@ -27,7 +27,7 @@ export const getPorcentagesOn = async (req, res, next) => {
         const {tableName, columnPrefix, timePeriod, rangePorcentage } = req.params;
         
         const currentData = await dataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod);
-        console.log('currentData del datacontroller geporcentageson', currentData);
+        //console.log('currentData del datacontroller geporcentageson', currentData);
         if (currentData?.length > 0){
             const rangePorcentageSecs = rangePorcentage * 60;
             const dataPorcentagesOn = calculatePorcentageOn(currentData, rangePorcentageSecs)

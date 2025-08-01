@@ -35,7 +35,7 @@ class AlarmService {
           const tableName = alarm.tabla;
           const columnPrefix = alarm.columna;
           const timePeriod = alarm.periodo_tiempo;
-          const variable01 = 60;
+          const variable01 = alarm.variable01; //60;
           const currentData = await DataModel.findDataFromDigitalChannel(tableName, columnPrefix, timePeriod);
           
           const rangePorcentageSecs = timePeriod * 60;
@@ -128,11 +128,11 @@ class AlarmService {
   /**
    * Envía correos a los usuarios afectados y devuelve un array con el resultado de cada envío.
    */
-  async notifyUsers(alarm, mensaje, users, disparada) {
+  async notifyUsers(alarm, mensaje, users, disparada, eventId) {
     const results = [];
     for (const user of users) {
       try {
-        const token = generateTokenAlarmLog(null, user.id, alarm.id, alarm.canal_id, alarm.datalogger_id);
+        const token = generateTokenAlarmLog(eventId, user.id, alarm.id, alarm.canal_id, alarm.datalogger_id);
         const emailToSend = user.email;
         const sendOk = await sendMessage(alarm, mensaje, emailToSend, token);
         results.push({
@@ -156,9 +156,9 @@ class AlarmService {
   }
 
   
-  async logAlarmNotifications(alarm, mensaje, notifications) {
-    console.log('notifications:', notifications);
-    const eventId = uuidv4();
+  async logAlarmNotifications(alarm, mensaje, notifications, eventId) {
+    //console.log('eventId desde alarm service->logAlarmNotifications:', eventId);
+    //const eventId = uuidv4();
     for (const notif of notifications) {
       const alarmLog = {
         id: eventId,
@@ -171,8 +171,9 @@ class AlarmService {
       };
       console.log('Alarm Log data on logAlarmNotificatins:', alarmLog);
       const insertedId = await AlarmLogModel.create(alarmLog);
-      console.log('insertedId on alarmaLogs on logAlarmNotificatins', insertedId);
-      console.log(insertedId > 0 ? `Alarm Log inserted Ok with id: ${insertedId}` : 'Error inserting log');
+      //console.log('insertedId on alarmaLogs on logAlarmNotificatins', insertedId);
+
+      console.log(insertedId != null ? `Alarm Log inserted Ok with id: ${insertedId}` : 'Error inserting log');
     }
   }
 
@@ -183,9 +184,11 @@ class AlarmService {
       await AlarmModel.updateTrigger(alarm.id, alarm.disparada);
 
       const usersAffected = await AlarmUserModel.findUsersByAlarmId(alarm.id);
+      const eventId = uuidv4();
+
       if (usersAffected.length > 0) {
-        const notifications = await this.notifyUsers(alarm, mensaje, usersAffected, 1);
-        await this.logAlarmNotifications(alarm, mensaje, notifications);
+        const notifications = await this.notifyUsers(alarm, mensaje, usersAffected, 1, eventId);
+        await this.logAlarmNotifications(alarm, mensaje, notifications, eventId);
       }
     } else {
       console.log(`la alarma ${alarm.nombre} sigue disparada...\n`);

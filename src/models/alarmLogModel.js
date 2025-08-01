@@ -66,22 +66,29 @@ const AlarmLog = {
         VALUES
         (?, ?, ?, ?, ?, ?, CONVERT_TZ(CURRENT_TIMESTAMP(), '+00:00', '${process.env.UTC_LOCAL}'), ?);`;
         const [result] = await pool.query(query, [id, alarma_id, usuario_id, canal_id, mensaje, disparada, email_enviado]);
-        return result.insertId;
-        },    
-      update: async (alarmUserData) => {
-        const { id, alarma_id, usuario_id, canal_id, valor, fecha_vista, email_enviado  } = alarmUserData;        
+        console.log('results on create alarmLogModel:', result);
         
+        return result.affectedRows > 0 ? id : null;
+
+        },    
+      update: async (alarmLogData) => {
+        const { id, alarma_id, usuario_id, canal_id, valor, fecha_vista, email_enviado  } = alarmLogData;        
+        console.log('alarmLogData on update alarmLogModel:', alarmLogData);
         const updateFields = [];
         const values = [];
     
         if (alarma_id) { updateFields.push('alarma_id = ?'); values.push(alarma_id); }
-        if (usuario_id) { updateFields.push('usuario_id = ?'); values.push(usuario_id); }
+        //if (usuario_id) { updateFields.push('usuario_id = ?'); values.push(usuario_id); }
         if (canal_id) { updateFields.push('canal_id = ?'); values.push(canal_id); }
         if (valor) { updateFields.push('valor = ?'); values.push(valor); }
         if (fecha_vista) { updateFields.push('fecha_vista = ?'); values.push(fecha_vista); }
         if (email_enviado) { updateFields.push('email_enviado = ?'); values.push(email_enviado); }
        
         values.push(id);
+        values.push(usuario_id);
+
+        console.log('updateFields:', updateFields);
+        console.log('values:', values);
     
         const query = `UPDATE alarmas_logs SET ${updateFields.join(', ')} WHERE id = ? AND usuario_id = ?`;
         const [result] = await pool.query(query, values);

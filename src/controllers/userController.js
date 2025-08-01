@@ -298,14 +298,16 @@ export const getAllUsersByUser = async (req, res, next) => {
 
     const locationsByUser = await LocationUser.findLocationsByUserId(userId);
     const locationsIdsByUser = locationsByUser.map(locationByUser => locationByUser.ubicaciones_id);
-
+    
     // Usar Promise.all para esperar a que todas las promesas se resuelvan
     const users = await Promise.all(
       locationsIdsByUser.map(async (locationId) => {
         const currentUser = await LocationUser.findUsersByLocationId(locationId);
-        return currentUser.filter(user => user.espropietario == 0);
+        console.log('currentUser', currentUser);
+        return currentUser.filter(user => user.espropietario != 1);
       })
     );
+
 
     // Filtrar los valores que no existen y aplanar el array
     const flattenedUsers = users.filter(Boolean).flat();
