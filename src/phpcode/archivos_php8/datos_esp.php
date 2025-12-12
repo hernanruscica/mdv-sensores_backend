@@ -110,4 +110,6 @@ flush();
 $pdo2 = getDatabaseConnection($servidorSQL_ruscica, $usuario_ruscica, $password_ruscica, $base_datos_ruscica);
 insertData($pdo2, $tabla, $data);
 
+
+
 ?>

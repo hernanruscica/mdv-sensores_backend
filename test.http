@@ -564,3 +564,21 @@ Content-Type: image/jpeg
 < ./src/uploads/cafetera_generica.jpg
 ------WebKitFormBoundary7MA4YWxkTrZu0gW--
 
+######################################################################################
+#####################################    PHP TEST     ################################
+######################################################################################
+
+### Test for datos_esp.php
+POST https://impulsainternet.com/cocina/datos_esp.php
+Content-Type: application/x-www-form-urlencoded
+
+identificador=1&tiempo_total=100&d1_estado=1&d1_cantidad=10&d1_tiempo=100&d2_estado=0&d2_cantidad=0&d2_tiempo=0&d3_estado=1&d3_cantidad=5&d3_tiempo=50&d4_estado=0&d4_cantidad=0&d4_tiempo=0&d5_estado=1&d5_cantidad=2&d5_tiempo=20&d6_estado=0&d6_cantidad=0&d6_tiempo=0&d7_estado=1&d7_cantidad=1&d7_tiempo=10&d8_estado=0&d8_cantidad=0&d8_tiempo=0&a1_inst=1.1&a1_min=1.0&a1_max=1.2&a1_estado=1&a1_cantidad=10&a1_tiempo=100&a2_inst=2.2&a2_min=2.0&a2_max=2.4&a2_estado=0&a2_cantidad=0&a2_tiempo=0&a3_inst=3.3&a3_min=3.0&a3_max=3.6&a3_estado=1&a3_cantidad=5&a3_tiempo=50&a4_inst=4.4&a4_min=4.0&a4_max=4.8&a4_estado=0&a4_cantidad=0&a4_tiempo=0&a5_inst=5.5&a5_min=5.0&a5_max=5.9&a5_estado=1&a5_cantidad=2&a5_tiempo=20&servicio=1&energia=1&texto=test
+
+
+### 
+POST https://impulsainternet.com/cocina/datos_esp.php
+Content-Type: application/json
+
+###
+POST https://www.mdvsrl.com.ar/cocina/datos_esp.php
+Content-Type: application/json
