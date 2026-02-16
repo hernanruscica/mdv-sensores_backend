@@ -4,7 +4,7 @@ const generateTokenAlarmLog =  (alarmLogId = '' , userId = '', alarmId = '', cha
   const token =  jwt.sign({ alarmLogId , userId, alarmId, channelId, dataloggerId}, process.env.JWT_SECRET, {
     expiresIn: '1d',
   });  
-  console.log('datos en generateToken',alarmLogId, userId, alarmId, channelId, dataloggerId, token);
+  //console.log('datos en generateToken',alarmLogId, userId, alarmId, channelId, dataloggerId, token);
   return token;
 };
 
